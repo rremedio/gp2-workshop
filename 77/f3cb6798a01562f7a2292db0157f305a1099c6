@@ -1,0 +1,30 @@
+crates/gp2ws-gui/src/main.rs
+  s_e1187d914239f8::t_824d452f61b1c4 1-21
+crates/gp2ws-gui/src/magic_tab.rs
+  s_e1187d914239f8::t_31ea26e6a52347 1-9
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_6ef24f172c17ce 1-4,6,8,26-27
+  s_e1187d914239f8::t_b4c4d2af19ddac 5,7,9-25
+crates/gp2ws-core/src/lib.rs
+  s_e1187d914239f8::t_de28176876dd94 11
+crates/gp2ws-core/src/display.rs
+  s_e1187d914239f8::t_6c307c58409ad4 1-113
+crates/gp2ws-gui/src/app.rs
+  s_e1187d914239f8::t_0b15615ed8bb6f 1-302
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "77f3cb6798a01562f7a2292db0157f305a1099c6",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
