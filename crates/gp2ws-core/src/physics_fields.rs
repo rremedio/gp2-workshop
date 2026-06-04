@@ -2,101 +2,87 @@ use crate::encoding::Encoding;
 use crate::field::{FieldDesc, SubTab, Tier};
 use crate::target::Target;
 
-/// Sentinel stock value meaning "stock unknown / unverified"; the real-EXE
-/// verification test skips fields carrying this value.
-pub const STOCK_UNKNOWN: i64 = i64::MIN;
-
 pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     // ---- Engine ----
     FieldDesc {
         id: "rev_limiter",
         label: "Rev Limiter",
-        help: "Engine rev limiter (legacy old-editor offset).",
+        help: "Soft power-cut RPM (the old editor's \"Rev Limiter\"). \
+               Power begins to be cut above this. Stock 15200.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1281904),
+        target: Target::Data(0xD6010),
         width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy offset; verify
+        stock: 15200,
         range: None,
     },
     FieldDesc {
         id: "max_rpm",
         label: "Max RPM",
-        help: "Maximum engine RPM (legacy old-editor offset).",
+        help: "Auto-shift / nominal max RPM (w_rpm15000). The engine can rev \
+               higher if the gear ratio is too tall. Stock 15000.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1281924),
+        target: Target::Data(0xD601C),
         width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy offset; verify
+        stock: 15000,
         range: None,
     },
     FieldDesc {
         id: "rpm_light_1",
         label: "RPM Light 1",
-        help: "Shift-light 1 RPM threshold (legacy old-editor offset).",
+        help: "Cockpit shift-light 1 threshold. Adjust to match rev-limiter / \
+               max-RPM changes. Stock 7146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1284436),
-        width: 4,
+        target: Target::Data(0xD6700),
+        width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy; verify
+        stock: 7146,
         range: None,
     },
     FieldDesc {
         id: "rpm_light_2",
         label: "RPM Light 2",
-        help: "Shift-light 2 RPM threshold (legacy old-editor offset).",
+        help: "Cockpit shift-light 2 threshold. Stock 8146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1284440),
-        width: 4,
+        target: Target::Data(0xD6704),
+        width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy; verify
+        stock: 8146,
         range: None,
     },
     FieldDesc {
         id: "rpm_light_3",
         label: "RPM Light 3",
-        help: "Shift-light 3 RPM threshold (legacy old-editor offset).",
+        help: "Cockpit shift-light 3 threshold. Stock 8496.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1284444),
-        width: 4,
+        target: Target::Data(0xD6708),
+        width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy; verify
+        stock: 8496,
         range: None,
     },
     FieldDesc {
         id: "rpm_light_4",
         label: "RPM Light 4",
-        help: "Shift-light 4 RPM threshold (legacy old-editor offset).",
+        help: "Cockpit shift-light 4 threshold. Stock 8696.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
-        target: Target::Direct(1284448),
-        width: 4,
+        target: Target::Data(0xD670C),
+        width: 2,
         signed: false,
         encoding: Encoding::Raw,
-        stock: STOCK_UNKNOWN, // legacy; verify
-        range: None,
-    },
-    FieldDesc {
-        id: "soft_powercut_rpm",
-        label: "Soft Power-cut RPM",
-        help: "RPM at which engine power begins to be cut.",
-        subtab: SubTab::Engine,
-        tier: Tier::Advanced,
-        target: Target::Data(0xD6010),
-        width: 4,
-        signed: false,
-        encoding: Encoding::Raw,
-        stock: 15200,
+        stock: 8696,
         range: None,
     },
     // ---- Aero ----
