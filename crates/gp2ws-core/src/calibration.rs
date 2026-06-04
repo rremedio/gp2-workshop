@@ -7,10 +7,16 @@ pub struct Anchor {
     pub stock: u64,
 }
 
+// Anchors MUST be EXE constants this tool never writes — otherwise patching a
+// field that shares an anchor's address would make a re-opened, already-patched
+// EXE fail recalibration. These are documented steering-aid constants (physics.md
+// §8.11) that are NOT in our editable field set; verified against the real EXE.
+// If a future version ever exposes steering-help editing, pick different anchors.
 pub const ANCHORS: &[Anchor] = &[
-    Anchor { target: Target::Data(0xD53DC), width: 4, stock: 0x40000 }, // off_D53DC
-    Anchor { target: Target::Data(0xD5D96), width: 2, stock: 0x0B00 },  // word_D5D96
-    Anchor { target: Target::Data(0xD5DEE), width: 2, stock: 0x48A0 },  // t_tiretypetab[A]
+    Anchor { target: Target::Data(0xD5638), width: 4, stock: 0x800 },  // off_D5638 auto-forward scale
+    Anchor { target: Target::Data(0xD5648), width: 4, stock: 0x1000 }, // off_D5648 CC steer-correction scale
+    Anchor { target: Target::Data(0xD5F24), width: 4, stock: 0x400 },  // off_D5F24 human steer-aid scale
+    Anchor { target: Target::Data(0xD5F28), width: 4, stock: 0x1500 }, // off_D5F28 slip normaliser
 ];
 
 /// How far (in bytes) to scan on either side of each anchor's base offset.
