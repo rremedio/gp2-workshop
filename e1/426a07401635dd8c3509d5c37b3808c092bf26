@@ -1,0 +1,25 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_e1187d914239f8::t_30ce452ac47601 24-25,28,32
+  s_e1187d914239f8::t_eca8cde17d707d 42,55,68,81
+  s_e1187d914239f8::t_58b777e5a86868 52,56,59
+  s_e1187d914239f8::t_921ca90ae4c8ae 10-11,14,18
+  s_e1187d914239f8::t_5839580a635ed8 38-39,43,46
+  s_e1187d914239f8::t_f04469d57d8630 65,69,72
+  s_e1187d914239f8::t_41497df0b16e7d 78,82,85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "e1426a07401635dd8c3509d5c37b3808c092bf26",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
