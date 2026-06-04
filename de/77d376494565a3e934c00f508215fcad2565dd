@@ -1,0 +1,21 @@
+crates/gp2ws-core/src/power_curve.rs
+  s_e1187d914239f8::t_a0c7662e924162 1-89
+crates/gp2ws-core/src/lib.rs
+  s_e1187d914239f8::t_134eb5e78b0c02 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "de77d376494565a3e934c00f508215fcad2565dd",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
