@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = ["crates/gp2ws-core", "crates/gp2ws-gui"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"

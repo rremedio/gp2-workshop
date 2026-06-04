@@ -1,0 +1,10 @@
+[package]
+name = "gp2ws-gui"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+gp2ws-core = { path = "../gp2ws-core" }
+eframe = "0.29"
+egui_plot = "0.29"
+rfd = "0.15"   # native file dialogs
