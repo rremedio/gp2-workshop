@@ -1,0 +1,21 @@
+crates/gp2ws-core/src/lib.rs
+  s_e1187d914239f8::t_74082f8db4d6de 8
+crates/gp2ws-core/src/tyre_fields.rs
+  s_e1187d914239f8::t_0b69088ba83cc0 1-182
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "9401b96a4305caffae73f8a4669ec0984e7a2845",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
