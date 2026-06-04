@@ -1,0 +1,31 @@
+crates/gp2ws-core/src/lib.rs
+  s_e1187d914239f8::t_587aa02123be6c 1
+crates/gp2ws-gui/Cargo.toml
+  s_e1187d914239f8::t_3e5f5ab258659e 1-10
+crates/gp2ws-core/Cargo.toml
+  s_e1187d914239f8::t_8a897e3da72323 1-9
+.cargo/config.toml
+  s_e1187d914239f8::t_6ce1c30102854e 1-2
+rust-toolchain.toml
+  s_e1187d914239f8::t_a3a5f92b9906ce 1-2
+Cargo.toml
+  s_e1187d914239f8::t_8fe0efe365bdac 1-7
+crates/gp2ws-gui/src/main.rs
+  s_e1187d914239f8::t_0863edd56440b1 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "42c35d5fe5ed5a00b52e9467b8cbc5c91d6b55b4",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
