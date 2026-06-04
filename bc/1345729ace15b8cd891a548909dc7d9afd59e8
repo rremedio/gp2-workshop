@@ -1,0 +1,19 @@
+docs/plans/2026-06-04-gp2-workshop-editor-implementation.md
+  s_e1187d914239f8::t_eb07a0f38f73e9 1-689
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "bc1345729ace15b8cd891a548909dc7d9afd59e8",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
