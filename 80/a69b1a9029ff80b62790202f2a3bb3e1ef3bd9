@@ -1,0 +1,21 @@
+crates/gp2ws-core/src/lib.rs
+  s_e1187d914239f8::t_bfc3a568453251 9
+crates/gp2ws-core/src/magic.rs
+  s_e1187d914239f8::t_47d078c8a0b447 1-198
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "80a69b1a9029ff80b62790202f2a3bb3e1ef3bd9",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
