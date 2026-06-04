@@ -55,6 +55,31 @@ impl FieldDesc {
         let raw = crate::encoding::encode(value, self.encoding);
         img.write(off, self.width, mask(raw, self.width));
     }
+
+    /// The inclusive `(min, max)` bounds this field accepts as a human value.
+    ///
+    /// Uses the explicit `range` when set; otherwise derives the default from
+    /// `width` + `signed`: unsigned `0..=2^bits-1`, signed
+    /// `-(2^(bits-1))..=2^(bits-1)-1`.
+    pub fn bounds(&self) -> (i64, i64) {
+        if let Some(r) = self.range {
+            return r;
+        }
+        let bits = self.width as u32 * 8;
+        if self.signed {
+            let max = (1i64 << (bits - 1)) - 1;
+            (-(1i64 << (bits - 1)), max)
+        } else {
+            (0, (1i64 << bits) - 1)
+        }
+    }
+
+    /// True if `value` fits this field (within its `range`, or the default
+    /// width/signedness bounds when `range` is `None`).
+    pub fn validate(&self, value: i64) -> bool {
+        let (min, max) = self.bounds();
+        value >= min && value <= max
+    }
 }
 
 fn sign_extend(v: i64, width: u8) -> i64 {
@@ -131,6 +156,58 @@ mod tests {
         // raw written should be 0xF29B
         assert_eq!(img.read(300, 2), 0xF29B);
         assert_eq!(f.read(&img, 0), 25);
+    }
+
+    fn field(width: u8, signed: bool, range: Option<(i64, i64)>) -> FieldDesc {
+        FieldDesc {
+            id: "v",
+            label: "V",
+            help: "",
+            subtab: SubTab::Engine,
+            tier: Tier::Basic,
+            target: Target::Direct(0),
+            width,
+            signed,
+            encoding: Encoding::Raw,
+            stock: 0,
+            range,
+        }
+    }
+
+    #[test]
+    fn validate_unsigned_default_bounds() {
+        let f = field(2, false, None); // u16: 0..=65535
+        assert!(f.validate(0));
+        assert!(f.validate(65535));
+        assert!(!f.validate(-1));
+        assert!(!f.validate(65536));
+    }
+
+    #[test]
+    fn validate_signed_default_bounds() {
+        let f = field(2, true, None); // i16: -32768..=32767
+        assert!(f.validate(-32768));
+        assert!(f.validate(32767));
+        assert!(!f.validate(-32769));
+        assert!(!f.validate(32768));
+    }
+
+    #[test]
+    fn validate_unsigned_u32_default_bounds() {
+        let f = field(4, false, None); // u32: 0..=4294967295
+        assert!(f.validate(0));
+        assert!(f.validate(4_294_967_295));
+        assert!(!f.validate(-1));
+        assert!(!f.validate(4_294_967_296));
+    }
+
+    #[test]
+    fn validate_explicit_range_overrides_width() {
+        let f = field(2, false, Some((10, 100)));
+        assert!(f.validate(10));
+        assert!(f.validate(100));
+        assert!(!f.validate(9));
+        assert!(!f.validate(101));
     }
 
     #[test]

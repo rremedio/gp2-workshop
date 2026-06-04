@@ -46,8 +46,15 @@ pub fn doc_from_buffers(
     for f in PHYSICS_FIELDS.iter().chain(TYRE_FIELDS.iter()) {
         if let Some(text) = field_buf.get(f.id) {
             match parse_edit_string(text, f.encoding) {
-                Some(v) => {
+                Some(v) if f.validate(v) => {
                     doc.fields.insert(f.id.to_string(), v);
+                }
+                Some(v) => {
+                    let (min, max) = f.bounds();
+                    warnings.push(format!(
+                        "{}: value {} out of range ({}..={})",
+                        f.id, v, min, max
+                    ));
                 }
                 None => warnings.push(format!("{}: invalid value {:?}", f.id, text)),
             }
@@ -383,6 +390,22 @@ mod tests {
         let curve: Vec<String> = (0..36).map(|i| i.to_string()).collect();
         let (_doc, warnings) = doc_from_buffers(&base, &buf, &curve);
         assert!(warnings.iter().any(|w| w.contains("tow_strength")));
+    }
+
+    #[test]
+    fn doc_from_buffers_rejects_out_of_range_value() {
+        // tow_strength is a width-4 unsigned Raw field: 0..=4294967295.
+        let base = base_doc();
+        let mut buf = std::collections::HashMap::new();
+        buf.insert("tow_strength".to_string(), "4294967296".to_string());
+        let curve: Vec<String> = vec!["0".to_string(); 36];
+        let (doc, warnings) = doc_from_buffers(&base, &buf, &curve);
+        assert!(
+            warnings.iter().any(|w| w.contains("tow_strength") && w.contains("out of range")),
+            "{warnings:?}"
+        );
+        // The out-of-range edit must not overwrite the base value.
+        assert_eq!(doc.fields.get("tow_strength"), Some(&0x40000));
     }
 
     #[test]
