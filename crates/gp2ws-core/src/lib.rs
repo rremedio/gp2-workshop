@@ -8,6 +8,7 @@ pub mod power_curve;
 pub mod tyre_fields;
 pub mod magic;
 pub mod physics_io;
+pub mod display;
 
 use std::path::{Path, PathBuf};
 
