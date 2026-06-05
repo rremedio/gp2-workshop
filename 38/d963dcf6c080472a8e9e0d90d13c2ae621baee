@@ -1,0 +1,19 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_e1187d914239f8::t_cea1332afa817d 289-309
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "38d963dcf6c080472a8e9e0d90d13c2ae621baee",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
