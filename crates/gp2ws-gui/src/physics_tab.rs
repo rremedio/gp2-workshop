@@ -174,7 +174,7 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
 
     // Secondary column: float (for Fixed), validity, or hex hint tooltip.
     match parse_edit_string(&app.physics_buf[f.id], f.encoding, f.width, f.signed) {
-        Some(v) => {
+        Some(v) if f.validate(v) => {
             let hint = format_hint(v, f.encoding, f.width);
             if let Some(fl) = fixed_float(v, f.encoding) {
                 ui.label(format!("= {fl:.3}\u{00d7}")).on_hover_text(hint);
@@ -184,8 +184,14 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
                 ui.label("");
             }
         }
+        Some(_) => {
+            // Parses fine but is outside the field's allowed range.
+            let (min, max) = f.bounds();
+            ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "out of range")
+                .on_hover_text(format!("Allowed: {min} to {max}"));
+        }
         None => {
-            ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "invalid");
+            ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "not a number");
         }
     }
 

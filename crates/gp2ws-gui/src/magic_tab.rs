@@ -210,7 +210,7 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
                         } else if app.magic_buf[i].trim().parse::<u16>().is_err() {
                             ui.colored_label(
                                 egui::Color32::from_rgb(220, 80, 80),
-                                "invalid u16",
+                                "must be 0\u{2013}65535",
                             );
                         }
                         ui.end_row();
