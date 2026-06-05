@@ -158,7 +158,7 @@ impl App {
         for f in PHYSICS_FIELDS.iter().chain(TYRE_FIELDS.iter()) {
             if let Some(&v) = doc.fields.get(f.id) {
                 self.physics_buf
-                    .insert(f.id.to_string(), value_to_edit_string(v, f.encoding));
+                    .insert(f.id.to_string(), value_to_edit_string(v, f.encoding, f.width));
             }
         }
         self.curve_buf = doc.power_curve.iter().map(|v| v.to_string()).collect();

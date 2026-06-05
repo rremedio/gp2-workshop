@@ -45,7 +45,7 @@ pub fn doc_from_buffers(
 
     for f in PHYSICS_FIELDS.iter().chain(TYRE_FIELDS.iter()) {
         if let Some(text) = field_buf.get(f.id) {
-            match parse_edit_string(text, f.encoding) {
+            match parse_edit_string(text, f.encoding, f.width, f.signed) {
                 Some(v) if f.validate(v) => {
                     doc.fields.insert(f.id.to_string(), v);
                 }
@@ -155,13 +155,13 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
         .physics_buf
         .entry(f.id.to_string())
         .or_insert_with(String::new);
-    let edit = egui::TextEdit::singleline(buf).desired_width(120.0);
+    let edit = egui::TextEdit::singleline(buf).desired_width(240.0);
     let resp = ui.add(edit);
 
     // Secondary column: float (for Fixed), validity, or hex hint tooltip.
-    match parse_edit_string(&app.physics_buf[f.id], f.encoding) {
+    match parse_edit_string(&app.physics_buf[f.id], f.encoding, f.width, f.signed) {
         Some(v) => {
-            let hint = format_hint(v, f.encoding);
+            let hint = format_hint(v, f.encoding, f.width);
             if let Some(fl) = fixed_float(v, f.encoding) {
                 ui.label(format!("= {fl}")).on_hover_text(hint);
             } else {
@@ -181,7 +181,7 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
         .clicked()
     {
         app.physics_buf
-            .insert(f.id.to_string(), value_to_edit_string(f.stock, f.encoding));
+            .insert(f.id.to_string(), value_to_edit_string(f.stock, f.encoding, f.width));
     }
     ui.end_row();
 }
@@ -214,7 +214,7 @@ fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
             for i in 0..app.curve_buf.len() {
                 ui.label(format!("[{i}]"));
                 let edit =
-                    egui::TextEdit::singleline(&mut app.curve_buf[i]).desired_width(70.0);
+                    egui::TextEdit::singleline(&mut app.curve_buf[i]).desired_width(140.0);
                 ui.add(edit);
                 if app.curve_buf[i].trim().parse::<i64>().is_err() {
                     ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "invalid");
