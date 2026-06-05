@@ -315,38 +315,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 0x3E800,
         range: None,
     },
-    FieldDesc {
-        id: "ai_brake_lookahead_1",
-        label: "AI Brake Lookahead 1",
-        help: "How far ahead the AI looks before braking for a corner (first of \
-               two stages). Raise it and the AI brakes earlier - longer, gentler \
-               braking; lower it and the AI brakes later and more aggressively, \
-               and may overshoot. Stock 15360.",
-        subtab: SubTab::Brakes,
-        tier: Tier::Advanced,
-        target: Target::Data(0xC9970),
-        width: 4,
-        signed: false,
-        encoding: Encoding::Raw,
-        stock: 0x3C00,
-        range: None,
-    },
-    FieldDesc {
-        id: "ai_brake_lookahead_2",
-        label: "AI Brake Lookahead 2",
-        help: "The second AI braking-lookahead stage, paired with the first. \
-               Higher = the AI brakes earlier; lower = later and more aggressive. \
-               We're confident on that direction but not on the exact difference \
-               between the two stages, so adjust both together and test. Stock 15360.",
-        subtab: SubTab::Brakes,
-        tier: Tier::Advanced,
-        target: Target::Data(0xC9974),
-        width: 4,
-        signed: false,
-        encoding: Encoding::Raw,
-        stock: 0x3C00,
-        range: None,
-    },
+    // (Removed "AI Brake Lookahead 1/2" = off_C9970/off_C9974. Tracing the EXE
+    // showed these are NOT corner-braking lookahead: both gate pit-lane approach
+    // behaviour (compared against car+0x29C distance-to-pit, guarding pit line
+    // departure and the pit speed limiter), so they have no effect on racing.)
     // ---- Mass / Grip ----
     FieldDesc {
         id: "std_weight",
