@@ -53,6 +53,9 @@ pub struct App {
     // ---- Status ----
     pub status: Option<Status>,
 
+    /// When set, a centered help dialog is shown with this `(title, body)`.
+    pub help_popup: Option<(String, String)>,
+
     /// Last successfully-opened EXE path, persisted across runs so the next
     /// launch reopens it automatically.
     pub last_exe_path: Option<PathBuf>,
@@ -75,9 +78,15 @@ impl Default for App {
             physics_buf: std::collections::HashMap::new(),
             curve_buf: Vec::new(),
             status: None,
+            help_popup: None,
             last_exe_path: None,
         }
     }
+}
+
+/// Build the `(title, body)` tuple for a per-field help dialog.
+pub fn help_popup_entry(label: &str, help: &str) -> (String, String) {
+    (label.to_string(), help.to_string())
 }
 
 impl App {
@@ -261,6 +270,24 @@ impl eframe::App for App {
                 Tab::Physics => crate::physics_tab::ui(self, ui),
             }
         });
+
+        // Per-field help dialog (centered, modal-style). Clone the text out of
+        // `self` so the window closure does not borrow `self` mutably.
+        if let Some((title, body)) = self.help_popup.clone() {
+            let mut open = true;
+            egui::Window::new(title)
+                .collapsible(false)
+                .resizable(false)
+                .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+                .open(&mut open)
+                .show(ctx, |ui| {
+                    ui.set_max_width(420.0);
+                    ui.label(body);
+                });
+            if !open {
+                self.help_popup = None;
+            }
+        }
     }
 
     /// Persist the last-used EXE path so the next launch reopens it.
@@ -274,6 +301,13 @@ impl eframe::App for App {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn help_popup_entry_builds_owned_tuple() {
+        let (title, body) = help_popup_entry("Rev Limiter", "Soft power-cut RPM.");
+        assert_eq!(title, "Rev Limiter");
+        assert_eq!(body, "Soft power-cut RPM.");
+    }
 
     fn synthetic_exe_path() -> PathBuf {
         use gp2ws_core::calibration::ANCHORS;

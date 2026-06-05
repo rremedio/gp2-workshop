@@ -150,7 +150,16 @@ fn subtab_fields_ui(app: &mut App, ui: &mut egui::Ui) {
 fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
     use gp2ws_core::display::value_to_edit_string;
 
-    ui.label(f.label).on_hover_text(f.help);
+    ui.horizontal(|ui| {
+        ui.label(f.label).on_hover_text(f.help);
+        if ui
+            .small_button("?")
+            .on_hover_text("Show help for this field")
+            .clicked()
+        {
+            app.help_popup = Some(crate::app::help_popup_entry(f.label, f.help));
+        }
+    });
 
     let buf = app
         .physics_buf
@@ -191,8 +200,24 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
     ui.end_row();
 }
 
+const POWER_CURVE_HELP: &str =
+    "The engine's torque curve - 36 numbers describing how much pull the engine \
+     makes across the rev range. Higher numbers = more power at that point in the \
+     range. There's no single \"right\" shape; raise or lower points and shape the \
+     curve by feel, then test in-game. The EXE bias is applied for you.";
+
 fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
-    ui.label("Torque curve (36 entries). Decoded values; the EXE bias is applied for you.");
+    ui.horizontal(|ui| {
+        ui.label("Torque curve (36 entries). Decoded values; the EXE bias is applied for you.");
+        if ui
+            .small_button("?")
+            .on_hover_text("Show help for the power curve")
+            .clicked()
+        {
+            app.help_popup =
+                Some(crate::app::help_popup_entry("Power Curve", POWER_CURVE_HELP));
+        }
+    });
 
     // Plot of decoded values currently in the buffers.
     let points: PlotPoints = app

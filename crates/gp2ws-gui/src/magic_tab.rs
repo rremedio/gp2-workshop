@@ -191,7 +191,17 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
                     for i in 0..24usize {
                         let (label, help) = MAGIC_LABELS[i];
                         let dead = is_dead_table(i);
-                        ui.label(label).on_hover_text(help);
+                        ui.horizontal(|ui| {
+                            ui.label(label).on_hover_text(help);
+                            if ui
+                                .small_button("?")
+                                .on_hover_text("Show help for this table")
+                                .clicked()
+                            {
+                                app.help_popup =
+                                    Some(crate::app::help_popup_entry(label, help));
+                            }
+                        });
                         let edit = egui::TextEdit::singleline(&mut app.magic_buf[i])
                             .desired_width(140.0);
                         let resp = ui.add_enabled(!dead, edit);
