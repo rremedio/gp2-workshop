@@ -5,6 +5,7 @@ version.workspace = true
 
 [dependencies]
 gp2ws-core = { path = "../gp2ws-core" }
-eframe = "0.29"
+# "persistence" enables cc.storage + App::save so the last-used EXE path is remembered.
+eframe = { version = "0.29", features = ["persistence"] }
 egui_plot = "0.29"
 rfd = "0.15"   # native file dialogs

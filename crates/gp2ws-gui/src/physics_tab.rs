@@ -155,7 +155,7 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
         .physics_buf
         .entry(f.id.to_string())
         .or_insert_with(String::new);
-    let edit = egui::TextEdit::singleline(buf).desired_width(240.0);
+    let edit = egui::TextEdit::singleline(buf).desired_width(140.0);
     let resp = ui.add(edit);
 
     // Secondary column: float (for Fixed), validity, or hex hint tooltip.
@@ -214,7 +214,7 @@ fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
             for i in 0..app.curve_buf.len() {
                 ui.label(format!("[{i}]"));
                 let edit =
-                    egui::TextEdit::singleline(&mut app.curve_buf[i]).desired_width(140.0);
+                    egui::TextEdit::singleline(&mut app.curve_buf[i]).desired_width(90.0);
                 ui.add(edit);
                 if app.curve_buf[i].trim().parse::<i64>().is_err() {
                     ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "invalid");

@@ -17,6 +17,6 @@ fn main() -> eframe::Result<()> {
     eframe::run_native(
         "GP2 Workshop",
         native_options,
-        Box::new(|_cc| Ok(Box::new(App::default()))),
+        Box::new(|cc| Ok(Box::new(App::new(cc)))),
     )
 }

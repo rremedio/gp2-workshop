@@ -95,7 +95,7 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
                         let dead = is_dead_table(i);
                         ui.label(label).on_hover_text(help);
                         let edit = egui::TextEdit::singleline(&mut app.magic_buf[i])
-                            .desired_width(120.0);
+                            .desired_width(140.0);
                         let resp = ui.add_enabled(!dead, edit);
                         if dead {
                             resp.on_hover_text("(ignored by game)");

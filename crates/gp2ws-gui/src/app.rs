@@ -52,7 +52,14 @@ pub struct App {
 
     // ---- Status ----
     pub status: Option<Status>,
+
+    /// Last successfully-opened EXE path, persisted across runs so the next
+    /// launch reopens it automatically.
+    pub last_exe_path: Option<PathBuf>,
 }
+
+/// Storage key for the remembered EXE path.
+const LAST_EXE_KEY: &str = "last_exe_path";
 
 impl Default for App {
     fn default() -> Self {
@@ -68,11 +75,27 @@ impl Default for App {
             physics_buf: std::collections::HashMap::new(),
             curve_buf: Vec::new(),
             status: None,
+            last_exe_path: None,
         }
     }
 }
 
 impl App {
+    /// Build the app, restoring (and reopening) the last-used EXE from eframe
+    /// storage if it still exists on disk.
+    pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        let mut app = Self::default();
+        if let Some(storage) = cc.storage {
+            if let Some(p) = storage.get_string(LAST_EXE_KEY) {
+                let path = PathBuf::from(p);
+                if path.is_file() {
+                    app.open_path(path);
+                }
+            }
+        }
+        app
+    }
+
     /// Record an informational status line.
     pub fn info(&mut self, text: impl Into<String>) {
         self.status = Some(Status {
@@ -111,6 +134,7 @@ impl App {
             Ok(session) => {
                 self.backup_exists = path.with_extension("bak").exists();
                 let calibrated = session.delta().is_some();
+                self.last_exe_path = Some(path.clone());
                 self.session = Some(session);
                 // Refresh dependent buffers for whatever data is available.
                 if calibrated {
@@ -237,6 +261,13 @@ impl eframe::App for App {
                 Tab::Physics => crate::physics_tab::ui(self, ui),
             }
         });
+    }
+
+    /// Persist the last-used EXE path so the next launch reopens it.
+    fn save(&mut self, storage: &mut dyn eframe::Storage) {
+        if let Some(path) = &self.last_exe_path {
+            storage.set_string(LAST_EXE_KEY, path.to_string_lossy().into_owned());
+        }
     }
 }
 
