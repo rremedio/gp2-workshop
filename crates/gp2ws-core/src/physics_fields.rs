@@ -7,8 +7,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rev_limiter",
         label: "Rev Limiter",
-        help: "Soft power-cut RPM (the old editor's \"Rev Limiter\"). \
-               Power begins to be cut above this. Stock 15200.",
+        help: "The RPM where the engine starts cutting power (the soft limiter \
+               the old editor called \"Rev Limiter\"). Raise it and the engine \
+               keeps pulling to higher revs; lower it and power dies sooner. \
+               Stock 15200.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6010),
@@ -21,8 +23,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "max_rpm",
         label: "Max RPM",
-        help: "Auto-shift / nominal max RPM (w_rpm15000). The engine can rev \
-               higher if the gear ratio is too tall. Stock 15000.",
+        help: "The nominal top RPM the game uses for automatic shifting. The \
+               engine can still rev past this if a gear is geared too tall. \
+               Raise it for a higher shift point. Stock 15000.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD601C),
@@ -35,8 +38,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rpm_light_1",
         label: "RPM Light 1",
-        help: "Cockpit shift-light 1 threshold. Adjust to match rev-limiter / \
-               max-RPM changes. Stock 7146.",
+        help: "The RPM at which the first cockpit shift light comes on. Purely \
+               cosmetic, but bump it up if you raise the rev limiter or max RPM \
+               so the dashboard lights still make sense. Stock 7146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6700),
@@ -49,7 +53,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rpm_light_2",
         label: "RPM Light 2",
-        help: "Cockpit shift-light 2 threshold. Stock 8146.",
+        help: "The RPM at which the second cockpit shift light comes on. Purely \
+               cosmetic; raise it alongside the rev limiter / max RPM. Stock 8146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6704),
@@ -62,7 +67,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rpm_light_3",
         label: "RPM Light 3",
-        help: "Cockpit shift-light 3 threshold. Stock 8496.",
+        help: "The RPM at which the third cockpit shift light comes on. Purely \
+               cosmetic; raise it alongside the rev limiter / max RPM. Stock 8496.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6708),
@@ -75,7 +81,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rpm_light_4",
         label: "RPM Light 4",
-        help: "Cockpit shift-light 4 threshold. Stock 8696.",
+        help: "The RPM at which the fourth (top) cockpit shift light comes on. \
+               Purely cosmetic; raise it alongside the rev limiter / max RPM. \
+               Stock 8696.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD670C),
@@ -89,7 +97,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "df_scale",
         label: "Downforce Scale",
-        help: "d_wingfactor (= old \"Downforce\").",
+        help: "Overall downforce from the wings (the old editor's \"Downforce\"). \
+               Higher = more cornering grip across the board; lower = less grip \
+               but slightly less drag. Affects all cars.",
         subtab: SubTab::Aero,
         tier: Tier::Basic,
         target: Target::Data(0xD5EA8),
@@ -102,7 +112,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rear_df_slope",
         label: "Rear Downforce Slope",
-        help: "Rear wing downforce slope.",
+        help: "How much cornering grip each step of the rear-wing slider (1-20) \
+               adds. Raise it so higher wing settings give more grip - the main \
+               lever for fixing \"wing 1 is always fastest\". Stock 430.",
         subtab: SubTab::Aero,
         tier: Tier::Basic,
         target: Target::Code(0x1682D),
@@ -115,7 +127,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rear_df_floor",
         label: "Rear Downforce Floor",
-        help: "Rear wing downforce floor.",
+        help: "The cornering grip you already get at the lowest rear-wing setting \
+               (wing 1). Stock is high (2064), which is why low wing still corners \
+               well; lower it to make running little wing actually cost grip. \
+               Stock 2064.",
         subtab: SubTab::Aero,
         tier: Tier::Basic,
         target: Target::Code(0x1683B),
@@ -128,7 +143,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rear_drag_slope",
         label: "Rear Drag Slope",
-        help: "Rear wing drag slope.",
+        help: "How much top-speed-killing drag each step of the rear-wing slider \
+               (1-20) adds. Raise it to make high wing cost more top speed; lower \
+               it to make wing cheaper on the straights. Stock 1259.",
         subtab: SubTab::Aero,
         tier: Tier::Basic,
         target: Target::Code(0x168EC),
@@ -141,7 +158,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rear_drag_floor",
         label: "Rear Drag Floor",
-        help: "Rear wing drag floor.",
+        help: "The baseline drag present even at the lowest rear-wing setting \
+               (wing 1). Raise it to slow every car's top speed regardless of \
+               wing; lower it for a higher minimum top speed. Stock 1792.",
         subtab: SubTab::Aero,
         tier: Tier::Basic,
         target: Target::Code(0x168FA),
@@ -154,7 +173,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "front_wing_slope",
         label: "Front Wing Slope",
-        help: "Front wing downforce slope.",
+        help: "How much front downforce each step of the front-wing slider (1-20) \
+               adds. Raise it so higher front wing gives more front grip / turn-in. \
+               Stock 430.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         // Plan table listed IDA 0x1685F, but that address points directly at the
@@ -171,7 +192,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "front_wing_floor",
         label: "Front Wing Floor",
-        help: "Front wing downforce floor.",
+        help: "The front downforce already present at the lowest front-wing \
+               setting (wing 1). Lower it to make minimum front wing actually \
+               reduce front grip. Stock 2064.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         // Same correction as front_wing_slope: plan listed 0x1686D (the operand),
@@ -187,7 +210,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "front_aero_scale",
         label: "Front Aero Scale",
-        help: "Front aero scale factor.",
+        help: "Advanced front-aero tuning multiplier. The exact effect is subtle \
+               and not fully confirmed - we expect higher = a bit more front aero, \
+               but it's worth testing in-game before relying on it.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         target: Target::Data(0xD5EA4),
@@ -200,7 +225,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "lateral_drag_x",
         label: "Lateral Drag X",
-        help: "Lateral drag coefficient X.",
+        help: "Advanced: sideways air resistance along one axis (felt mostly when \
+               the car is sliding). The effect is subtle and not well confirmed - \
+               test in-game before changing much. Stock 6656.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FD4),
@@ -213,7 +240,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "lateral_drag_y",
         label: "Lateral Drag Y",
-        help: "Lateral drag coefficient Y.",
+        help: "Advanced: sideways air resistance along the other axis (felt mostly \
+               when the car is sliding). The effect is subtle and not well \
+               confirmed - test in-game before changing much. Stock 22528.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FD8),
@@ -226,7 +255,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rear_wing_drag_factor",
         label: "Rear Wing Drag Factor",
-        help: "Rear wing drag factor.",
+        help: "Advanced extra multiplier on rear-wing drag, used together with the \
+               slipstream/wake maths. Effect is subtle and uncertain - prefer the \
+               Rear Drag Slope/Floor fields for normal tuning, and test this one \
+               in-game. Stock 4096.",
         subtab: SubTab::Aero,
         tier: Tier::Advanced,
         target: Target::Data(0xD53E0),
@@ -240,7 +272,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "brake_force",
         label: "Brake Force",
-        help: "Maximum braking force.",
+        help: "Overall braking power. Higher = shorter stopping distances. It \
+               affects the human player strongly (you brake by feel), but only a \
+               little for the AI, which brakes to hit a target corner speed either \
+               way. Stock 1441792.",
         subtab: SubTab::Brakes,
         tier: Tier::Basic,
         target: Target::Data(0xD53FC),
@@ -253,7 +288,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "brake_fail_mult",
         label: "Brake Fail Multiplier",
-        help: "Brake failure multiplier.",
+        help: "Advanced: how much braking is left after a brake failure (it's \
+               applied twice, so stock leaves roughly a sixteenth). Rarely needed; \
+               higher = a failed car can still brake more. Stock 4096.",
         subtab: SubTab::Brakes,
         tier: Tier::Advanced,
         target: Target::Data(0xD56A8),
@@ -266,7 +303,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "abs_threshold",
         label: "ABS Threshold",
-        help: "ABS activation threshold.",
+        help: "Advanced: the point at which the special anti-lock braking path \
+               kicks in. Rarely needed and the exact in-game effect isn't \
+               confirmed - test before relying on it. Stock 256000.",
         subtab: SubTab::Brakes,
         tier: Tier::Advanced,
         target: Target::Data(0xD5400),
@@ -279,7 +318,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_brake_lookahead_1",
         label: "AI Brake Lookahead 1",
-        help: "AI braking lookahead distance 1.",
+        help: "How far ahead the AI looks before braking for a corner (first of \
+               two stages). Raise it and the AI brakes earlier - longer, gentler \
+               braking; lower it and the AI brakes later and more aggressively, \
+               and may overshoot. Stock 15360.",
         subtab: SubTab::Brakes,
         tier: Tier::Advanced,
         target: Target::Data(0xC9970),
@@ -292,7 +334,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_brake_lookahead_2",
         label: "AI Brake Lookahead 2",
-        help: "AI braking lookahead distance 2.",
+        help: "The second AI braking-lookahead stage, paired with the first. \
+               Higher = the AI brakes earlier; lower = later and more aggressive. \
+               We're confident on that direction but not on the exact difference \
+               between the two stages, so adjust both together and test. Stock 15360.",
         subtab: SubTab::Brakes,
         tier: Tier::Advanced,
         target: Target::Data(0xC9974),
@@ -306,7 +351,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "std_weight",
         label: "Standard Weight",
-        help: "Standard car weight.",
+        help: "Advanced: the car's reference (dry) weight. Heavier cars \
+               accelerate and brake more slowly and shift load more in corners. \
+               Best left near stock unless you know what you're after. Stock 1313.",
         subtab: SubTab::MassGrip,
         tier: Tier::Basic,
         target: Target::Data(0xD5E74),
@@ -319,7 +366,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "norm_weight",
         label: "Normal Weight",
-        help: "Normal car weight.",
+        help: "Advanced: a second reference weight used alongside Standard Weight \
+               for the car's mass/acceleration feel. Keep it close to Standard \
+               Weight; changing it is experimental. Stock 1313.",
         subtab: SubTab::MassGrip,
         tier: Tier::Basic,
         target: Target::Data(0xD5E78),
@@ -332,7 +381,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "gravity",
         label: "Gravity",
-        help: "Gravity constant (signed).",
+        help: "Experimental: the global gravity the game uses for weight transfer \
+               (stored as a negative number, stock -524288 = 32.0 down). Stronger \
+               gravity shifts more load under braking/cornering. Changing it is \
+               experimental - test carefully.",
         subtab: SubTab::MassGrip,
         tier: Tier::Advanced,
         target: Target::Data(0xD5EA0),
@@ -345,7 +397,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "fuel_factor",
         label: "Fuel Factor",
-        help: "Fuel mass factor.",
+        help: "How much weight each unit of fuel adds (more fuel = heavier, \
+               slower car). Raise it to make a full tank hurt more and fuel \
+               strategy matter more; lower it to soften the penalty. Stock 1627167.",
         subtab: SubTab::MassGrip,
         tier: Tier::Advanced,
         target: Target::Data(0xD57D8),
@@ -358,7 +412,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "packer_factor",
         label: "Packer Factor",
-        help: "Suspension packer factor.",
+        help: "Advanced: scales the suspension bump rubbers (packers) and ride \
+               heights. The effect is subtle and only applies with advanced setup \
+               on; test in-game. Stock 14091072.",
         subtab: SubTab::MassGrip,
         tier: Tier::Advanced,
         target: Target::Data(0xD54B4),
@@ -371,7 +427,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "rebound_factor",
         label: "Rebound Factor",
-        help: "Suspension rebound factor.",
+        help: "Advanced: scales the suspension dampers (how the springs settle \
+               after bumps). The effect is subtle; test in-game before relying on \
+               it. Stock 5529600.",
         subtab: SubTab::MassGrip,
         tier: Tier::Advanced,
         target: Target::Data(0xD54C8),
@@ -384,7 +442,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "min_grip_clamp",
         label: "Min Grip Clamp",
-        help: "Minimum grip clamp.",
+        help: "Advanced: a floor on grip so it never drops below a set minimum. \
+               Raising it guarantees more baseline grip; rarely needs touching. \
+               Stock 11264.",
         subtab: SubTab::MassGrip,
         tier: Tier::Advanced,
         target: Target::Data(0xD5E3E),
@@ -397,7 +457,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "cc_grip_qual",
         label: "CC Grip (Qualifying)",
-        help: "Overall computer-controlled grip in qualifying.",
+        help: "Overall AI grip level in qualifying, across every track (the old \
+               editor's \"Overall CC Grip Level\" for quali). Higher = faster AI \
+               in qualifying; lower = slower. Stock 16588.",
         subtab: SubTab::MassGrip,
         tier: Tier::Basic,
         target: Target::Data(0xD5974),
@@ -410,7 +472,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "cc_grip_race",
         label: "CC Grip (Race)",
-        help: "Overall computer-controlled grip in race.",
+        help: "Overall AI grip level in the race, across every track (the old \
+               editor's \"Overall CC Grip Level\" for the race). Higher = faster \
+               AI in the race; lower = slower. Stock 16588.",
         subtab: SubTab::MassGrip,
         tier: Tier::Basic,
         target: Target::Data(0xD5978),
@@ -424,7 +488,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_strength",
         label: "Tow Strength",
-        help: "Slipstream tow strength (0 = off).",
+        help: "How strong YOUR slipstream is when you tuck in behind another car. \
+               Higher = a bigger speed boost in the draft; 0 turns the player \
+               draft off entirely. Player only. Stock 262144.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xD53DC),
@@ -437,7 +503,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_reach",
         label: "Tow Reach",
-        help: "Slipstream reach.",
+        help: "How far back behind another car your slipstream still works. \
+               Higher = you can catch the draft from further away; lower = you \
+               must get very close. Player only. Stock 384.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xC9750),
@@ -450,7 +518,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_align_width",
         label: "Tow Align Width",
-        help: "Slipstream alignment width.",
+        help: "How directly behind the other car you must be to get the draft - \
+               the width of the slipstream cone. Wider = easier to stay in the \
+               tow when not perfectly lined up. Player only. Stock 512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xC9748),
@@ -463,7 +533,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_tow_strength",
         label: "AI Tow Strength",
-        help: "AI slipstream tow strength (dormant; set >0).",
+        help: "A speed-scaled boost that lets AI cars slingshot past the car \
+               ahead. Stock 0 means OFF - the developers left it disabled. Raise \
+               it to enable; it only ADDS tow (can't go below stock) and a little \
+               goes a long way, so test in small steps. Stock 0.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xD5FF4),
@@ -476,7 +549,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_max_wake",
         label: "Tow Max Wake",
-        help: "Maximum slipstream wake.",
+        help: "A cap on how much slipstream boost you can get, no matter how \
+               close you get. Raise it to allow a bigger maximum draft effect. \
+               Player only. Stock 256.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC9752),
@@ -489,7 +564,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_max_range",
         label: "Tow Max Range",
-        help: "Maximum slipstream range.",
+        help: "The maximum distance (in track segments) over which the draft can \
+               apply. Higher = the slipstream stretches further down the track. \
+               Player only. Stock 7.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC9766),
@@ -502,7 +579,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_min_speed",
         label: "Tow Min Speed",
-        help: "Minimum speed for slipstream.",
+        help: "The minimum speed you must be going for the slipstream to work at \
+               all (so it only helps on fast sections). Raise it to restrict the \
+               draft to higher speeds; lower it to allow it sooner. Player only. \
+               Stock 2816.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5D96),
@@ -516,7 +596,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_1",
         label: "AI Follow Base 1",
-        help: "AI following threshold 1 (signed).",
+        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
+               mode the AI follows or backs off the car ahead. Very fiddly, no \
+               intuitive scale, and the exact direction needs in-game testing. \
+               Stock -4096.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CA),
@@ -529,7 +612,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_2",
         label: "AI Follow Base 2",
-        help: "AI following threshold 2 (signed).",
+        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
+               mode the AI follows or backs off the car ahead. Very fiddly, no \
+               intuitive scale, and the exact direction needs in-game testing. \
+               Stock -3072.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CC),
@@ -542,7 +628,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_3",
         label: "AI Follow Base 3",
-        help: "AI following threshold 3 (signed).",
+        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
+               mode the AI follows or backs off the car ahead. Very fiddly, no \
+               intuitive scale, and the exact direction needs in-game testing. \
+               Stock -24576.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D2),
@@ -555,7 +644,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_4",
         label: "AI Follow Base 4",
-        help: "AI following threshold 4 (signed).",
+        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
+               mode the AI follows or backs off the car ahead. Very fiddly, no \
+               intuitive scale, and the exact direction needs in-game testing. \
+               Stock -1024.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D4),
@@ -568,7 +660,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_5",
         label: "AI Follow Base 5",
-        help: "AI following threshold 5 (signed).",
+        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
+               slingshots past the car ahead. Lower these to rein in aggressive \
+               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -2048.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D8),
@@ -581,7 +675,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_6",
         label: "AI Follow Base 6",
-        help: "AI following threshold 6 (signed).",
+        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
+               slingshots past the car ahead. Lower these to rein in aggressive \
+               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -4096.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DA),
@@ -594,7 +690,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_7",
         label: "AI Follow Base 7",
-        help: "AI following threshold 7 (signed).",
+        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
+               slingshots past the car ahead. Lower these to rein in aggressive \
+               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DC),
@@ -608,7 +706,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_1",
         label: "AI Follow Floor 1",
-        help: "AI following floor 1.",
+        help: "Advanced: the minimum value of the AI's follow target (one of \
+               three). Sets a lower bound on how the AI tracks the car ahead. \
+               No intuitive scale - test by feel. Stock 64512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FE8),
@@ -621,7 +721,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_2",
         label: "AI Follow Floor 2",
-        help: "AI following floor 2.",
+        help: "Advanced: the minimum value of the AI's follow target (one of \
+               three). Sets a lower bound on how the AI tracks the car ahead. \
+               No intuitive scale - test by feel. Stock 53248.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FEC),
@@ -634,7 +736,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_3",
         label: "AI Follow Floor 3",
-        help: "AI following floor 3.",
+        help: "Advanced: the minimum value of the AI's follow target (one of \
+               three). Sets a lower bound on how the AI tracks the car ahead. \
+               No intuitive scale - test by feel. Stock 20480.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FF0),

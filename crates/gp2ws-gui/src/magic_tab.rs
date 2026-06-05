@@ -10,30 +10,128 @@ use gp2ws_core::magic::{to_m2d, MAGIC_DEAD_TABLE};
 
 /// (label, help) for each of the 24 magic-data tables, 0-based index = table-1.
 pub const MAGIC_LABELS: [(&str, &str); 24] = [
-    ("T1 Tyre/track grip", "Tyre & track grip table."),
-    ("T2 Cornering grip (always)", "Cornering grip applied always."),
-    ("T3 Cornering grip (qual)", "Cornering grip in qualifying."),
-    ("T4 Cornering grip (race)", "Cornering grip in the race."),
-    ("T5 Out-lap grip bias", "Grip bias on the out lap."),
-    ("T6 Dead data", "Ignored by the game. Written through for file fidelity."),
-    ("T7 Driver pace (qual)", "Per-driver qualifying pace."),
-    ("T8 Driver pace (race)", "Per-driver race pace."),
-    ("T9 Lap-clock rate (qual)", "Lap clock rate, qualifying."),
-    ("T10 Lap-clock rate (race)", "Lap clock rate, race."),
-    ("T11 Difficulty grip (SemiPro)", "Grip at SemiPro difficulty."),
-    ("T12 Difficulty grip (Rookie)", "Grip at Rookie difficulty."),
-    ("T13 CC mistake rate", "Computer-car mistake rate."),
-    ("T14 Pit geometry", "Pit entry/exit geometry (positional)."),
-    ("T15 Pit geometry", "Pit entry/exit geometry (positional)."),
-    ("T16 Pit geometry", "Pit entry/exit geometry (positional)."),
-    ("T17 Pit geometry", "Pit entry/exit geometry (positional)."),
-    ("T18 Pit-approach zone", "Pit approach zone."),
-    ("T19 Pit-in distance", "Pit-in distance."),
-    ("T20 Pit-out distance", "Pit-out distance."),
-    ("T21 Pit-in speed", "Pit-in speed."),
-    ("T22 Fuel burn (human)", "Fuel burn rate, human cars."),
-    ("T23 Fuel burn (CC)", "Fuel burn rate, computer cars."),
-    ("T24 Reference lap time", "Reference lap time."),
+    (
+        "T1 Tyre/track grip",
+        "Per-track grip level that also drives tyre wear. Higher = more grip but \
+         faster wear; this is the wear term that clearly slows the player too.",
+    ),
+    (
+        "T2 Cornering grip (always)",
+        "Per-track cornering-grip multiplier applied in both qualifying and the \
+         race. Higher = more cornering speed for every car.",
+    ),
+    (
+        "T3 Cornering grip (qual)",
+        "Per-track cornering-grip multiplier used only in non-race sessions \
+         (qualifying/practice). Higher = more cornering speed there.",
+    ),
+    (
+        "T4 Cornering grip (race)",
+        "Per-track cornering-grip multiplier used only in the race. Higher = more \
+         cornering speed during the race.",
+    ),
+    (
+        "T5 Out-lap grip bias",
+        "A small extra grip bias felt most on the out-lap / early laps (the \
+         \"miss corners at the start\" feel). Higher = more early-lap grip.",
+    ),
+    (
+        "T6 Dead data",
+        "The game ignores this - it has no effect. Kept only so saved files match \
+         the original layout.",
+    ),
+    (
+        "T7 Driver pace (qual)",
+        "Per-driver qualifying pace scaler for the AI (the player is always 1.0). \
+         Higher = faster AI driver in qualifying.",
+    ),
+    (
+        "T8 Driver pace (race)",
+        "Per-driver race pace scaler for the AI (the player is always 1.0). \
+         Higher = faster AI driver in the race.",
+    ),
+    (
+        "T9 Lap-clock rate (qual)",
+        "Adjusts qualifying lap times without changing car speed - it tweaks how \
+         fast the lap clock counts. Higher = slower recorded laps.",
+    ),
+    (
+        "T10 Lap-clock rate (race)",
+        "Adjusts race lap times without changing car speed - it tweaks how fast \
+         the lap clock counts. Higher = slower recorded laps.",
+    ),
+    (
+        "T11 Difficulty grip (SemiPro)",
+        "AI grip at the SemiPro difficulty for this track (Pro is interpolated \
+         from it). Higher = faster AI; Ace level is about 16384.",
+    ),
+    (
+        "T12 Difficulty grip (Rookie)",
+        "AI grip at the Rookie difficulty for this track (Amateur is interpolated \
+         from this and SemiPro). Higher = faster AI at easier levels.",
+    ),
+    (
+        "T13 CC mistake rate",
+        "How often AI cars make a mistake in corners on this track. Higher = more \
+         AI mistakes; lower = cleaner AI driving.",
+    ),
+    (
+        "T14 Pit geometry",
+        "Part of the pit-lane entry/exit positioning for this track. Best left \
+         alone unless you really know the pit geometry.",
+    ),
+    (
+        "T15 Pit geometry",
+        "Part of the pit-lane entry/exit positioning for this track. Best left \
+         alone unless you really know the pit geometry.",
+    ),
+    (
+        "T16 Pit geometry",
+        "Part of the pit-lane entry/exit positioning for this track. Best left \
+         alone unless you really know the pit geometry.",
+    ),
+    (
+        "T17 Pit geometry",
+        "Part of the pit-lane entry/exit positioning for this track. Best left \
+         alone unless you really know the pit geometry.",
+    ),
+    (
+        "T18 Pit-approach zone",
+        "Length (in track segments) of the zone before the pit entry where the AI \
+         eases off following and overtaking so cars don't pile up at the pit \
+         mouth. Stock is 64 on every track.",
+    ),
+    (
+        "T19 Pit-in distance",
+        "How many segments before the pit entry cars start leaving the racing line \
+         to dive into the pits. Varies per track (sometimes 0).",
+    ),
+    (
+        "T20 Pit-out distance",
+        "How many segments after the pit exit cars use to rejoin the racing line. \
+         Affects AI cars leaving the pits.",
+    ),
+    (
+        "T21 Pit-in speed",
+        "The speed cars are held to while in the pit-in zone (the pit-lane speed). \
+         Higher = faster pit approach.",
+    ),
+    (
+        "T22 Fuel burn (human)",
+        "Per-track fuel-burn multiplier for the player (16384 = normal). Higher = \
+         you use more fuel per lap on this track.",
+    ),
+    (
+        "T23 Fuel burn (CC)",
+        "Per-track fuel-burn multiplier for the AI cars (16384 = normal). Higher = \
+         the AI uses more fuel per lap on this track.",
+    ),
+    (
+        "T24 Reference lap time",
+        "A reference lap time in milliseconds, used by the race-director event \
+         timing - not car performance. Set it to the real track lap time; it does \
+         not make cars faster or slower.",
+    ),
 ];
 
 /// Is the given 0-based table index the dead table (`T6`)?
