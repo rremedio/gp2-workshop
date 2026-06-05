@@ -286,6 +286,28 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         range: None,
     },
     FieldDesc {
+        id: "ai_brake_strength",
+        label: "AI Brake Strength (shift)",
+        help: "AI-only brake strength (the player is not affected). The AI brakes \
+               from a table the game rebuilds each session; this is the right-shift \
+               used when building it. It works BACKWARDS and in big steps: each +1 \
+               HALVES AI braking (brakes earlier and softer), each -1 DOUBLES it. \
+               Stock 8. Safe range about 7-10. Below 7 the values can overflow and \
+               make AI braking erratic; above 10 they can hit zero and the AI may \
+               not brake at all. Experimental - test in-game.",
+        subtab: SubTab::Brakes,
+        tier: Tier::Basic,
+        // 1-byte code patch: the shift count of `sar eax, 8` at IDA 0x2EF90 inside
+        // the AI decel-table builder sub_2EE0F. Direct file offset (opcode+2, so
+        // Target::Code's opcode+1 rule doesn't fit). Verified byte = 0x08.
+        target: Target::Direct(0xA71E6),
+        width: 1,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 8,
+        range: Some((4, 14)),
+    },
+    FieldDesc {
         id: "brake_fail_mult",
         label: "Brake Fail Multiplier",
         help: "Advanced: how much braking is left after a brake failure (it's \
