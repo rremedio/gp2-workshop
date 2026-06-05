@@ -168,7 +168,7 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
         Some(v) => {
             let hint = format_hint(v, f.encoding, f.width);
             if let Some(fl) = fixed_float(v, f.encoding) {
-                ui.label(format!("= {fl}")).on_hover_text(hint);
+                ui.label(format!("= {fl:.3}\u{00d7}")).on_hover_text(hint);
             } else {
                 resp.on_hover_text(hint);
                 // The "↺ stock" button lives in the third column.
@@ -416,7 +416,8 @@ mod tests {
 
     #[test]
     fn doc_from_buffers_hex_field_parses_hex() {
-        // min_grip_clamp is a Hex-encoded field; ensure 0x.. parses.
+        // min_grip_clamp is now a plain-decimal field, but Raw still accepts a
+        // convenience 0x.. prefix; ensure that still parses.
         let base = base_doc();
         let mut buf = std::collections::HashMap::new();
         buf.insert("min_grip_clamp".to_string(), "0x2C00".to_string());
