@@ -1,0 +1,20 @@
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_091e7095224404 434-451
+  s_e1187d914239f8::t_a7d5334bed1d17 300-313,317-325
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "ef705195389e4b45afc7250ba6679e59aba71d57",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
