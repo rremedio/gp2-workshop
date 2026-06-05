@@ -171,12 +171,9 @@ mod tests {
             panic!("not calibrated")
         };
         for f in TYRE_FIELDS {
-            assert_eq!(
-                f.read(&img, delta),
-                crate::encoding::decode(f.stock, f.encoding),
-                "field {} mismatch",
-                f.id
-            );
+            // `stock` is already decoded; `read` decodes internally. Compare
+            // directly to avoid double-decoding Bias/Fixed fields.
+            assert_eq!(f.read(&img, delta), f.stock, "field {} mismatch", f.id);
         }
     }
 }

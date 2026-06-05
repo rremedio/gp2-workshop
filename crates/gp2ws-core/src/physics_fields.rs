@@ -671,15 +671,11 @@ mod tests {
             panic!("not calibrated")
         };
         for f in PHYSICS_FIELDS {
-            if f.stock == i64::MIN {
-                continue; // sentinel for "unknown stock"
-            }
-            assert_eq!(
-                f.read(&img, delta),
-                crate::encoding::decode(f.stock, f.encoding),
-                "field {} mismatch",
-                f.id
-            );
+            // `stock` is already the decoded human value (same value the
+            // reset-to-stock button writes), and `read` decodes internally —
+            // so compare directly. Decoding the expected side here would
+            // double-decode any Bias/Fixed field.
+            assert_eq!(f.read(&img, delta), f.stock, "field {} mismatch", f.id);
         }
     }
 }
