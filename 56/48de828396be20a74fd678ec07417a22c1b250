@@ -1,0 +1,21 @@
+crates/gp2ws-gui/src/magic_tab.rs
+  s_e1187d914239f8::t_f1faed28d7511a 213
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_49b1dc57645135 177,187-192,194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "5648de828396be20a74fd678ec07417a22c1b250",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
