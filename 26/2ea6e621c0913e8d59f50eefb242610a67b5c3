@@ -1,0 +1,24 @@
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_656d5472e07a8d 171
+  s_e1187d914239f8::t_86bea1e30c8186 419-420
+crates/gp2ws-core/src/physics_fields.rs
+  s_e1187d914239f8::t_6246f852bb9ec1 393,525,538,551,564,577,590,603,617,630,643
+crates/gp2ws-core/src/tyre_fields.rs
+  s_e1187d914239f8::t_6246f852bb9ec1 25,38,51,64,78,91,104,117,131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "262ea6e621c0913e8d59f50eefb242610a67b5c3",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
