@@ -1,0 +1,27 @@
+crates/gp2ws-gui/src/app.rs
+  s_e1187d914239f8::t_79e16deaeb0e02 305-311
+  s_e1187d914239f8::t_443115c877febd 56-58
+  s_e1187d914239f8::t_4a76e853946a65 273-290
+  s_e1187d914239f8::t_f306d06d03c27c 81,87-89
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_40b29c3ad53131 203-208,210-220
+  s_e1187d914239f8::t_442b7820076753 153-162
+crates/gp2ws-gui/src/magic_tab.rs
+  s_e1187d914239f8::t_3a9cfc52bf5b0b 194-204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "b801cb69c6971d37038a7a1aabbcf90d64e6b369",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
