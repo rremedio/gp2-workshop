@@ -96,6 +96,7 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
     egui::ScrollArea::vertical()
         .id_salt("physics_scroll")
         .max_height(avail - 40.0)
+        .auto_shrink([false, false])
         .show(ui, |ui| {
             if app.subtab == SubTab::PowerCurve {
                 power_curve_ui(app, ui);
@@ -155,8 +156,12 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
         .physics_buf
         .entry(f.id.to_string())
         .or_insert_with(String::new);
-    let edit = egui::TextEdit::singleline(buf).desired_width(140.0);
-    let resp = ui.add(edit);
+    // add_sized forces the width: inside the ScrollArea this box is a middle
+    // grid column, where desired_width alone gets squeezed.
+    let resp = ui.add_sized(
+        [130.0, ui.spacing().interact_size.y],
+        egui::TextEdit::singleline(buf),
+    );
 
     // Secondary column: float (for Fixed), validity, or hex hint tooltip.
     match parse_edit_string(&app.physics_buf[f.id], f.encoding, f.width, f.signed) {
@@ -213,9 +218,10 @@ fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
         .show(ui, |ui| {
             for i in 0..app.curve_buf.len() {
                 ui.label(format!("[{i}]"));
-                let edit =
-                    egui::TextEdit::singleline(&mut app.curve_buf[i]).desired_width(90.0);
-                ui.add(edit);
+                ui.add_sized(
+                    [80.0, ui.spacing().interact_size.y],
+                    egui::TextEdit::singleline(&mut app.curve_buf[i]),
+                );
                 if app.curve_buf[i].trim().parse::<i64>().is_err() {
                     ui.colored_label(egui::Color32::from_rgb(220, 80, 80), "invalid");
                 } else {
