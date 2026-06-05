@@ -297,7 +297,32 @@ fn physics_buttons(app: &mut App, ui: &mut egui::Ui) {
         {
             save_toml(app);
         }
+
+        ui.separator();
+
+        if ui
+            .add_enabled(app.physics.is_some(), egui::Button::new("Reset all to stock"))
+            .on_hover_text(
+                "Set every physics & tyre field back to its stock value (same as \
+                 clicking each field's stock button). Does not touch the power curve, \
+                 and is not written to the EXE until you Export.",
+            )
+            .clicked()
+        {
+            reset_all_to_stock(app);
+        }
     });
+}
+
+/// Reset every physics + tyre field buffer to its stock value (the power curve
+/// is left untouched — it has no stored stock baseline). Does not write the EXE.
+fn reset_all_to_stock(app: &mut App) {
+    use gp2ws_core::display::value_to_edit_string;
+    for f in PHYSICS_FIELDS.iter().chain(TYRE_FIELDS.iter()) {
+        app.physics_buf
+            .insert(f.id.to_string(), value_to_edit_string(f.stock, f.encoding, f.width));
+    }
+    app.info("All physics fields reset to stock — Export EXE to apply (power curve unchanged).");
 }
 
 /// Build a `PhysicsDoc` from the current buffers, reporting parse errors.
@@ -403,6 +428,25 @@ mod tests {
         let tyres = fields_for(SubTab::Tyres);
         assert!(!tyres.is_empty());
         assert!(tyres.iter().all(|f| f.subtab == SubTab::Tyres));
+    }
+
+    #[test]
+    fn reset_all_to_stock_restores_stock_strings() {
+        use gp2ws_core::display::value_to_edit_string;
+        let mut app = App::default();
+        // Dirty a couple of fields.
+        app.physics_buf.insert("brake_force".to_string(), "999".to_string());
+        app.physics_buf.insert("tow_strength".to_string(), "0".to_string());
+        reset_all_to_stock(&mut app);
+        // Every registry field now holds its stock value as the edit string.
+        for f in PHYSICS_FIELDS.iter().chain(TYRE_FIELDS.iter()) {
+            assert_eq!(
+                app.physics_buf.get(f.id).map(String::as_str),
+                Some(value_to_edit_string(f.stock, f.encoding, f.width).as_str()),
+                "field {} not reset",
+                f.id
+            );
+        }
     }
 
     #[test]
