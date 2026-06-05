@@ -1,0 +1,21 @@
+crates/gp2ws-gui/src/physics_tab.rs
+  s_e1187d914239f8::t_c010ab2415ca14 159-164
+  s_e1187d914239f8::t_4ee888eb06541a 221-224
+  s_e1187d914239f8::t_7bca71586a212a 99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "423eb5fdb6bf24ced1ddeddb9543b95471d78362",
+  "prompts": {},
+  "sessions": {
+    "s_e1187d914239f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "560d85ff-dcdd-4372-92f6-fbbf6efb2544",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <roberto@kobana.com.br>"
+    }
+  }
+}
