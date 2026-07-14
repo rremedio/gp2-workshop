@@ -18,6 +18,21 @@ human-readable physics TOML format.
 > patch a file you already patched before, the `.bak` still holds the *previous*
 > state, not the factory original. Keep a pristine copy yourself.
 
+## System requirements
+
+GP2 Workshop draws its interface with **OpenGL** (`eframe`'s glow backend), so it
+needs a working **OpenGL 2.1+** driver on the machine that runs it:
+
+- On any PC with normal GPU drivers installed, this is already the case.
+- On a bare **Windows 7** install that only has Microsoft's default *software*
+  OpenGL 1.1 (i.e. no GPU vendor driver), the window will fail to render. Install
+  the GPU driver (Intel/NVIDIA/AMD) first.
+
+Windows 7 also needs a **dedicated build** — Rust dropped Windows 7/8 support in
+1.78, so the ordinary Windows build fails at launch with a missing
+`api-ms-win-core-*.dll`. See [`docs/WINDOWS7-BUILD.md`](docs/WINDOWS7-BUILD.md)
+for how the Win7 package is produced.
+
 ## What it does
 
 - **Magic Data tab** — pick a slot (1–16), edit the 24 tables in a labelled

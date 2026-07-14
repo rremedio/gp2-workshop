@@ -5,3 +5,10 @@ members = ["crates/gp2ws-core", "crates/gp2ws-gui"]
 [workspace.package]
 edition = "2021"
 version = "0.1.0"
+
+# Vendored arboard (clipboard backend pulled in by eframe/egui-winit). The only
+# change vs. crates.io 3.6.1 is dropping the PathCchStripPrefix call, which
+# imported api-ms-win-core-path-l1-1-0.dll — a Win8+ API set absent on Windows 7.
+# See third_party/arboard/src/platform/windows.rs and docs/WINDOWS7-BUILD.md.
+[patch.crates-io]
+arboard = { path = "third_party/arboard" }
