@@ -20,6 +20,31 @@ Every new field batch appends its rows here as `untested`.
 | `rpm_light_2` | RPM Light 2 | Engine | Basic | untested |  |
 | `rpm_light_3` | RPM Light 3 | Engine | Basic | untested |  |
 | `rpm_light_4` | RPM Light 4 | Engine | Basic | untested |  |
+| `diff_lock` | Rear Diff Lock | Drivetrain | Basic | untested |  |
+| `final_drive` | Final Drive Divisor | Drivetrain | Basic | untested |  |
+| `gearing_base_1` | Gearing Base 1 | Drivetrain | Adv | untested |  |
+| `gearing_base_2` | Gearing Base 2 | Drivetrain | Adv | untested |  |
+| `shift_cut_player` | Shift Cut Duration | Drivetrain | Basic | untested |  |
+| `shift_cut_ai` | Shift Cut Duration (AI) | Drivetrain | Basic | untested |  |
+| `downshift_guard` | Downshift Over-Rev Guard | Drivetrain | Adv | untested |  |
+| `downshift_margin` | Downshift Table Margin | Drivetrain | Adv | untested |  |
+| `min_upshift_speed` | Min Auto-Upshift Speed | Drivetrain | Adv | untested |  |
+| `clutch_blend_gain` | Clutch Engagement Gain | Drivetrain | Adv | untested |  |
+| `clutch_rpm_lag` | Clutch RPM Lag | Drivetrain | Adv | untested |  |
+| `clutch_slip_decay` | Clutch Slip Decay | Drivetrain | Adv | untested |  |
+| `engine_spin_down` | Engine-Off Spin-Down | Drivetrain | Adv | untested |  |
+| `spin_gain_driven_rl` | Wheelspin Gain (Rear Left) | Drivetrain | Adv | untested |  |
+| `spin_gain_driven_rr` | Wheelspin Gain (Rear Right) | Drivetrain | Adv | untested |  |
+| `spin_gain_driven_fl` | Wheelspin Gain (Front Left) | Drivetrain | Adv | untested |  |
+| `spin_gain_driven_fr` | Wheelspin Gain (Front Right) | Drivetrain | Adv | untested |  |
+| `spin_gain_lock_rl` | Lock-Up Gain (Rear Left) | Drivetrain | Adv | untested |  |
+| `spin_gain_lock_rr` | Lock-Up Gain (Rear Right) | Drivetrain | Adv | untested |  |
+| `spin_gain_lock_fl` | Lock-Up Gain (Front Left) | Drivetrain | Adv | untested |  |
+| `spin_gain_lock_fr` | Lock-Up Gain (Front Right) | Drivetrain | Adv | untested |  |
+| `slip_decay_rl` | Slip Decay Gain (Rear Left) | Drivetrain | Adv | untested |  |
+| `slip_decay_rr` | Slip Decay Gain (Rear Right) | Drivetrain | Adv | untested |  |
+| `slip_decay_fl` | Slip Decay Gain (Front Left) | Drivetrain | Adv | untested |  |
+| `slip_decay_fr` | Slip Decay Gain (Front Right) | Drivetrain | Adv | untested |  |
 | `df_scale` | Downforce Scale | Aero | Basic | untested |  |
 | `rear_df_slope` | Rear Downforce Slope | Aero | Basic | untested |  |
 | `rear_df_floor` | Rear Downforce Floor | Aero | Basic | untested |  |
@@ -70,7 +95,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 56 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 81 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 

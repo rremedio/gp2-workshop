@@ -96,6 +96,422 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 8696,
         range: None,
     },
+    // ---- Drivetrain ----
+    FieldDesc {
+        id: "diff_lock",
+        label: "Rear Diff Lock",
+        help: "The rear differential's viscous coupling - how strongly the two \
+               rear wheels are pulled to the same speed. 0 behaves like a fully \
+               open diff (inside wheel spins up easily); higher values act like a \
+               locked diff / spool (more traction, more understeer on power). \
+               Affects all cars. Stock 24576 (x1.5).",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Basic,
+        target: Target::Data(0xD53C4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 24576,
+        range: None,
+    },
+    FieldDesc {
+        id: "final_drive",
+        label: "Final Drive Divisor",
+        help: "The divisor in the speed-to-RPM conversion, applied on top of \
+               every gear ratio. Higher = longer gearing (fewer RPM for the same \
+               speed) in every gear at once; lower = shorter. This is the knob \
+               for re-centring the whole gear-ratio range after changing Rev \
+               Limiter or Max RPM. Affects all cars. Stock 111522.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5FC8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 111522,
+        range: None,
+    },
+    FieldDesc {
+        id: "gearing_base_1",
+        label: "Gearing Base 1",
+        help: "One of three inputs to the speed-to-RPM conversion (with Gearing \
+               Base 2 and Final Drive Divisor). Only the RATIO between the three \
+               matters, so changing one alone rescales all the gearing. Prefer \
+               Final Drive Divisor for normal tuning and leave this alone unless \
+               you know why. Old editor: \"Differential Final Ratio - Factor 1\". \
+               Stock 304.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5FC0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 304,
+        range: None,
+    },
+    FieldDesc {
+        id: "gearing_base_2",
+        label: "Gearing Base 2",
+        help: "The second of the three speed-to-RPM inputs (see Gearing Base 1). \
+               Higher = shorter gearing (more RPM for the same speed). Only its \
+               ratio to the other two matters. Old editor: \"Differential Final \
+               Ratio - Factor 2\". Stock 1728.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5FC4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1728,
+        range: None,
+    },
+    FieldDesc {
+        id: "shift_cut_player",
+        label: "Shift Cut Duration",
+        help: "How long engine power is cut on every gear change, for the player. \
+               Higher = a longer dead spot on each shift, so shifting costs more \
+               time; 0 makes shifts instant. Player only - the AI has its own \
+               value. Old editor: \"Upshift Penalty (Humans)\" (which edited a \
+               single byte at 1390C1). Stock 2560.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E6C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2560,
+        range: None,
+    },
+    FieldDesc {
+        id: "shift_cut_ai",
+        label: "Shift Cut Duration (AI)",
+        help: "The AI twin of Shift Cut Duration - how long power is cut on each \
+               AI gear change. Higher = AI cars lose more time per shift. Stock \
+               is higher than the player's 2560, so the AI already shifts slower \
+               than you do. AI only. Old editor: \"Upshift Penalty (CCs)\". Stock \
+               4096.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E70),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4096,
+        range: None,
+    },
+    FieldDesc {
+        id: "downshift_guard",
+        label: "Downshift Over-Rev Guard",
+        help: "The RPM ceiling the automatic gearbox will not downshift through: \
+               a downshift that would send the engine past this is refused. Raise \
+               it to allow later, more aggressive downshifts; lower it to protect \
+               the engine. Affects cars on auto gears (including the AI). Stock \
+               14800.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        // Listing symbol is `w_maxrpm` (dw) - NOT the same as our `max_rpm`
+        // field at 0xD601C. Verified dw in the annotated listing.
+        target: Target::Data(0xD6020),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 14800,
+        range: None,
+    },
+    FieldDesc {
+        id: "downshift_margin",
+        label: "Downshift Table Margin",
+        help: "The RPM margin left when the game builds its automatic-downshift \
+               table at session start. Higher = the auto box downshifts more \
+               conservatively (further from the limit). Affects cars on auto \
+               gears. Stock 800.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD6024),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 800,
+        range: None,
+    },
+    FieldDesc {
+        id: "min_upshift_speed",
+        label: "Min Auto-Upshift Speed",
+        help: "The speed floor below which the automatic gearbox will not \
+               upshift, so it does not short-shift when crawling. Higher = the \
+               auto box holds the lower gear longer before it will change up. \
+               Affects cars on auto gears. Stock 4608.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD602E),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4608,
+        range: None,
+    },
+    FieldDesc {
+        id: "clutch_blend_gain",
+        label: "Clutch Engagement Gain",
+        help: "How sharply an analog clutch blends drive in as it is released. \
+               Higher = the clutch bites harder and sooner; lower = a longer, \
+               softer take-up. Only affects players using an analog clutch axis. \
+               Stock 262144.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5408),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 262144,
+        range: None,
+    },
+    FieldDesc {
+        id: "clutch_rpm_lag",
+        label: "Clutch RPM Lag",
+        help: "How fast engine revs chase the target while the analog clutch is \
+               slipping - the rev-matching rate. Higher = the revs catch up \
+               faster. Only affects players using an analog clutch. Stock 32768.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD6036),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 32768,
+        range: None,
+    },
+    FieldDesc {
+        id: "clutch_slip_decay",
+        label: "Clutch Slip Decay",
+        help: "How quickly slipping engine revs settle back to the speed the \
+               wheels are asking for. Higher = slip disappears faster (the clutch \
+               feels more locked). Only affects players using an analog clutch. \
+               Stock 4096.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD6032),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4096,
+        range: None,
+    },
+    FieldDesc {
+        id: "engine_spin_down",
+        label: "Engine-Off Spin-Down",
+        help: "How fast the revs die away once the engine is off (stalled or \
+               blown). Higher = the engine stops spinning sooner. Cosmetic in \
+               most situations. Stock 4000.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD603A),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4000,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_driven_rl",
+        label: "Wheelspin Gain (Rear Left)",
+        help: "How fast the rear left wheel spins up when you give it more power \
+               than it can put down. Higher = wheelspin builds faster and is \
+               easier to trigger; lower = the wheel hooks up more forgivingly. \
+               Stock is lower at the rear (98304) than the front (131072). \
+               Affects all cars. Stock 98304.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5318 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 98304,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_driven_rr",
+        label: "Wheelspin Gain (Rear Right)",
+        help: "How fast the rear right wheel spins up when you give it more power \
+               than it can put down. Higher = wheelspin builds faster and is \
+               easier to trigger; lower = the wheel hooks up more forgivingly. \
+               Stock is lower at the rear (98304) than the front (131072). \
+               Affects all cars. Stock 98304.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5318 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 98304,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_driven_fl",
+        label: "Wheelspin Gain (Front Left)",
+        help: "How fast the front left wheel spins up when you give it more power \
+               than it can put down. Higher = wheelspin builds faster and is \
+               easier to trigger; lower = the wheel hooks up more forgivingly. \
+               Stock is lower at the rear (98304) than the front (131072). \
+               Affects all cars. Stock 131072.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5318 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 131072,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_driven_fr",
+        label: "Wheelspin Gain (Front Right)",
+        help: "How fast the front right wheel spins up when you give it more \
+               power than it can put down. Higher = wheelspin builds faster and \
+               is easier to trigger; lower = the wheel hooks up more forgivingly. \
+               Stock is lower at the rear (98304) than the front (131072). \
+               Affects all cars. Stock 131072.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5318 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 131072,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_lock_rl",
+        label: "Lock-Up Gain (Rear Left)",
+        help: "How readily the rear left wheel locks under braking - the \
+               mirror-image of Wheelspin Gain. Higher = the wheel locks more \
+               easily and flat-spots sooner; lower = it keeps rolling under heavy \
+               braking. Affects all cars. Stock 98304.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5328 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 98304,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_lock_rr",
+        label: "Lock-Up Gain (Rear Right)",
+        help: "How readily the rear right wheel locks under braking - the \
+               mirror-image of Wheelspin Gain. Higher = the wheel locks more \
+               easily and flat-spots sooner; lower = it keeps rolling under heavy \
+               braking. Affects all cars. Stock 98304.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5328 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 98304,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_lock_fl",
+        label: "Lock-Up Gain (Front Left)",
+        help: "How readily the front left wheel locks under braking - the \
+               mirror-image of Wheelspin Gain. Higher = the wheel locks more \
+               easily and flat-spots sooner; lower = it keeps rolling under heavy \
+               braking. Affects all cars. Stock 131072.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5328 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 131072,
+        range: None,
+    },
+    FieldDesc {
+        id: "spin_gain_lock_fr",
+        label: "Lock-Up Gain (Front Right)",
+        help: "How readily the front right wheel locks under braking - the \
+               mirror-image of Wheelspin Gain. Higher = the wheel locks more \
+               easily and flat-spots sooner; lower = it keeps rolling under heavy \
+               braking. Affects all cars. Stock 131072.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5328 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 131072,
+        range: None,
+    },
+    FieldDesc {
+        id: "slip_decay_rl",
+        label: "Slip Decay Gain (Rear Left)",
+        help: "How fast the rear left wheel recovers once it is spinning or \
+               locked - effectively that wheel's inertia. Higher = it returns to \
+               rolling speed sooner, so spin and lock-up are shorter-lived; lower \
+               = they persist. Pairs with Wheelspin Gain and Lock-Up Gain. \
+               Affects all cars. Stock 1310720.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5338 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1310720,
+        range: None,
+    },
+    FieldDesc {
+        id: "slip_decay_rr",
+        label: "Slip Decay Gain (Rear Right)",
+        help: "How fast the rear right wheel recovers once it is spinning or \
+               locked - effectively that wheel's inertia. Higher = it returns to \
+               rolling speed sooner, so spin and lock-up are shorter-lived; lower \
+               = they persist. Pairs with Wheelspin Gain and Lock-Up Gain. \
+               Affects all cars. Stock 1310720.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5338 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1310720,
+        range: None,
+    },
+    FieldDesc {
+        id: "slip_decay_fl",
+        label: "Slip Decay Gain (Front Left)",
+        help: "How fast the front left wheel recovers once it is spinning or \
+               locked - effectively that wheel's inertia. Higher = it returns to \
+               rolling speed sooner, so spin and lock-up are shorter-lived; lower \
+               = they persist. Pairs with Wheelspin Gain and Lock-Up Gain. \
+               Affects all cars. Stock 2228224.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5338 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2228224,
+        range: None,
+    },
+    FieldDesc {
+        id: "slip_decay_fr",
+        label: "Slip Decay Gain (Front Right)",
+        help: "How fast the front right wheel recovers once it is spinning or \
+               locked - effectively that wheel's inertia. Higher = it returns to \
+               rolling speed sooner, so spin and lock-up are shorter-lived; lower \
+               = they persist. Pairs with Wheelspin Gain and Lock-Up Gain. \
+               Affects all cars. Stock 2228224.",
+        subtab: SubTab::Drivetrain,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5338 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2228224,
+        range: None,
+    },
     // ---- Aero ----
     FieldDesc {
         id: "df_scale",
