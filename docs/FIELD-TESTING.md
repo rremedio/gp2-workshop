@@ -166,6 +166,41 @@ Every new field batch appends its rows here as `untested`.
 | `wear_rate_fl` | Tyre Wear Rate (Front Left) | Tyres | Basic | untested |  |
 | `wear_rate_fr` | Tyre Wear Rate (Front Right) | Tyres | Basic | untested |  |
 | `segment_grip_boost` | Segment Grip Boost | Tyres | Adv | untested |  |
+| `tyre_spring` | Tyre Spring Rate | Suspension | Basic | untested |  |
+| `tyre_spring_init_rl` | Tyre Spring Init (Rear Left) | Suspension | Adv | untested |  |
+| `tyre_spring_init_rr` | Tyre Spring Init (Rear Right) | Suspension | Adv | untested |  |
+| `tyre_spring_init_fl` | Tyre Spring Init (Front Left) | Suspension | Adv | untested |  |
+| `tyre_spring_init_fr` | Tyre Spring Init (Front Right) | Suspension | Adv | untested |  |
+| `tyre_damping_rl` | Tyre Damping (Rear Left) | Suspension | Adv | untested |  |
+| `tyre_damping_rr` | Tyre Damping (Rear Right) | Suspension | Adv | untested |  |
+| `tyre_damping_fl` | Tyre Damping (Front Left) | Suspension | Adv | untested |  |
+| `tyre_damping_fr` | Tyre Damping (Front Right) | Suspension | Adv | untested |  |
+| `spring_factor` | Spring Rate Scale | Suspension | Basic | untested |  |
+| `arb_factor` | Anti-Roll Bar Scale | Suspension | Basic | untested |  |
+| `free_length_rl` | Suspension Travel (Rear Left) | Suspension | Adv | untested |  |
+| `free_length_rr` | Suspension Travel (Rear Right) | Suspension | Adv | untested |  |
+| `free_length_fl` | Suspension Travel (Front Left) | Suspension | Adv | untested |  |
+| `free_length_fr` | Suspension Travel (Front Right) | Suspension | Adv | untested |  |
+| `bumpstop_rate_rl` | Bump-Stop Rate (Rear Left) | Suspension | Adv | untested |  |
+| `bumpstop_rate_rr` | Bump-Stop Rate (Rear Right) | Suspension | Adv | untested |  |
+| `bumpstop_rate_fl` | Bump-Stop Rate (Front Left) | Suspension | Adv | untested |  |
+| `bumpstop_rate_fr` | Bump-Stop Rate (Front Right) | Suspension | Adv | untested |  |
+| `packer_cap_rl` | Packer Cap (Rear Left) | Suspension | Adv | untested |  |
+| `packer_cap_rr` | Packer Cap (Rear Right) | Suspension | Adv | untested |  |
+| `packer_cap_fl` | Packer Cap (Front Left) | Suspension | Adv | untested |  |
+| `packer_cap_fr` | Packer Cap (Front Right) | Suspension | Adv | untested |  |
+| `droop_stiffness` | Droop Stiffness Add | Suspension | Adv | untested |  |
+| `bump_rebound_ratio` | Bump/Rebound Ratio | Suspension | Adv | untested |  |
+| `damper_knee_pos` | Damper Knee (+) | Suspension | Adv | untested |  |
+| `damper_knee_neg` | Damper Knee (-) | Suspension | Adv | untested |  |
+| `bottoming_stiffness` | Bottoming Stiffness | Suspension | Adv | untested |  |
+| `plank_wear_rate` | Plank Wear Rate | Suspension | Adv | untested |  |
+| `heave_knee` | Soft-Limit Knee (Heave) | Suspension | Adv | untested |  |
+| `pitch_knee` | Soft-Limit Knee (Pitch) | Suspension | Adv | untested |  |
+| `roll_knee` | Soft-Limit Knee (Roll) | Suspension | Adv | untested |  |
+| `heave_gain` | Soft-Limit Gain (Heave) | Suspension | Adv | untested |  |
+| `pitch_gain` | Soft-Limit Gain (Pitch) | Suspension | Adv | untested |  |
+| `roll_gain` | Soft-Limit Gain (Roll) | Suspension | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -175,7 +210,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 161 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 196 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 

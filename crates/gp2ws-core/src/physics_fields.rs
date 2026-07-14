@@ -2595,6 +2595,579 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 17408,
         range: None,
     },
+    // ---- Suspension ----
+    FieldDesc {
+        id: "tyre_spring",
+        label: "Tyre Spring Rate",
+        help: "How stiff the tyre carcass itself is as a spring - the last bit of \
+               give between the wheel and the road. Higher = a harsher ride and \
+               more kerb kick; lower = the tyre soaks up bumps. MUST move \
+               together with the Tyre Spring (Init) values: the init value x120 \
+               has to equal this rate, or the sim's setup pass and its \
+               per-substep pass disagree. Affects all cars. Stock 24000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Basic,
+        // Paired with tyre_spring_init_* (0xD54E8+4i): init * 120 == this rate
+        // (200 * 120 == 24000 in stock). Change one without the other and the
+        // session-init pass and the substep pass use different spring rates.
+        target: Target::Data(0xD5508),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 24000,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_spring_init_rl",
+        label: "Tyre Spring Init (Rear Left)",
+        help: "The rear left tyre's carcass spring rate as used by the \
+               session-init pass, stored 120x smaller than the real rate. Stock \
+               200 x 120 = 24000, which is exactly Tyre Spring Rate - keep that \
+               relationship or the two passes disagree and the car behaves \
+               inconsistently. Change Tyre Spring Rate and you must change this \
+               too. Stock 200.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD54E8 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 200,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_spring_init_rr",
+        label: "Tyre Spring Init (Rear Right)",
+        help: "The rear right tyre's carcass spring rate as used by the \
+               session-init pass, stored 120x smaller than the real rate. Stock \
+               200 x 120 = 24000, which is exactly Tyre Spring Rate - keep that \
+               relationship or the two passes disagree and the car behaves \
+               inconsistently. Change Tyre Spring Rate and you must change this \
+               too. Stock 200.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD54E8 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 200,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_spring_init_fl",
+        label: "Tyre Spring Init (Front Left)",
+        help: "The front left tyre's carcass spring rate as used by the \
+               session-init pass, stored 120x smaller than the real rate. Stock \
+               200 x 120 = 24000, which is exactly Tyre Spring Rate - keep that \
+               relationship or the two passes disagree and the car behaves \
+               inconsistently. Change Tyre Spring Rate and you must change this \
+               too. Stock 200.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD54E8 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 200,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_spring_init_fr",
+        label: "Tyre Spring Init (Front Right)",
+        help: "The front right tyre's carcass spring rate as used by the \
+               session-init pass, stored 120x smaller than the real rate. Stock \
+               200 x 120 = 24000, which is exactly Tyre Spring Rate - keep that \
+               relationship or the two passes disagree and the car behaves \
+               inconsistently. Change Tyre Spring Rate and you must change this \
+               too. Stock 200.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD54E8 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 200,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_damping_rl",
+        label: "Tyre Damping (Rear Left)",
+        help: "How much the rear left tyre carcass damps its own bouncing \
+               (separate from the damper). Higher = the tyre stops ringing sooner \
+               after a bump; lower = it keeps oscillating. Affects all cars. \
+               Stock 256.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD550C + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_damping_rr",
+        label: "Tyre Damping (Rear Right)",
+        help: "How much the rear right tyre carcass damps its own bouncing \
+               (separate from the damper). Higher = the tyre stops ringing sooner \
+               after a bump; lower = it keeps oscillating. Affects all cars. \
+               Stock 256.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD550C + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_damping_fl",
+        label: "Tyre Damping (Front Left)",
+        help: "How much the front left tyre carcass damps its own bouncing \
+               (separate from the damper). Higher = the tyre stops ringing sooner \
+               after a bump; lower = it keeps oscillating. Affects all cars. \
+               Stock 256.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD550C + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_damping_fr",
+        label: "Tyre Damping (Front Right)",
+        help: "How much the front right tyre carcass damps its own bouncing \
+               (separate from the damper). Higher = the tyre stops ringing sooner \
+               after a bump; lower = it keeps oscillating. Affects all cars. \
+               Stock 256.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD550C + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_factor",
+        label: "Spring Rate Scale",
+        help: "A global multiplier on every spring setting in the garage. Higher \
+               = each click of spring in your setup does more, so the whole range \
+               gets stiffer; lower = softer. Use it to re-centre the setup range \
+               rather than changing individual setups. Affects all cars. Stock \
+               1966080.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Basic,
+        target: Target::Data(0xD54C4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1966080,
+        range: None,
+    },
+    FieldDesc {
+        id: "arb_factor",
+        label: "Anti-Roll Bar Scale",
+        help: "A global multiplier on both anti-roll bar settings. Higher = every \
+               ARB click resists roll more, so the bars bite harder across the \
+               range; lower = they matter less. The knob for making ARB choice \
+               meaningful. Affects all cars. Stock 196608.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Basic,
+        target: Target::Data(0xD54CC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 196608,
+        range: None,
+    },
+    FieldDesc {
+        id: "free_length_rl",
+        label: "Suspension Travel (Rear Left)",
+        help: "The rear left suspension's free length - how much travel it has \
+               before it runs out. Higher = more room to move before hitting the \
+               bump stops; lower = it runs out of travel sooner and rides on the \
+               stops. Stock gives the rear slightly more travel than the front. \
+               Stock 283984.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5544 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 283984,
+        range: None,
+    },
+    FieldDesc {
+        id: "free_length_rr",
+        label: "Suspension Travel (Rear Right)",
+        help: "The rear right suspension's free length - how much travel it has \
+               before it runs out. Higher = more room to move before hitting the \
+               bump stops; lower = it runs out of travel sooner and rides on the \
+               stops. Stock gives the rear slightly more travel than the front. \
+               Stock 283984.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5544 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 283984,
+        range: None,
+    },
+    FieldDesc {
+        id: "free_length_fl",
+        label: "Suspension Travel (Front Left)",
+        help: "The front left suspension's free length - how much travel it has \
+               before it runs out. Higher = more room to move before hitting the \
+               bump stops; lower = it runs out of travel sooner and rides on the \
+               stops. Stock gives the rear slightly more travel than the front. \
+               Stock 278528.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5544 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 278528,
+        range: None,
+    },
+    FieldDesc {
+        id: "free_length_fr",
+        label: "Suspension Travel (Front Right)",
+        help: "The front right suspension's free length - how much travel it has \
+               before it runs out. Higher = more room to move before hitting the \
+               bump stops; lower = it runs out of travel sooner and rides on the \
+               stops. Stock gives the rear slightly more travel than the front. \
+               Stock 278528.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5544 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 278528,
+        range: None,
+    },
+    FieldDesc {
+        id: "bumpstop_rate_rl",
+        label: "Bump-Stop Rate (Rear Left)",
+        help: "How stiff the rear left bump stop is once the suspension runs out \
+               of travel and hits it. Higher = a harsh, sudden stop; lower = it \
+               squashes progressively. Affects all cars. Stock 1000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5570 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1000,
+        range: None,
+    },
+    FieldDesc {
+        id: "bumpstop_rate_rr",
+        label: "Bump-Stop Rate (Rear Right)",
+        help: "How stiff the rear right bump stop is once the suspension runs out \
+               of travel and hits it. Higher = a harsh, sudden stop; lower = it \
+               squashes progressively. Affects all cars. Stock 1000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5570 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1000,
+        range: None,
+    },
+    FieldDesc {
+        id: "bumpstop_rate_fl",
+        label: "Bump-Stop Rate (Front Left)",
+        help: "How stiff the front left bump stop is once the suspension runs out \
+               of travel and hits it. Higher = a harsh, sudden stop; lower = it \
+               squashes progressively. Affects all cars. Stock 1000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5570 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1000,
+        range: None,
+    },
+    FieldDesc {
+        id: "bumpstop_rate_fr",
+        label: "Bump-Stop Rate (Front Right)",
+        help: "How stiff the front right bump stop is once the suspension runs \
+               out of travel and hits it. Higher = a harsh, sudden stop; lower = \
+               it squashes progressively. Affects all cars. Stock 1000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5570 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1000,
+        range: None,
+    },
+    FieldDesc {
+        id: "packer_cap_rl",
+        label: "Packer Cap (Rear Left)",
+        help: "A cap on how far the rear left corner can compress - the packer. \
+               Lower = the suspension is blocked from compressing as far, so it \
+               bottoms out earlier. Stock allows the rear twice the travel of the \
+               front. Stock 68800.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5590 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 68800,
+        range: None,
+    },
+    FieldDesc {
+        id: "packer_cap_rr",
+        label: "Packer Cap (Rear Right)",
+        help: "A cap on how far the rear right corner can compress - the packer. \
+               Lower = the suspension is blocked from compressing as far, so it \
+               bottoms out earlier. Stock allows the rear twice the travel of the \
+               front. Stock 68800.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5590 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 68800,
+        range: None,
+    },
+    FieldDesc {
+        id: "packer_cap_fl",
+        label: "Packer Cap (Front Left)",
+        help: "A cap on how far the front left corner can compress - the packer. \
+               Lower = the suspension is blocked from compressing as far, so it \
+               bottoms out earlier. Stock allows the rear twice the travel of the \
+               front. Stock 34400.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5590 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 34400,
+        range: None,
+    },
+    FieldDesc {
+        id: "packer_cap_fr",
+        label: "Packer Cap (Front Right)",
+        help: "A cap on how far the front right corner can compress - the packer. \
+               Lower = the suspension is blocked from compressing as far, so it \
+               bottoms out earlier. Stock allows the rear twice the travel of the \
+               front. Stock 34400.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5590 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 34400,
+        range: None,
+    },
+    FieldDesc {
+        id: "droop_stiffness",
+        label: "Droop Stiffness Add",
+        help: "Extra stiffness added as the suspension extends past its normal \
+               range (droop), e.g. over a crest. Higher = the suspension resists \
+               topping out more. Affects all cars. Stock 9600.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5540),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 9600,
+        range: None,
+    },
+    FieldDesc {
+        id: "bump_rebound_ratio",
+        label: "Bump/Rebound Ratio",
+        help: "How damping splits between compression (bump) and extension \
+               (rebound). Stock 8192 is the balance point; raise it for \
+               relatively more bump damping, lower it for more rebound. Affects \
+               all cars. Stock 8192.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55BC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 8192,
+        range: None,
+    },
+    FieldDesc {
+        id: "damper_knee_pos",
+        label: "Damper Knee (+)",
+        help: "The damper velocity at which the damping curve changes slope, on \
+               the compression side - the knee between low-speed and high-speed \
+               damping. Higher = the damper stays in its low-speed behaviour to \
+               higher velocities. Keep it mirrored with Damper Knee (-), which \
+               should be the same magnitude negated. Affects all cars. Stock \
+               43690.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55AC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 43690,
+        range: None,
+    },
+    FieldDesc {
+        id: "damper_knee_neg",
+        label: "Damper Knee (-)",
+        help: "The same damper-curve knee as Damper Knee (+), but on the \
+               extension side. SIGNED and NEGATIVE: keep it the mirror of the \
+               positive knee (stock is exactly -43690 against +43690). Making the \
+               pair asymmetric gives the damper a different knee compressing than \
+               extending, which is possible but is not what stock does. Affects \
+               all cars. Stock -43690.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55B0),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: -43690,
+        range: None,
+    },
+    FieldDesc {
+        id: "bottoming_stiffness",
+        label: "Bottoming Stiffness",
+        help: "How hard the car resists once the floor itself is on the ground. \
+               Higher = bottoming out feels like hitting a wall; lower = the car \
+               grounds out softly. Affects all cars. Stock 240000.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5584),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 240000,
+        range: None,
+    },
+    FieldDesc {
+        id: "plank_wear_rate",
+        label: "Plank Wear Rate",
+        help: "How fast the wooden plank under the car wears away when it drags \
+               on the track. Higher = it wears through sooner. Affects all cars. \
+               Stock 4096.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5588),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4096,
+        range: None,
+    },
+    FieldDesc {
+        id: "heave_knee",
+        label: "Soft-Limit Knee (Heave)",
+        help: "Where the soft limit on heave movement starts to bite. Higher = \
+               the car can heave further before the limit does anything. Pairs \
+               with Soft-Limit Gain (Heave), which sets how hard it pushes back \
+               once past this point. Stock 65536.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5624),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 65536,
+        range: None,
+    },
+    FieldDesc {
+        id: "pitch_knee",
+        label: "Soft-Limit Knee (Pitch)",
+        help: "Where the soft limit on pitch movement starts to bite. Higher = \
+               the car can pitch further before the limit does anything. Pairs \
+               with Soft-Limit Gain (Pitch), which sets how hard it pushes back \
+               once past this point. Stock 134217728.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5620),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 134217728,
+        range: None,
+    },
+    FieldDesc {
+        id: "roll_knee",
+        label: "Soft-Limit Knee (Roll)",
+        help: "Where the soft limit on roll movement starts to bite. Higher = the \
+               car can roll further before the limit does anything. Pairs with \
+               Soft-Limit Gain (Roll), which sets how hard it pushes back once \
+               past this point. Stock 134217728.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD561C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 134217728,
+        range: None,
+    },
+    FieldDesc {
+        id: "heave_gain",
+        label: "Soft-Limit Gain (Heave)",
+        help: "How hard the soft limit pushes back once heave passes its knee. \
+               Higher = a firmer stop; 0 disables the limit. Pairs with \
+               Soft-Limit Knee (Heave), which sets where it starts. Stock 65536.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5630),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 65536,
+        range: None,
+    },
+    FieldDesc {
+        id: "pitch_gain",
+        label: "Soft-Limit Gain (Pitch)",
+        help: "How hard the soft limit pushes back once pitch passes its knee. \
+               Higher = a firmer stop; 0 disables the limit. Pairs with \
+               Soft-Limit Knee (Pitch), which sets where it starts. Stock 16384.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD562C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "roll_gain",
+        label: "Soft-Limit Gain (Roll)",
+        help: "How hard the soft limit pushes back once roll passes its knee. \
+               Higher = a firmer stop; 0 disables the limit. Pairs with \
+               Soft-Limit Knee (Roll), which sets where it starts. Stock 16384.",
+        subtab: SubTab::Suspension,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5628),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
 ];
 
 #[cfg(test)]
