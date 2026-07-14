@@ -1,0 +1,31 @@
+crates/gp2ws-core/src/calibration.rs
+  s_43a31c3da013a9::t_70d515ca313570 77,89,94
+crates/gp2ws-core/src/lib.rs
+  s_43a31c3da013a9::t_d1239476847919 142,171
+crates/gp2ws-core/src/magic.rs
+  s_43a31c3da013a9::t_7a17527f45ecfb 161,169
+crates/gp2ws-core/src/physics_io.rs
+  s_43a31c3da013a9::t_e4eb87d77c3448 154,163,172
+crates/gp2ws-core/src/power_curve.rs
+  s_43a31c3da013a9::t_0e498e2b86cb55 38,56
+crates/gp2ws-core/src/tyre_fields.rs
+  s_43a31c3da013a9::t_29956b549421be 171
+crates/gp2ws-gui/src/app.rs
+  s_43a31c3da013a9::t_b53cc17c394e2c 315,354
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "8ada2d84ccb205bcc1b726ed9c10399c8225d1a0",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
