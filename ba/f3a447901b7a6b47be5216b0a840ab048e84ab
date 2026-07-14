@@ -1,0 +1,19 @@
+docs/PARAMETER-GUIDE.md
+  s_81304e009f3cf4::t_936ad12dee0e3e 1-255
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "baf3a447901b7a6b47be5216b0a840ab048e84ab",
+  "prompts": {},
+  "sessions": {
+    "s_81304e009f3cf4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d6ec06a6-8213-4126-99bf-81a6fdd98e5f",
+        "model": "unknown"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
