@@ -96,6 +96,89 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 8696,
         range: None,
     },
+    FieldDesc {
+        id: "engine_force_scale",
+        label: "Engine Force Scale",
+        help: "A global multiplier on engine power, applied on top of the power \
+               curve AND each car's own horsepower. Higher = every car on the \
+               grid gets more punch; lower = the whole field is slower. This is \
+               the blunt \"more power\" knob when you don't want to redraw the \
+               curve. Affects all cars. Old editor: \"Power Factor\". Stock \
+               15728.",
+        subtab: SubTab::Engine,
+        tier: Tier::Basic,
+        target: Target::Data(0xD60B0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 15728,
+        range: None,
+    },
+    FieldDesc {
+        id: "engine_braking",
+        label: "Engine Braking",
+        help: "How much the engine slows the car when you lift off the throttle. \
+               Higher = lifting scrubs more speed and the car settles onto its \
+               nose sooner; lower = it coasts. Affects all cars. Stock 2560.",
+        subtab: SubTab::Engine,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5FE4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2560,
+        range: None,
+    },
+    FieldDesc {
+        id: "engine_brake_pitch",
+        label: "Engine-Brake Pitch Factor",
+        help: "How much engine braking pitches the car forward, separately from \
+               how much it slows you. It is a quirk: raising it makes lifting off \
+               dive the nose more without changing the actual retardation. \
+               Affects all cars. Stock 3072.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        target: Target::Data(0x1731C0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3072,
+        range: None,
+    },
+    FieldDesc {
+        id: "idle_rpm",
+        label: "Idle RPM",
+        help: "The RPM the engine idles at when you're stopped and off the \
+               throttle (it jitters about 128 either side). Mostly cosmetic - \
+               raise it alongside a raised rev range so idle doesn't sound dead. \
+               Stock 3712.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        target: Target::Data(0x174040),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3712,
+        range: None,
+    },
+    FieldDesc {
+        id: "misfire_probability",
+        label: "Misfire Probability",
+        help: "How often the engine misfires once it has picked up an engine \
+               failure - on a 0-255 scale, so stock 128 is about half the time. \
+               Higher = a failing engine splutters more; 0 = it never misfires. \
+               Only applies after a failure, not to a healthy engine. Stock 128.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        // Plan flagged this width as uncertain; the listing settles it:
+        // `000D56B0 dword_0_D56B0 dd 80h` -> dd, width 4.
+        target: Target::Data(0xD56B0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 128,
+        range: None,
+    },
     // ---- Drivetrain ----
     FieldDesc {
         id: "diff_lock",
@@ -2313,6 +2396,71 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         signed: false,
         encoding: Encoding::Raw,
         stock: 0x5000,
+        range: None,
+    },
+    FieldDesc {
+        id: "fuel_burn_base",
+        label: "Fuel Burn Base",
+        help: "The baseline rate the cars burn fuel. Higher = everyone uses more \
+               fuel per lap, so races need bigger loads or more stops. This \
+               chains with the per-track fuel multipliers in Magic Data (T22 \
+               human / T23 CC), which scale it per circuit. Affects all cars. \
+               Stock 2048.",
+        subtab: SubTab::MassGrip,
+        tier: Tier::Basic,
+        target: Target::Data(0xD57DC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2048,
+        range: None,
+    },
+    FieldDesc {
+        id: "fuel_weight_div",
+        label: "Fuel Weight Divisor",
+        help: "One half of the pair that converts fuel into weight (with Fuel \
+               Weight Multiplier). Together they set the roughly \
+               776-units-to-pounds slope, about 4.7 lbs per lap of fuel. Only \
+               their ratio matters, so change one and you rescale how heavy fuel \
+               feels. Affects all cars. Stock 563.",
+        subtab: SubTab::MassGrip,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD57CC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 563,
+        range: None,
+    },
+    FieldDesc {
+        id: "fuel_weight_mult",
+        label: "Fuel Weight Multiplier",
+        help: "The other half of the fuel-to-weight conversion (see Fuel Weight \
+               Divisor). Raising this relative to the divisor makes each lap of \
+               fuel weigh more, so heavy cars feel heavier and fuel strategy \
+               matters more. Affects all cars. Stock 437318.",
+        subtab: SubTab::MassGrip,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD57D4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 437318,
+        range: None,
+    },
+    FieldDesc {
+        id: "qual_fuel_laps",
+        label: "Qualifying Fuel Laps",
+        help: "How many laps of fuel the AI carries in qualifying (the code adds \
+               1, so stock 4 means 5 laps' worth). Lower = lighter, faster AI \
+               qualifying runs; higher = heavier and slower. AI only. Stock 4.",
+        subtab: SubTab::MassGrip,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD3550),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4,
         range: None,
     },
 ];

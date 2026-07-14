@@ -20,6 +20,11 @@ Every new field batch appends its rows here as `untested`.
 | `rpm_light_2` | RPM Light 2 | Engine | Basic | untested |  |
 | `rpm_light_3` | RPM Light 3 | Engine | Basic | untested |  |
 | `rpm_light_4` | RPM Light 4 | Engine | Basic | untested |  |
+| `engine_force_scale` | Engine Force Scale | Engine | Basic | untested |  |
+| `engine_braking` | Engine Braking | Engine | Basic | untested |  |
+| `engine_brake_pitch` | Engine-Brake Pitch Factor | Engine | Adv | untested |  |
+| `idle_rpm` | Idle RPM | Engine | Adv | untested |  |
+| `misfire_probability` | Misfire Probability | Engine | Adv | untested |  |
 | `diff_lock` | Rear Diff Lock | Drivetrain | Basic | untested |  |
 | `final_drive` | Final Drive Divisor | Drivetrain | Basic | untested |  |
 | `gearing_base_1` | Gearing Base 1 | Drivetrain | Adv | untested |  |
@@ -150,6 +155,10 @@ Every new field batch appends its rows here as `untested`.
 | `ai_follow_floor_1` | AI Heavy-Braking Flag | AiRacecraft | Adv | untested |  |
 | `ai_follow_floor_2` | AI Max Braking / Tick | AiRacecraft | Adv | untested |  |
 | `ai_follow_floor_3` | AI Avoidance Clamp | AiRacecraft | Adv | untested |  |
+| `fuel_burn_base` | Fuel Burn Base | MassGrip | Basic | untested |  |
+| `fuel_weight_div` | Fuel Weight Divisor | MassGrip | Adv | untested |  |
+| `fuel_weight_mult` | Fuel Weight Multiplier | MassGrip | Adv | untested |  |
+| `qual_fuel_laps` | Qualifying Fuel Laps | MassGrip | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -159,7 +168,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 145 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 154 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
