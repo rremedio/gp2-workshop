@@ -158,7 +158,7 @@ mod tests {
 
     #[test]
     fn slot_roundtrip_synthetic() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let v: [u16; 24] = core::array::from_fn(|i| (i as u16) * 3 + 1);
         write_slot(&mut img, 0, 5, &v);
         assert_eq!(read_slot(&img, 0, 5), v);
@@ -166,7 +166,7 @@ mod tests {
 
     #[test]
     fn slot_roundtrip_with_delta() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let v: [u16; 24] = core::array::from_fn(|i| (i as u16) * 7 + 2);
         write_slot(&mut img, 0x10, 3, &v);
         assert_eq!(read_slot(&img, 0x10, 3), v);

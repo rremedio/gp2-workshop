@@ -312,7 +312,7 @@ mod tests {
     fn synthetic_exe_path() -> PathBuf {
         use gp2ws_core::calibration::ANCHORS;
         use gp2ws_core::exe::ExeImage;
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         for a in ANCHORS {
             img.write(a.target.base_offset(), a.width, a.stock);
         }
@@ -351,7 +351,7 @@ mod tests {
     #[test]
     fn uncalibrated_disables_editing() {
         use gp2ws_core::exe::ExeImage;
-        let img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let dir = std::env::temp_dir().join(format!("gp2ws-gui-bad-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("bad.exe");

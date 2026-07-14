@@ -74,7 +74,7 @@ mod tests {
     use super::*;
     use crate::exe::ExeImage;
     fn synthetic() -> ExeImage {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         for a in ANCHORS {
             img.write(a.target.base_offset(), a.width, a.stock);
         }
@@ -86,12 +86,12 @@ mod tests {
     }
     #[test]
     fn fails_on_garbage() {
-        let img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         assert_eq!(calibrate(&img), Calibration::Failed);
     }
     #[test]
     fn calibrates_shifted_exe() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         for a in ANCHORS {
             img.write(a.target.base_offset() + 0x10, a.width, a.stock);
         }

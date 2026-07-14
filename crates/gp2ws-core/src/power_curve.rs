@@ -35,7 +35,7 @@ mod tests {
 
     #[test]
     fn synthetic_roundtrip() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let mut vals = [0i64; POWER_CURVE_LEN];
         for (i, v) in vals.iter_mut().enumerate() {
             *v = (i as i64) * 7;
@@ -53,7 +53,7 @@ mod tests {
 
     #[test]
     fn delta_applied() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let mut vals = [0i64; POWER_CURVE_LEN];
         vals[0] = 100;
         write_curve(&mut img, 0x20, &vals);

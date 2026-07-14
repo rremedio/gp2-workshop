@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn synthetic_roundtrip() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         for (i, f) in TYRE_FIELDS.iter().enumerate() {
             f.write(&mut img, 0, (i as i64 + 1) * 0x100);
         }

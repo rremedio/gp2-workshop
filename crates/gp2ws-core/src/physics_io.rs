@@ -151,7 +151,7 @@ mod tests {
     #[test]
     fn import_export_identity() {
         // Synthetic image: populate every field + curve with known values.
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let delta = 0;
         for (i, f) in all_fields().enumerate() {
             // Use values within each field's width; stay small and positive.
@@ -160,7 +160,7 @@ mod tests {
         let doc1 = import_from_exe(&img, delta);
 
         // Export into a fresh image, re-import, must be identical.
-        let mut img2 = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img2 = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let warnings = export_to_exe(&mut img2, delta, &doc1);
         assert!(warnings.is_empty(), "unexpected warnings: {warnings:?}");
         let doc2 = import_from_exe(&img2, delta);
@@ -169,7 +169,7 @@ mod tests {
 
     #[test]
     fn export_reports_unknown_and_missing() {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let mut fields = BTreeMap::new();
         fields.insert("tow_strength".to_string(), 5i64);
         fields.insert("not_a_real_field".to_string(), 9i64);

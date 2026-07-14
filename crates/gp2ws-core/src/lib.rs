@@ -139,7 +139,7 @@ mod tests {
     /// Build a minimal synthetic image with the calibration anchors in place,
     /// big enough to cover all field offsets, and write it to a unique temp file.
     fn synthetic_exe_file() -> PathBuf {
-        let mut img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let mut img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         for a in calibration::ANCHORS {
             img.write(a.target.base_offset(), a.width, a.stock);
         }
@@ -168,7 +168,7 @@ mod tests {
     #[test]
     fn open_uncalibrated_returns_none_delta() {
         // Image with no anchors -> calibration fails, but open() still succeeds.
-        let img = ExeImage::from_bytes(vec![0u8; 1_400_000]);
+        let img = ExeImage::from_bytes(vec![0u8; 2_000_000]);
         let dir = std::env::temp_dir().join(format!("gp2ws-session-bad-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("bad.exe");
