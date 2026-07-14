@@ -194,6 +194,99 @@ braking bug.
 Related: **AI Brake Strength (shift)** on the Brakes tab is how hard the AI
 brakes for the *corner*; the settings here are how it brakes for *traffic*.
 
+### Drivetrain
+
+How power gets from the engine to the road.
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **Rear Diff Lock** | Basic | The rear differential's viscous coupling. 0 behaves like an open diff (the inside wheel spins up easily); higher acts like a spool — more traction, more understeer on power. | 24576 |
+| **Final Drive Divisor** | Basic | Longer or shorter gearing in *every* gear at once. Higher = fewer RPM for the same speed. The knob for re-centring gearing after changing the rev range. | 111522 |
+| **Shift Cut Duration** | Basic | How long power is cut on each of *your* gear changes. Higher = shifting costs more time; 0 = instant shifts. | 2560 |
+| **Shift Cut Duration (AI)** | Basic | The AI's version. Stock is *higher* than yours (4096 vs 2560), so the AI already shifts slower than you do. | 4096 |
+
+*Advanced here:* the two Gearing Base constants (only their ratio to the Final
+Drive Divisor matters), the auto-gearbox downshift guard/margin and upshift speed
+floor, the analog-clutch trio, engine spin-down, and the per-wheel wheelspin /
+lock-up / slip-decay gains.
+
+### Chassis
+
+The car's basic dimensions and how its mass is distributed. **All of these are
+read when you enter the track**, so changes apply from the next session, not
+live.
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **CoG → Rear Axle** | Basic | ⚠️ Moves **three** things at once: with the front arm it sets the wheelbase, and the ratio between them sets weight distribution. Change with care. | 65955 |
+| **CoG → Front Axle** | Basic | The other half of the pair. Also feeds the steering-assist model, so it changes steering feel too. | 94928 |
+| **Rear Track Width** | Basic | How far apart the rear wheels are. Wider = more resistance to roll at the rear. | 86596 |
+| **Front Track Width** | Basic | Same at the front. Raising it relative to the rear shifts balance toward oversteer. | 90113 |
+| **CoG Height** | Basic | The classic "lower the centre of gravity" knob. Lower = less dive, squat and roll. | 13438 |
+| **Yaw Gyration Radius** | Basic | How hard the car is to rotate. Lower = pointier and dartier; higher = lazier but more stable. | 247 |
+
+*Advanced here:* pitch/roll gyration radii, front/rear unsprung mass, the inertia
+reference fuel, and **per-wheel camber — dormant in stock GP2** (every wheel is
+0, which leaves real grip machinery switched off; setting it non-zero wakes that
+up, so expect surprises).
+
+### Suspension
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **Tyre Spring Rate** | Basic | How stiff the tyre carcass is — the last bit of give before the road. ⚠️ Must move together with the four Tyre Spring Init values (init × 120 has to equal this). | 24000 |
+| **Spring Rate Scale** | Basic | A global multiplier on every spring setting in the garage. Use it to re-centre the whole setup range rather than editing setups. | 1966080 |
+| **Anti-Roll Bar Scale** | Basic | The same idea for both anti-roll bars — the knob for making ARB choice actually matter. | 196608 |
+
+*Advanced here:* per-wheel tyre damping, free length, bump-stop rates and packer
+caps, droop stiffness, bump/rebound ratio, the damper knee pair (keep it
+mirrored), bottoming stiffness, plank wear, and the heave/pitch/roll soft-limit
+knee+gain pairs.
+
+### Surfaces
+
+What each surface does to the car. Five classes: track, low kerb, high kerb,
+grass, gravel.
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **Grip: Grass** | Basic | Cornering grip on grass — the most slippery surface in stock. | 10240 |
+| **Grip: Gravel** | Basic | Cornering grip in the gravel trap. | 12288 |
+| **Traction: Low Kerb** | Basic | How well power goes down on a low kerb. Stock is *tiny* (1024 vs 16384 on track) — this is why kerbs light the wheels up. | 1024 |
+| **Traction: High Kerb** | Basic | The same for high kerbs. | 1024 |
+
+*Advanced here:* grip/traction/roughness for the remaining classes, and the three
+bump amplitudes.
+
+> **Note on the "wet" tables.** GP2 ships a full second set of surface values for
+> wet weather, but the blend factor that would mix them in is 0 and nothing in
+> the game ever writes it — so they do nothing. They are deliberately not exposed.
+> One exception: the *first* entry of each wet table is read as the kerb
+> back-apron surface through an out-of-bounds read, so those three values are
+> live even on a dry track.
+
+### Walls & Damage
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **Wall Restitution** | Basic | How bouncy the barriers are. Higher = you ping off harder; 0 = the car stops dead. | 4096 |
+| **Wall Friction** | Basic | How much speed you keep scraping *along* a wall. Higher = you slide along losing little. | 14848 |
+| **Engine-Kill Impact** | Basic | How hard a hit must be to stop the engine. Raise it for forgiving walls. | 7424 |
+
+*Advanced here:* the wall yaw-kick gain and clamp, per-wheel damage load floors
+and spring-break loads, the four per-wheel damage-threshold tables, damage
+probability (stock 256 = damage is **always** deterministic; lower makes it a
+gamble), and the broken-spring ride drop.
+
+### Steering
+
+| Setting | Tier | Everyday meaning | Stock |
+|---|---|---|---|
+| **Max Steering Lock** | Basic | The hard ceiling on how far the front wheels can steer. Higher = more lock for tight corners and catching slides. | 6372 |
+
+*Advanced here:* the manual base lock, and the traction-control ramp rate (only
+affects players running the traction-control aid).
+
 ---
 
 ## Magic Data (per-track and per-driver tuning)

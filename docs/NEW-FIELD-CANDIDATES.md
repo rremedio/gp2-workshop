@@ -1,5 +1,22 @@
 # New editor field candidates — from the physics-tick RE (2026-07)
 
+> **Status (2026-07-14):** the plan `docs/plans/2026-07-14-new-physics-fields.md`
+> has shipped. The registry now holds **234 fields** across 14 sub-tabs; every
+> stock value is byte-verified against a pristine GP2.EXE by
+> `stock_values_match_real_exe`. Sections below are marked ✅ IMPLEMENTED or
+> ⬜ REMAINING.
+>
+> **Still open**, each needing its own design rather than more `FieldDesc` rows:
+> §10 default setups (48-byte records), §11 per-car HP + grip tables, per-track
+> tyre abrasion [16] and the ARB step tables [11×2] (all four need a slot/table
+> UI like the Magic Data tab), the wet/dry blend `w` (see below), and the
+> multi-site code immediates (see the last section).
+>
+> **Read before trusting any stock value here:** several were taken from the
+> annotated listing's *data* section, which was dumped from an EXE patched by
+> **GP2Edit**. Its code is sound; its data is not stock. `damage_load_floor` was
+> wrong here for exactly that reason. Byte-check against a pristine GP2.EXE.
+
 Gap analysis between the vault's `physics-*` docs (`~/vaults/gp2/docs/`) and the
 fields the editor currently exposes (`physics_fields.rs`, `tyre_fields.rs`,
 `power_curve.rs`, `magic.rs`). Everything listed is **statically patchable**
@@ -27,7 +44,7 @@ bytes before wiring (the vault docs record verified stock values).
 
 ---
 
-## 1. Chassis & Geometry — new sub-tab
+## 1. Chassis & Geometry — new sub-tab  — **✅ IMPLEMENTED (Chassis sub-tab)**
 
 From `physics-derived-params-init.md` §8.
 
@@ -46,7 +63,7 @@ From `physics-derived-params-init.md` §8.
 | Inertia reference fuel | Data 0xD5C3A | 60000 | Nominal fuel used only in the inertia mass (never live fuel). |
 | **Per-wheel camber [4]** | Data 0xD5EC4 (4×i32) | 0 | **Dormant knob** — camber grip machinery (`1A9E7`) is fully wired but ships with camber = 0 and no runtime writer. A static patch activates real per-wheel camber grip effects. |
 
-## 2. Differential & wheel dynamics — new sub-tab
+## 2. Differential & wheel dynamics — new sub-tab  — **✅ IMPLEMENTED (Drivetrain sub-tab)**
 
 From `physics-wheel-speed-update.md`.
 
@@ -60,7 +77,7 @@ From `physics-wheel-speed-update.md`.
 Note: the load-based open-diff split in `1B3C3` (lightly-loaded wheel gets more
 drive) is code logic, not a constant — D53C4 is the tunable part.
 
-## 3. Engine & transmission — additions to Engine tab
+## 3. Engine & transmission — additions to Engine tab  — **✅ IMPLEMENTED (Engine + Drivetrain)**
 
 From `physics-drivetrain.md` §14.
 
@@ -82,7 +99,7 @@ From `physics-drivetrain.md` §14.
 Hard caps (20000 rev clamp, 17000 curve clamp, 15200-bounce range) are code
 immediates — patchable via `Code` targets for a "hard rev ceiling" field.
 
-## 4. Tyre model — additions to Tyres tab
+## 4. Tyre model — additions to Tyres tab  — **✅ IMPLEMENTED (Tyres sub-tab) — except per-track tyre abrasion [16], see below**
 
 From `physics-tyre-model.md`. The 14×2 rear/front coefficient block is at
 **CODE 0x1A93F–0x1A9B6** (dwords, data-in-code-segment — see address
@@ -101,7 +118,7 @@ convention above). Modder-meaningful entries:
 | Per-track tyre abrasion [16] | Data 0xD5D9E (16×u32) | per slot | Currently "read-only" in the Tyres tab; 16-slot table fits the Magic-tab slot UI. |
 | Segment grip-boost value | Data 0xD5704 | 0x4400 | Grip multiplier on segments with flag 0x40 (+6.25% stock). |
 
-## 5. Suspension — new sub-tab
+## 5. Suspension — new sub-tab  — **✅ IMPLEMENTED (Suspension sub-tab) — except the ARB step tables, see below**
 
 From `physics-suspension-substep.md` / `physics-setup-apply.md` /
 `physics-chassis-ode.md`.
@@ -123,7 +140,7 @@ From `physics-suspension-substep.md` / `physics-setup-apply.md` /
 | Plank wear rate | Data 0xD5588 | 0x1000 | Speed-scaled plank abrasion. |
 | Heave/pitch/roll soft-limit knees + gains | Data 0xD5624/0xD5620/0xD561C, 0xD5630/0xD562C/0xD5628 | various | Chassis-motion soft stops (advanced). |
 
-## 6. Aero — ground effect / rake additions
+## 6. Aero — ground effect / rake additions  — **✅ IMPLEMENTED (Aero sub-tab)**
 
 From `physics-aero-damage.md` §A4 — the ground-effect model is entirely
 untouched in the editor.
@@ -137,7 +154,7 @@ untouched in the editor.
 | GE master scale | Data 0xD5EE8 | 0x4000 (×1.0) | Shipped as a no-op — dormant global ground-effect multiplier. |
 | Wing-damage downforce loss / front boost | Code imms in `CalcBothWings` @0x16AA5 | 0x3000 / 0x5000 | −25% damaged wing, +25% front compensation. |
 
-## 7. Surfaces — new sub-tab
+## 7. Surfaces — new sub-tab  — **✅ IMPLEMENTED (Surfaces sub-tab)**
 
 From `physics-surface-sampling.md` §2 — grip/traction/roughness for the 5
 surface classes at Data 0xD5CF4 (contiguous dword tables
@@ -151,7 +168,7 @@ surface classes at Data 0xD5CF4 (contiguous dword tables
 | Grass/gravel bump amplitude | Data 0xD7E1C / 0xD7E20 | 0xC0000 / 0x140000 | Noise height off-track (track bump scale = 0xD7E24). |
 | Kerb profile defaults (CA/CB widths+heights) | Code imms @CompileLoadTrack ~0x73557 | (0x6E,0x12C,0x12,0x1A / 0xB2,0x164,0x0E,0x18) | Default kerb shape when the track doesn't override. |
 
-## 8. Walls & damage — new sub-tab
+## 8. Walls & damage — new sub-tab  — **✅ IMPLEMENTED (Walls & Damage sub-tab)**
 
 From `physics-walls.md` §9 and `physics-aero-damage.md` §B7.
 
@@ -168,7 +185,7 @@ From `physics-walls.md` §9 and `physics-aero-damage.md` §B7.
 | Damage probability | Data 0xC7B00 | 0x100 (always) | Lower ⇒ damage becomes probabilistic. |
 | Broken-spring ride drop | Data 0xD55E8 | 0x8000 | |
 
-## 9. Fuel — additions
+## 9. Fuel — additions  — **✅ IMPLEMENTED (Mass/Grip sub-tab)**
 
 From `physics-fuel.md`.
 
@@ -179,7 +196,7 @@ From `physics-fuel.md`.
 | Qualifying fuel laps | Data 0xD3550 (d_QualFuelLaps) | 4 | +1 applied in code. |
 | Practice fuel laps | Code imm @0x2C543 | 12 | |
 
-## 10. Default setups — potential new tab
+## 10. Default setups — potential new tab  — **⬜ REMAINING**
 
 `physics-setup-apply.md` §13: the 48-byte setup records are static EXE data —
 player defaults @0x1771B8, AI/standard @0x177158, per-car @0x177218. Editing
@@ -188,7 +205,7 @@ balance, ARBs and pit strategy. Caveat: wings/gears/tyre bytes (+0x00..+0x08)
 are overwritten by track data at load — display-only. Full record layout is in
 the vault doc §2.
 
-## 11. Smaller / advanced
+## 11. Smaller / advanced  — **⬜ REMAINING**
 
 - **Max steering lock** — Data 0xD61C4 (0x18E4 master clamp), manual base lock
   Data 0x1731E4 (0x800).
@@ -205,7 +222,7 @@ the vault doc §2.
 `D3F50`, inertias `D3FB0..` (patch the §1 inputs instead), `car+0x86`
 (pit jack, not ride height).
 
-## Corrections to existing Slipstream fields (Systems B and C)
+## Corrections to existing Slipstream fields (Systems B and C)  — **✅ IMPLEMENTED (AI Racecraft sub-tab)**
 
 From `slipstream.md` (incl. the 2026-07-10 AI-RE addendum),
 `ai-mover-longitudinal.md` §4.8 and `ai-racecraft-infra-follow.md` §9.1.
@@ -255,7 +272,7 @@ System C fields out of Slipstream into an "AI Racecraft braking" group,
 next to AI Brake Strength. Note the three "floors" are stored/edited as u32
 but are semantically signed s16 bases.
 
-## Legacy editor cross-reference
+## Legacy editor cross-reference  — **✅ IMPLEMENTED (old-editor names are in the field helps)**
 
 Mapping of the decimal file offsets used in Roberto's old editor
 (gp2_slot_and_tyre_editor; source recovered 2026-07-14 from
