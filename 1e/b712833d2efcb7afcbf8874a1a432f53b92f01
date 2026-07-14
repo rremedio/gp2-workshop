@@ -1,0 +1,21 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_43a31c3da013a9::t_6824c42c6fdffe 2477-2597
+docs/FIELD-TESTING.md
+  s_43a31c3da013a9::t_80af7e4cb3a79b 162-168,178
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "1eb712833d2efcb7afcbf8874a1a432f53b92f01",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
