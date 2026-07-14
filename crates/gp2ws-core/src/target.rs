@@ -3,9 +3,10 @@ pub const CODE_BASE: usize = 0x78254;
 
 #[derive(Clone, Copy, Debug)]
 pub enum Target {
-    Data(usize),   // IDA address of a data word
-    Code(usize),   // IDA address of an instruction; operand is at +1
-    Direct(usize), // already a file offset (legacy old-editor offsets)
+    Data(usize),     // IDA address of a data word
+    Code(usize),     // IDA address of an instruction; operand is at +1
+    CodeData(usize), // IDA address of DATA stored in the code segment (no +1)
+    Direct(usize),   // already a file offset (legacy old-editor offsets)
 }
 
 impl Target {
@@ -14,6 +15,7 @@ impl Target {
         match *self {
             Target::Data(ida) => ida + DATA_BASE,
             Target::Code(ida) => ida + 1 + CODE_BASE,
+            Target::CodeData(ida) => ida + CODE_BASE,
             Target::Direct(off) => off,
         }
     }
@@ -34,5 +36,10 @@ mod tests {
     fn code_operand_after_opcode() {
         // DF slope: instruction IDA 0x1682D, operand file 0x8EA82
         assert_eq!(Target::Code(0x1682D).base_offset(), 0x8EA82);
+    }
+    #[test]
+    fn code_data_no_opcode_skip() {
+        // tyre k1 rear @ code-segment data 0x1A94F -> file 0x92BA3
+        assert_eq!(Target::CodeData(0x1A94F).base_offset(), 0x1A94F + CODE_BASE);
     }
 }
