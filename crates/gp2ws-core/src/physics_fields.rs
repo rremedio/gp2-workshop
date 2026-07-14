@@ -482,9 +482,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_strength",
         label: "Tow Strength",
-        help: "How strong YOUR slipstream is when you tuck in behind another car. \
-               Higher = a bigger speed boost in the draft; 0 turns the player \
-               draft off entirely. Player only. Stock 262144.",
+        help: "How strong the slipstream is when tucked in behind another car. \
+               Higher = a bigger speed boost in the draft; 0 turns the draft \
+               off entirely. Affects BOTH the player and AI cars (the AI wake \
+               uses the same constant). Stock 262144.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xD53DC),
@@ -497,9 +498,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "tow_reach",
         label: "Tow Reach",
-        help: "How far back behind another car your slipstream still works. \
-               Higher = you can catch the draft from further away; lower = you \
-               must get very close. Player only. Stock 384.",
+        help: "How far back behind another car the slipstream still works. \
+               Higher = the draft can be caught from further away; lower = you \
+               must get very close. Affects both player and AI. Stock 384.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xC9750),
@@ -514,7 +515,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "Tow Align Width",
         help: "How directly behind the other car you must be to get the draft - \
                the width of the slipstream cone. Wider = easier to stay in the \
-               tow when not perfectly lined up. Player only. Stock 512.",
+               tow when not perfectly lined up. Affects both player and AI. \
+               Stock 512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xC9748),
@@ -527,10 +529,12 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_tow_strength",
         label: "AI Tow Strength",
-        help: "A speed-scaled boost that lets AI cars slingshot past the car \
-               ahead. Stock 0 means OFF - the developers left it disabled. Raise \
-               it to enable; it only ADDS tow (can't go below stock) and a little \
-               goes a long way, so test in small steps. Stock 0.",
+        help: "NOT actually a tow boost (the label predates newer RE): every \
+               place this is read scales the AI's traffic-BRAKING caps with \
+               speed, so raising it above stock 0 makes AI cars brake harder \
+               for the car ahead at high speed - it can never add speed. The \
+               real AI slipstream is Tow Strength, which AI cars share with \
+               the player. Stock 0 (dormant).",
         subtab: SubTab::Slipstream,
         tier: Tier::Basic,
         target: Target::Data(0xD5FF4),
@@ -545,7 +549,7 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "Tow Max Wake",
         help: "A cap on how much slipstream boost you can get, no matter how \
                close you get. Raise it to allow a bigger maximum draft effect. \
-               Player only. Stock 256.",
+               Affects both player and AI. Stock 256.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC9752),
@@ -560,7 +564,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "Tow Max Range",
         help: "The maximum distance (in track segments) over which the draft can \
                apply. Higher = the slipstream stretches further down the track. \
-               Player only. Stock 7.",
+               Used by the player's car scan; the AI wake path picks its target \
+               car differently. Stock 7.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC9766),
@@ -575,8 +580,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "Tow Min Speed",
         help: "The minimum speed you must be going for the slipstream to work at \
                all (so it only helps on fast sections). Raise it to restrict the \
-               draft to higher speeds; lower it to allow it sooner. Player only. \
-               Stock 2816.",
+               draft to higher speeds; lower it to allow it sooner. Gates the \
+               player's scan. Stock 2816.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5D96),
@@ -590,10 +595,11 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_1",
         label: "AI Follow Base 1",
-        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
-               mode the AI follows or backs off the car ahead. Very fiddly, no \
-               intuitive scale, and the exact direction needs in-game testing. \
-               Stock -4096.",
+        help: "NOT slipstream: part of the AI's traffic-BRAKING controller (it \
+               can only slow AI cars, never boost them). Avoidance engage \
+               threshold - when the avoidance metric is at/above this, the AI \
+               ignores the car ahead (neutral). Signed; scaled by frame time at \
+               session start. Stock -4096.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CA),
@@ -606,10 +612,11 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_2",
         label: "AI Follow Base 2",
-        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
-               mode the AI follows or backs off the car ahead. Very fiddly, no \
-               intuitive scale, and the exact direction needs in-game testing. \
-               Stock -3072.",
+        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
+               Leader-deceleration matching threshold - when the car ahead is \
+               slowing harder than this, the follower copies its deceleration \
+               instead of predicting its own braking point. Signed; scaled by \
+               frame time at session start. Stock -3072.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CC),
@@ -622,10 +629,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_3",
         label: "AI Follow Base 3",
-        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
-               mode the AI follows or backs off the car ahead. Very fiddly, no \
-               intuitive scale, and the exact direction needs in-game testing. \
-               Stock -24576.",
+        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
+               Close-follow selector - decides whether the AI uses its energy \
+               model or the tight gap servo when running right behind another \
+               car. Signed; scaled by frame time at session start. Stock -24576.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D2),
@@ -638,10 +645,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_4",
         label: "AI Follow Base 4",
-        help: "One of four internal thresholds (1-4) that decide WHEN and in which \
-               mode the AI follows or backs off the car ahead. Very fiddly, no \
-               intuitive scale, and the exact direction needs in-game testing. \
-               Stock -1024.",
+        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
+               Same close-follow selection as Base 3, but for the branch used \
+               when the AI car is damaged/out of shape. Signed; scaled by frame \
+               time at session start. Stock -1024.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D4),
@@ -654,9 +661,13 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_5",
         label: "AI Follow Base 5",
-        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
-               slingshots past the car ahead. Lower these to rein in aggressive \
-               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -2048.",
+        help: "NOT slipstream: per-tick BRAKE ceiling forced on an AI car in its \
+               hold-back / yellow-flag state (slowing past accident sites, \
+               yielding). More negative = it brakes harder in that state. Keep \
+               it NEGATIVE: pushed toward 0 or positive it turns into an \
+               acceleration limit whenever the state fires, which reads as a \
+               mysterious AI top-speed change. Scaled by frame time at session \
+               start. Stock -2048.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D8),
@@ -669,9 +680,12 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_6",
         label: "AI Follow Base 6",
-        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
-               slingshots past the car ahead. Lower these to rein in aggressive \
-               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -4096.",
+        help: "NOT slipstream: per-tick BRAKE ceiling forced on an AI car while \
+               it is SLIDING (the slide-test flag). More negative = harder \
+               braking when sliding. Keep it NEGATIVE - toward 0 or positive it \
+               becomes an acceleration limit at the grip limit, which shows up \
+               as an AI top-speed change. Scaled by frame time at session \
+               start. Stock -4096.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DA),
@@ -684,9 +698,11 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_base_7",
         label: "AI Follow Base 7",
-        help: "A clamp (one of 5/6/7) that limits how hard the AI catches up to / \
-               slingshots past the car ahead. Lower these to rein in aggressive \
-               AI drafting. Fiddly, no intuitive scale - test in-game. Stock -512.",
+        help: "NOT slipstream: per-tick BRAKE ceiling in the AI's corner-squeeze \
+               state (\"can't steer around the car ahead at this grip, so brake \
+               instead\"). The hardest of the three state ceilings. Keep it \
+               NEGATIVE (see Base 5/6). Scaled by frame time at session start. \
+               Stock -512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DC),
@@ -700,9 +716,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_1",
         label: "AI Follow Floor 1",
-        help: "Advanced: the minimum value of the AI's follow target (one of \
-               three). Sets a lower bound on how the AI tracks the car ahead. \
-               No intuitive scale - test by feel. Stock 64512.",
+        help: "NOT slipstream: threshold below which an AI car's per-tick speed \
+               delta counts as \"heavy braking\" (sets a status flag; the value \
+               is a negative s16, stored here as 0xFC00 = -1024). Scaled by \
+               frame time at session start. Stock 64512.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FE8),
@@ -715,9 +732,11 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_2",
         label: "AI Follow Floor 2",
-        help: "Advanced: the minimum value of the AI's follow target (one of \
-               three). Sets a lower bound on how the AI tracks the car ahead. \
-               No intuitive scale - test by feel. Stock 53248.",
+        help: "NOT slipstream: the AI's maximum braking per tick for ALL \
+               traffic-follow caps - every braking request from the follow \
+               controller is floored here (negative s16, stored as 0xD000 = \
+               -12288). More negative = the AI may brake harder for other \
+               cars. Scaled by frame time at session start. Stock 53248.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FEC),
@@ -730,9 +749,10 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     FieldDesc {
         id: "ai_follow_floor_3",
         label: "AI Follow Floor 3",
-        help: "Advanced: the minimum value of the AI's follow target (one of \
-               three). Sets a lower bound on how the AI tracks the car ahead. \
-               No intuitive scale - test by feel. Stock 20480.",
+        help: "NOT slipstream: clamp on the AI's avoidance metric - the largest \
+               slow-down request the gap/closing-speed servo may generate when \
+               closing on the car ahead (positive s16, 0x5000). Scaled by \
+               frame time at session start. Stock 20480.",
         subtab: SubTab::Slipstream,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FF0),
