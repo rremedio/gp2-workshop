@@ -1,0 +1,21 @@
+docs/NEW-FIELD-CANDIDATES.md
+  s_43a31c3da013a9::t_3fb2b3ba4ecfbe 3-19,47,66,80,102,121,143,157,171,188,199,208,225,275
+docs/PARAMETER-GUIDE.md
+  s_43a31c3da013a9::t_fce176f3ac2939 197-289
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "4aea7bf45c681745cb8273c15f198f06a41340ca",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
