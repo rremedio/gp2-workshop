@@ -159,6 +159,13 @@ Every new field batch appends its rows here as `untested`.
 | `fuel_weight_div` | Fuel Weight Divisor | MassGrip | Adv | untested |  |
 | `fuel_weight_mult` | Fuel Weight Multiplier | MassGrip | Adv | untested |  |
 | `qual_fuel_laps` | Qualifying Fuel Laps | MassGrip | Adv | untested |  |
+| `rear_lateral_blend` | Rear Pure-Lateral Blend | Tyres | Basic | untested |  |
+| `slip_prescale` | Slip Sensitivity | Tyres | Adv | untested |  |
+| `wear_rate_rl` | Tyre Wear Rate (Rear Left) | Tyres | Basic | untested |  |
+| `wear_rate_rr` | Tyre Wear Rate (Rear Right) | Tyres | Basic | untested |  |
+| `wear_rate_fl` | Tyre Wear Rate (Front Left) | Tyres | Basic | untested |  |
+| `wear_rate_fr` | Tyre Wear Rate (Front Right) | Tyres | Basic | untested |  |
+| `segment_grip_boost` | Segment Grip Boost | Tyres | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -168,7 +175,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 154 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 161 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 

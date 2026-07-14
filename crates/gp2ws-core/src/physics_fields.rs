@@ -2474,6 +2474,127 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 4,
         range: None,
     },
+    // ---- Tyres (additions) ----
+    FieldDesc {
+        id: "rear_lateral_blend",
+        label: "Rear Pure-Lateral Blend",
+        help: "How much of the rear tyre's cornering force comes from the \
+               pure-lateral model versus the combined (cornering + driving) \
+               model. Stock 6144 mixes 0.375 pure with 0.625 combined. Higher = \
+               the rear behaves more like a tyre that isn't being asked to do two \
+               jobs at once, so it breaks away more predictably; lower = more of \
+               the snappy combined-slip character. This is the rear breakaway \
+               feel knob. Affects all cars. Stock 6144.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5354),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 6144,
+        range: None,
+    },
+    FieldDesc {
+        id: "slip_prescale",
+        label: "Slip Sensitivity",
+        help: "Scales slip before it goes into the tyre model - effectively how \
+               twitchy the tyres are about sliding. Higher = the tyre reacts to \
+               smaller slip, so the grip peak arrives sooner and the car feels \
+               sharper and edgier; lower = lazier, more forgiving. Affects all \
+               cars. Stock 682.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5F5C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 682,
+        range: None,
+    },
+    FieldDesc {
+        id: "wear_rate_rl",
+        label: "Tyre Wear Rate (Rear Left)",
+        help: "How fast the rear left tyre wears. Higher = it wears out sooner, \
+               so stints get shorter. Stock wears the FRONTS faster than the \
+               rears (1024 vs 640). This is the per-wheel rate; the per-compound \
+               multipliers are the Tyre Wear Sensitivity fields. Affects all \
+               cars. Stock 640.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5524 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 640,
+        range: None,
+    },
+    FieldDesc {
+        id: "wear_rate_rr",
+        label: "Tyre Wear Rate (Rear Right)",
+        help: "How fast the rear right tyre wears. Higher = it wears out sooner, \
+               so stints get shorter. Stock wears the FRONTS faster than the \
+               rears (1024 vs 640). This is the per-wheel rate; the per-compound \
+               multipliers are the Tyre Wear Sensitivity fields. Affects all \
+               cars. Stock 640.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5524 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 640,
+        range: None,
+    },
+    FieldDesc {
+        id: "wear_rate_fl",
+        label: "Tyre Wear Rate (Front Left)",
+        help: "How fast the front left tyre wears. Higher = it wears out sooner, \
+               so stints get shorter. Stock wears the FRONTS faster than the \
+               rears (1024 vs 640). This is the per-wheel rate; the per-compound \
+               multipliers are the Tyre Wear Sensitivity fields. Affects all \
+               cars. Stock 1024.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5524 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1024,
+        range: None,
+    },
+    FieldDesc {
+        id: "wear_rate_fr",
+        label: "Tyre Wear Rate (Front Right)",
+        help: "How fast the front right tyre wears. Higher = it wears out sooner, \
+               so stints get shorter. Stock wears the FRONTS faster than the \
+               rears (1024 vs 640). This is the per-wheel rate; the per-compound \
+               multipliers are the Tyre Wear Sensitivity fields. Affects all \
+               cars. Stock 1024.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5524 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1024,
+        range: None,
+    },
+    FieldDesc {
+        id: "segment_grip_boost",
+        label: "Segment Grip Boost",
+        help: "A per-track-segment grip multiplier the game can apply on top of \
+               everything else. Higher = more grip wherever it applies. Stock \
+               17408 is just above 16384 (1.0), so it is a slight boost. Affects \
+               all cars. Stock 17408.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5704),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 17408,
+        range: None,
+    },
 ];
 
 #[cfg(test)]
