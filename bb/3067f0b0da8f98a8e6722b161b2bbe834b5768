@@ -1,0 +1,25 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_f4f56f1b3e0304::t_67dccf15306e4c 2165-2169,2230-2234,2247-2251,2264-2267,2280-2283,2296-2302,2315-2320,2333-2337,2351-2354,2368-2373,2386-2390
+crates/gp2ws-core/src/power_curve.rs
+  s_f4f56f1b3e0304::t_a94b809cda72d6 89,96
+crates/gp2ws-gui/src/physics_tab.rs
+  s_f4f56f1b3e0304::t_0b965f31f2d710 218,225,248
+docs/PARAMETER-GUIDE.md
+  s_f4f56f1b3e0304::t_3f20b00de1916e 166,168-169,354-355
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "bb3067f0b0da8f98a8e6722b161b2bbe834b5768",
+  "prompts": {},
+  "sessions": {
+    "s_f4f56f1b3e0304": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "291f7ed5-0cfb-427b-b1b8-76b00c24dca1",
+        "model": "unknown"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
