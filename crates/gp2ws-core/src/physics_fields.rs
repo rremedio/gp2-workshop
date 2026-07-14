@@ -790,6 +790,531 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 0,
         range: None,
     },
+    // ---- Walls & Damage ----
+    FieldDesc {
+        id: "wall_restitution",
+        label: "Wall Restitution",
+        help: "How bouncy the barriers are - how much speed you keep bouncing \
+               back off a wall. Higher = you ping off harder; 0 = the car just \
+               stops dead against it. Affects all cars. Stock 4096 (0.25).",
+        subtab: SubTab::Walls,
+        tier: Tier::Basic,
+        target: Target::Data(0xC6A2C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4096,
+        range: None,
+    },
+    FieldDesc {
+        id: "wall_friction",
+        label: "Wall Friction",
+        help: "How much speed you keep while scraping ALONG a wall. Higher = you \
+               slide along the barrier losing little speed; lower = scraping \
+               scrubs you off hard. Affects all cars. Stock 14848 (0.906).",
+        subtab: SubTab::Walls,
+        tier: Tier::Basic,
+        target: Target::Data(0xC6A30),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 14848,
+        range: None,
+    },
+    FieldDesc {
+        id: "wall_yaw_gain",
+        label: "Wall Yaw-Kick Gain",
+        help: "How much clipping a barrier spins the car. Higher = a glancing hit \
+               snaps you sideways; lower = the car shrugs walls off. Pairs with \
+               Wall Yaw-Kick Clamp, which caps the result. Affects all cars. \
+               Stock 131072.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC6A34),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 131072,
+        range: None,
+    },
+    FieldDesc {
+        id: "wall_yaw_clamp",
+        label: "Wall Yaw-Kick Clamp",
+        help: "The ceiling on the spin a wall contact can impart, no matter how \
+               bad the hit. Lower = even big clips can only spin you so far; \
+               raise it to allow wilder spins. Affects all cars. Stock 6144.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC6A3C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 6144,
+        range: None,
+    },
+    FieldDesc {
+        id: "engine_kill_threshold",
+        label: "Engine-Kill Impact",
+        help: "How hard an impact has to be before it stops the engine. Raise it \
+               for forgiving walls (you survive bigger hits still running); lower \
+               it and light taps will kill the engine. Affects all cars. Stock \
+               7424.",
+        subtab: SubTab::Walls,
+        tier: Tier::Basic,
+        target: Target::Data(0xCBD24),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 7424,
+        range: None,
+    },
+    FieldDesc {
+        id: "damage_load_floor_rl",
+        label: "Damage Load Floor (Rear Left)",
+        help: "The minimum load on the rear left corner before the game even \
+               rolls for damage - below this, that corner cannot be damaged at \
+               all. Higher = that corner shrugs off bigger hits; lower = it \
+               damages more easily. Stock is higher at the rear than the front, \
+               so the front is more fragile. Affects all cars. Stock 1048576.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        // PLAN DEVIATION (agreed): the plan modelled this as ONE scalar field
+        // `damage_load_floor` @ 0xC7A60 stock 917504. The code reads it per
+        // wheel - `cmp edi, osCarDamageTrack[ecx*4]` @ 0x32B09, the same shape
+        // as dword_0_C7A70[ecx*4] beside it - and a pristine GP2.EXE holds a
+        // rear/front split {0x100000,0x100000,0xE0000,0xE0000}, matching every
+        // neighbouring table. The scalar reading came from EXEs where this
+        // array was flattened to 0xE0000 x4, which makes indexed and scalar
+        // indistinguishable by value.
+        target: Target::Data(0xC7A60 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1048576,
+        range: None,
+    },
+    FieldDesc {
+        id: "damage_load_floor_rr",
+        label: "Damage Load Floor (Rear Right)",
+        help: "The minimum load on the rear right corner before the game even \
+               rolls for damage - below this, that corner cannot be damaged at \
+               all. Higher = that corner shrugs off bigger hits; lower = it \
+               damages more easily. Stock is higher at the rear than the front, \
+               so the front is more fragile. Affects all cars. Stock 1048576.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A60 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1048576,
+        range: None,
+    },
+    FieldDesc {
+        id: "damage_load_floor_fl",
+        label: "Damage Load Floor (Front Left)",
+        help: "The minimum load on the front left corner before the game even \
+               rolls for damage - below this, that corner cannot be damaged at \
+               all. Higher = that corner shrugs off bigger hits; lower = it \
+               damages more easily. Stock is higher at the rear than the front, \
+               so the front is more fragile. Affects all cars. Stock 917504.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A60 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 917504,
+        range: None,
+    },
+    FieldDesc {
+        id: "damage_load_floor_fr",
+        label: "Damage Load Floor (Front Right)",
+        help: "The minimum load on the front right corner before the game even \
+               rolls for damage - below this, that corner cannot be damaged at \
+               all. Higher = that corner shrugs off bigger hits; lower = it \
+               damages more easily. Stock is higher at the rear than the front, \
+               so the front is more fragile. Affects all cars. Stock 917504.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A60 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 917504,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_break_rl",
+        label: "Spring Break Load (Rear Left)",
+        help: "The load at which the rear left spring breaks. Lower = springs \
+               snap more readily over kerbs and in heavy landings; raise it for a \
+               tougher car. See Broken-Spring Ride Drop for what happens once one \
+               goes. Affects all cars. Stock 118095872.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A70 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 118095872,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_break_rr",
+        label: "Spring Break Load (Rear Right)",
+        help: "The load at which the rear right spring breaks. Lower = springs \
+               snap more readily over kerbs and in heavy landings; raise it for a \
+               tougher car. See Broken-Spring Ride Drop for what happens once one \
+               goes. Affects all cars. Stock 118095872.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A70 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 118095872,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_break_fl",
+        label: "Spring Break Load (Front Left)",
+        help: "The load at which the front left spring breaks. Lower = springs \
+               snap more readily over kerbs and in heavy landings; raise it for a \
+               tougher car. See Broken-Spring Ride Drop for what happens once one \
+               goes. Affects all cars. Stock 118030336.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A70 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 118030336,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_break_fr",
+        label: "Spring Break Load (Front Right)",
+        help: "The load at which the front right spring breaks. Lower = springs \
+               snap more readily over kerbs and in heavy landings; raise it for a \
+               tougher car. See Broken-Spring Ride Drop for what happens once one \
+               goes. Affects all cars. Stock 118030336.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A70 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 118030336,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_a_rl",
+        label: "Damage Threshold A (Rear Left)",
+        help: "One of four load thresholds for the rear left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1835008.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        // Stride 8: these tables are (threshold, flag) dword PAIRS. Fields
+        // target the thresholds only (+0/+8/+16/+24); the interleaved flag
+        // dwords at +4 are damage bits and must not be edited.
+        target: Target::Data(0xC7AA0 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1835008,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_a_rr",
+        label: "Damage Threshold A (Rear Right)",
+        help: "One of four load thresholds for the rear right corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1835008.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AA0 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1835008,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_a_fl",
+        label: "Damage Threshold A (Front Left)",
+        help: "One of four load thresholds for the front left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1703936.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AA0 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1703936,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_a_fr",
+        label: "Damage Threshold A (Front Right)",
+        help: "One of four load thresholds for the front right corner: pass it \
+               and the game rolls for a specific piece of damage. Lower = that \
+               damage happens on smaller hits (a more fragile car); higher = the \
+               corner survives more. A/B/C/D are separate damage effects, not \
+               severity steps. Affects all cars. Stock 1703936.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AA0 + 24),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1703936,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_b_rl",
+        label: "Damage Threshold B (Rear Left)",
+        help: "One of four load thresholds for the rear left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 2097152.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AC0 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2097152,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_b_rr",
+        label: "Damage Threshold B (Rear Right)",
+        help: "One of four load thresholds for the rear right corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 2097152.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AC0 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2097152,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_b_fl",
+        label: "Damage Threshold B (Front Left)",
+        help: "One of four load thresholds for the front left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1835008.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AC0 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1835008,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_b_fr",
+        label: "Damage Threshold B (Front Right)",
+        help: "One of four load thresholds for the front right corner: pass it \
+               and the game rolls for a specific piece of damage. Lower = that \
+               damage happens on smaller hits (a more fragile car); higher = the \
+               corner survives more. A/B/C/D are separate damage effects, not \
+               severity steps. Affects all cars. Stock 1835008.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AC0 + 24),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1835008,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_c_rl",
+        label: "Damage Threshold C (Rear Left)",
+        help: "One of four load thresholds for the rear left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 2359296.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A80 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2359296,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_c_rr",
+        label: "Damage Threshold C (Rear Right)",
+        help: "One of four load thresholds for the rear right corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 2359296.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A80 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2359296,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_c_fl",
+        label: "Damage Threshold C (Front Left)",
+        help: "One of four load thresholds for the front left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1048576.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A80 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1048576,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_c_fr",
+        label: "Damage Threshold C (Front Right)",
+        help: "One of four load thresholds for the front right corner: pass it \
+               and the game rolls for a specific piece of damage. Lower = that \
+               damage happens on smaller hits (a more fragile car); higher = the \
+               corner survives more. A/B/C/D are separate damage effects, not \
+               severity steps. Affects all cars. Stock 1048576.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7A80 + 24),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1048576,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_d_rl",
+        label: "Damage Threshold D (Rear Left)",
+        help: "One of four load thresholds for the rear left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 3145728.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AE0 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3145728,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_d_rr",
+        label: "Damage Threshold D (Rear Right)",
+        help: "One of four load thresholds for the rear right corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 3145728.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AE0 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3145728,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_d_fl",
+        label: "Damage Threshold D (Front Left)",
+        help: "One of four load thresholds for the front left corner: pass it and \
+               the game rolls for a specific piece of damage. Lower = that damage \
+               happens on smaller hits (a more fragile car); higher = the corner \
+               survives more. A/B/C/D are separate damage effects, not severity \
+               steps. Affects all cars. Stock 1310720.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AE0 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1310720,
+        range: None,
+    },
+    FieldDesc {
+        id: "dmg_thr_d_fr",
+        label: "Damage Threshold D (Front Right)",
+        help: "One of four load thresholds for the front right corner: pass it \
+               and the game rolls for a specific piece of damage. Lower = that \
+               damage happens on smaller hits (a more fragile car); higher = the \
+               corner survives more. A/B/C/D are separate damage effects, not \
+               severity steps. Affects all cars. Stock 1310720.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7AE0 + 24),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1310720,
+        range: None,
+    },
+    FieldDesc {
+        id: "damage_probability",
+        label: "Damage Probability",
+        help: "The chance a damage roll actually sticks once a threshold is \
+               passed. Stock 256 means ALWAYS - damage is fully deterministic in \
+               stock GP2. Lower it and damage becomes a gamble (128 = about half \
+               the time). Affects all cars. Stock 256.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xC7B00),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "spring_break_drop",
+        label: "Broken-Spring Ride Drop",
+        help: "How far the corner sinks once its spring has broken. Higher = a \
+               broken spring drops the car further, so it grounds out and handles \
+               worse; lower = a broken spring matters less. Affects all cars. \
+               Stock 32768.",
+        subtab: SubTab::Walls,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55E8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 32768,
+        range: None,
+    },
     // ---- Aero ----
     FieldDesc {
         id: "df_scale",

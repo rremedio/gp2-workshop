@@ -161,7 +161,7 @@ From `physics-walls.md` §9 and `physics-aero-damage.md` §B7.
 | **Wall friction** | Data 0xC6A30 | 0x3A00 (0.906) | Along-wall speed retention (the scrape). |
 | Wall yaw-kick gain / clamp | Data 0xC6A34 / 0xC6A3C | 0x20000 / 0x1800 | How much a clip spins you. |
 | **Engine-kill impact threshold** | Data 0xCBD24 | 0x1D00 | Hit harder than this ⇒ engine stops. Raise = forgiving walls. |
-| Suspension damage floor | Data 0xC7A60 | 0xE0000 | Min corner load before any damage roll. |
+| Suspension damage floor **[4]** | Data 0xC7A60 | {0x100000, 0x100000, 0xE0000, 0xE0000} | Min corner load before any damage roll. **Per wheel (RL,RR,FL,FR)**, read as `osCarDamageTrack[ecx*4]` @ 0x32B09 — not the scalar 0xE0000 this table used to claim. The scalar reading came from EXEs where the array is flattened to 0xE0000 ×4 (which makes indexed vs scalar indistinguishable by value); a pristine GP2.EXE has the rear/front split, matching every neighbouring table. |
 | Spring-break thresholds [4] | Data 0xC7A70 | ~0x70A0000 | |
 | Wheel/wing damage threshold tables | Data 0xC7AA0/0xC7AC0/0xC7A80/0xC7AE0 | pairs | Per-wheel load→damage-bit thresholds — "car fragility". |
 | Damage probability | Data 0xC7B00 | 0x100 (always) | Lower ⇒ damage becomes probabilistic. |

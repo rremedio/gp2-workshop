@@ -60,6 +60,37 @@ Every new field batch appends its rows here as `untested`.
 | `camber_rr` | Camber (Rear Right) | Chassis | Adv | untested |  |
 | `camber_fl` | Camber (Front Left) | Chassis | Adv | untested |  |
 | `camber_fr` | Camber (Front Right) | Chassis | Adv | untested |  |
+| `wall_restitution` | Wall Restitution | Walls | Basic | untested |  |
+| `wall_friction` | Wall Friction | Walls | Basic | untested |  |
+| `wall_yaw_gain` | Wall Yaw-Kick Gain | Walls | Adv | untested |  |
+| `wall_yaw_clamp` | Wall Yaw-Kick Clamp | Walls | Adv | untested |  |
+| `engine_kill_threshold` | Engine-Kill Impact | Walls | Basic | untested |  |
+| `damage_load_floor_rl` | Damage Load Floor (Rear Left) | Walls | Adv | untested |  |
+| `damage_load_floor_rr` | Damage Load Floor (Rear Right) | Walls | Adv | untested |  |
+| `damage_load_floor_fl` | Damage Load Floor (Front Left) | Walls | Adv | untested |  |
+| `damage_load_floor_fr` | Damage Load Floor (Front Right) | Walls | Adv | untested |  |
+| `spring_break_rl` | Spring Break Load (Rear Left) | Walls | Adv | untested |  |
+| `spring_break_rr` | Spring Break Load (Rear Right) | Walls | Adv | untested |  |
+| `spring_break_fl` | Spring Break Load (Front Left) | Walls | Adv | untested |  |
+| `spring_break_fr` | Spring Break Load (Front Right) | Walls | Adv | untested |  |
+| `dmg_thr_a_rl` | Damage Threshold A (Rear Left) | Walls | Adv | untested |  |
+| `dmg_thr_a_rr` | Damage Threshold A (Rear Right) | Walls | Adv | untested |  |
+| `dmg_thr_a_fl` | Damage Threshold A (Front Left) | Walls | Adv | untested |  |
+| `dmg_thr_a_fr` | Damage Threshold A (Front Right) | Walls | Adv | untested |  |
+| `dmg_thr_b_rl` | Damage Threshold B (Rear Left) | Walls | Adv | untested |  |
+| `dmg_thr_b_rr` | Damage Threshold B (Rear Right) | Walls | Adv | untested |  |
+| `dmg_thr_b_fl` | Damage Threshold B (Front Left) | Walls | Adv | untested |  |
+| `dmg_thr_b_fr` | Damage Threshold B (Front Right) | Walls | Adv | untested |  |
+| `dmg_thr_c_rl` | Damage Threshold C (Rear Left) | Walls | Adv | untested |  |
+| `dmg_thr_c_rr` | Damage Threshold C (Rear Right) | Walls | Adv | untested |  |
+| `dmg_thr_c_fl` | Damage Threshold C (Front Left) | Walls | Adv | untested |  |
+| `dmg_thr_c_fr` | Damage Threshold C (Front Right) | Walls | Adv | untested |  |
+| `dmg_thr_d_rl` | Damage Threshold D (Rear Left) | Walls | Adv | untested |  |
+| `dmg_thr_d_rr` | Damage Threshold D (Rear Right) | Walls | Adv | untested |  |
+| `dmg_thr_d_fl` | Damage Threshold D (Front Left) | Walls | Adv | untested |  |
+| `dmg_thr_d_fr` | Damage Threshold D (Front Right) | Walls | Adv | untested |  |
+| `damage_probability` | Damage Probability | Walls | Adv | untested |  |
+| `spring_break_drop` | Broken-Spring Ride Drop | Walls | Adv | untested |  |
 | `df_scale` | Downforce Scale | Aero | Basic | untested |  |
 | `rear_df_slope` | Rear Downforce Slope | Aero | Basic | untested |  |
 | `rear_df_floor` | Rear Downforce Floor | Aero | Basic | untested |  |
@@ -110,7 +141,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 96 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 127 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
