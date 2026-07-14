@@ -201,6 +201,14 @@ Every new field batch appends its rows here as `untested`.
 | `heave_gain` | Soft-Limit Gain (Heave) | Suspension | Adv | untested |  |
 | `pitch_gain` | Soft-Limit Gain (Pitch) | Suspension | Adv | untested |  |
 | `roll_gain` | Soft-Limit Gain (Roll) | Suspension | Adv | untested |  |
+| `rake_reference` | Reference Rake | Aero | Basic | untested |  |
+| `rake_sens_total` | Rake Sensitivity (Total) | Aero | Adv | untested |  |
+| `rake_sens_split` | Rake Sensitivity (Split) | Aero | Adv | untested |  |
+| `front_ride_sens` | Front Ride Sensitivity | Aero | Adv | untested |  |
+| `front_ride_ref` | Front Ride Reference | Aero | Adv | untested |  |
+| `ge_clamp_rear` | GE Ride Clamp Rear | Aero | Adv | untested |  |
+| `ge_clamp_front` | GE Ride Clamp Front | Aero | Adv | untested |  |
+| `ge_master_scale` | Ground-Effect Master | Aero | Basic | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -210,7 +218,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 196 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 204 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 

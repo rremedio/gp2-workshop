@@ -3168,6 +3168,133 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 16384,
         range: None,
     },
+    // ---- Aero: ground effect / ride height ----
+    FieldDesc {
+        id: "rake_reference",
+        label: "Reference Rake",
+        help: "The rake (nose-down angle) the aero is tuned around. The further \
+               your setup's actual rake is from this, the more downforce changes. \
+               Raise it and the car wants to run more nose-down to hit its aero \
+               sweet spot. Affects all cars. Stock 13760.",
+        subtab: SubTab::Aero,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5750),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 13760,
+        range: None,
+    },
+    FieldDesc {
+        id: "rake_sens_total",
+        label: "Rake Sensitivity (Total)",
+        help: "How much total downforce changes as rake moves away from Reference \
+               Rake. Higher = ride height and rake matter more for overall grip; \
+               0 = total downforce ignores rake entirely. Affects all cars. Stock \
+               3121.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EC0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3121,
+        range: None,
+    },
+    FieldDesc {
+        id: "rake_sens_split",
+        label: "Rake Sensitivity (Split)",
+        help: "How much rake shifts downforce BETWEEN the axles, as opposed to \
+               changing the total (that's Rake Sensitivity (Total)). Higher = \
+               rake changes the aero balance more, so ride height becomes a \
+               handling-balance tool. Affects all cars. Stock 3121.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EB8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 3121,
+        range: None,
+    },
+    FieldDesc {
+        id: "front_ride_sens",
+        label: "Front Ride Sensitivity",
+        help: "How much front downforce responds to front ride height \
+               specifically, on top of the rake effects. Higher = the front end \
+               is fussier about how low it runs. Affects all cars. Stock 1561.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EBC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1561,
+        range: None,
+    },
+    FieldDesc {
+        id: "front_ride_ref",
+        label: "Front Ride Reference",
+        help: "The front ride height that Front Ride Sensitivity measures against \
+               - the front's aero sweet spot. Affects all cars. Stock 12040.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5748),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12040,
+        range: None,
+    },
+    FieldDesc {
+        id: "ge_clamp_rear",
+        label: "GE Ride Clamp Rear",
+        help: "A ceiling on how much the rear ride height is allowed to alter \
+               downforce, so extreme heights can't produce absurd aero. Lower = \
+               the rear ride-height effect saturates sooner. Affects all cars. \
+               Stock 86000.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55D4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 86000,
+        range: None,
+    },
+    FieldDesc {
+        id: "ge_clamp_front",
+        label: "GE Ride Clamp Front",
+        help: "The front twin of GE Ride Clamp Rear. Stock clamps the front \
+               considerably tighter than the rear (51600 vs 86000). Affects all \
+               cars. Stock 51600.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD55D0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 51600,
+        range: None,
+    },
+    FieldDesc {
+        id: "ge_master_scale",
+        label: "Ground-Effect Master",
+        help: "A single multiplier over the WHOLE ride-height/rake downforce \
+               correction. Stock 16384 is exactly x1.0, so it is dormant - it \
+               sits there doing nothing until you change it. Raise it to amplify \
+               every ground-effect behaviour at once, drop it toward 0 to switch \
+               ride-height aero off entirely. A hidden global switch rather than \
+               a fine-tuning knob. Affects all cars. Stock 16384.",
+        subtab: SubTab::Aero,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5EE8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
 ];
 
 #[cfg(test)]
