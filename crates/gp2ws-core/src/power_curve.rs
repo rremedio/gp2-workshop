@@ -86,14 +86,14 @@ mod tests {
             );
         }
         // Prove POWER_CURVE_LEN is the real table length, not over-long:
-        // the LAST entry must still be plausible torque data (peak falls off
+        // the LAST entry must still be plausible power data (peak falls off
         // to a positive tail), while the word immediately AFTER the table is
         // adjacent data that decodes to an implausible value. This guards
         // against silently writing past the table into neighbouring fields.
         let last = curve[POWER_CURVE_LEN - 1];
         assert!(
             (1..=1000).contains(&last),
-            "last curve entry {} is not plausible torque data — table length may be wrong",
+            "last curve entry {} is not plausible power data — table length may be wrong",
             last
         );
         let past_end = img.read(

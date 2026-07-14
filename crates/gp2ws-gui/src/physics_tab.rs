@@ -215,14 +215,14 @@ fn field_row(app: &mut App, ui: &mut egui::Ui, f: &FieldDesc) {
 }
 
 const POWER_CURVE_HELP: &str =
-    "The engine's torque curve - 36 numbers describing how much pull the engine \
+    "The engine's power curve - 36 numbers describing how much pull the engine \
      makes across the rev range. Higher numbers = more power at that point in the \
      range. There's no single \"right\" shape; raise or lower points and shape the \
      curve by feel, then test in-game. The EXE bias is applied for you.";
 
 fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
     ui.horizontal(|ui| {
-        ui.label("Torque curve (36 entries). Decoded values; the EXE bias is applied for you.");
+        ui.label("Power curve (36 entries). Decoded values; the EXE bias is applied for you.");
         if ui
             .small_button("?")
             .on_hover_text("Show help for the power curve")
@@ -245,7 +245,7 @@ fn power_curve_ui(app: &mut App, ui: &mut egui::Ui) {
         .allow_zoom(true)
         .allow_drag(true)
         .show(ui, |plot_ui| {
-            plot_ui.line(Line::new(points).name("torque"));
+            plot_ui.line(Line::new(points).name("power"));
         });
 
     ui.separator();

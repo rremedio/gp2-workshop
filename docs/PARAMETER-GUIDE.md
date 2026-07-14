@@ -163,11 +163,10 @@ AI wake reads the same constants, so these settings affect everyone.
 
 ### AI Racecraft (how the AI brakes for traffic)
 
-These used to sit on the Slipstream tab under names like "AI Tow Strength" and
-"AI Follow Base 1–7", which badly mis-sold them. They are **not** a slipstream
-and they are **AI-only**. They are the AI's traffic-braking controller: every
+These are **AI-only**, and they are the AI's traffic-braking controller: every
 one of them can only ever *slow an AI car down*, never speed it up. If you came
-here looking for AI drafting, the AI already uses **Tow Strength** above.
+here looking for AI drafting, you want **Tow Strength** above — the AI already
+drafts using the same setting you do.
 
 *Recommended: leave alone unless you are testing.* None of these are verified
 in-game yet.
@@ -352,8 +351,8 @@ Here's what each of the 24 values means:
   Downforce Floor** and raise **Rear Downforce Slope**.
 - **Change AI slipstreaming** → Physics ▸ Slipstream ▸ **Tow Strength**. The AI
   already drafts using the same setting you do; there is no separate AI draft to
-  switch on. (The old "AI Tow Strength" is now **AI Speed-Scaled Braking** on the
-  AI Racecraft tab — it only ever makes the AI brake *harder*.)
+  switch on. (**AI Speed-Scaled Braking**, on the AI Racecraft tab, is *not* a
+  draft — it only ever makes the AI brake *harder*.)
 - **Make the AI brake harder for traffic** → Physics ▸ AI Racecraft ▸ **AI Max
   Braking / Tick** (more negative), or raise **AI Speed-Scaled Braking** from 0.
 - **Make fuel strategy more important** → Physics ▸ Mass/Grip ▸ **Fuel Factor**
