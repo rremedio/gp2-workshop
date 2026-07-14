@@ -296,7 +296,7 @@ identifications (IDA = file − 0x63254). Every entry resolved.
 | 1279570 | Breaking Force | 0xD53FE | Byte 2 of D53FC — brake force scale — in editor as full dword ("Brake Force") |
 | 1282276 | Polar Moment of Inertia | 0xD5E90 | `d_pmi` = yaw gyration radius (247) → yaw inertia (§1 candidate) — the annotator's symbol agrees with the old name |
 | 1281904 | Asphalt Acceleration 1 | 0xD5D1C | `t_accmax[0]` — track-surface traction coefficient (0x4000); scales driven wheelspin via `ws[0xD4]` |
-| 1281924 | Asphalt Acceleration 2 | 0xD5D30 | `t_accmin[0]` — WET track traction. **Placebo**: the wet/dry blend `D5D6C` is constant 0 with no writer, so `*min` tables never blend in |
+| 1281924 | Asphalt Acceleration 2 | 0xD5D30 | `t_accmin[0]` — nominally WET track traction (never blends in: `D5D6C` = 0), BUT live as the kerb back-apron's traction via the class-5 out-of-bounds read (`accmax[5]` = `accmin[0]`). The old field tuned apron traction, not wet grip |
 | 1281864 | Human Grip (Misc tab) | 0xD5CF4 | `t_gripmax[0]` — track-surface grip (§7 candidate `surf_grip_track`) |
 | 1282099+4i | Tire Wear (A–D) | ~0xD5DDE | old editor was one byte past the field start; ours (0xD5DDE+4i, file 1282098+4i) is listing-verified — in editor ("Tyre Wear Sensitivity A–D") |
 | 1282114+4i | Tire Grip (A–D) | 0xD5DEE | in editor ("Tyre Base Grip A–D") |

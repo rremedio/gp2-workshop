@@ -7,3 +7,6 @@ Cargo.lock.orig
 *.exe
 *.bak
 GP2WS_TEST_EXE
+
+# build artifacts (release zips)
+GP2-Workshop-*.zip
