@@ -512,6 +512,284 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 2228224,
         range: None,
     },
+    // ---- Chassis & Geometry ----
+    // All of these are session-init inputs: the derived-parameter init reads
+    // them at track entry, so edits apply from the next session, not live.
+    FieldDesc {
+        id: "cog_rear_arm",
+        label: "CoG -> Rear Axle",
+        help: "Distance from the centre of gravity back to the rear axle. This \
+               one knob moves THREE things at once: with CoG -> Front Axle it \
+               sets the wheelbase, and the ratio between the two sets the \
+               front/rear weight distribution (lever rule). Bigger = the CoG sits \
+               further forward of the rear axle, shifting weight onto the front. \
+               Change it with care. Read once when you enter the track, so \
+               changes only take effect on the next session. Stock 65955.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E50),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 65955,
+        range: None,
+    },
+    FieldDesc {
+        id: "cog_front_arm",
+        label: "CoG -> Front Axle",
+        help: "Distance from the centre of gravity forward to the front axle. \
+               Pairs with CoG -> Rear Axle to set wheelbase and weight \
+               distribution (see that field's warning), and it also feeds the \
+               steering-assist bicycle model, so it changes steering feel as well \
+               as balance. Read once when you enter the track, so changes only \
+               take effect on the next session. Stock 94928.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E54),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 94928,
+        range: None,
+    },
+    FieldDesc {
+        id: "track_rear",
+        label: "Rear Track Width",
+        help: "How far apart the two rear wheels are. Wider = more resistance to \
+               roll at the rear and a bit more rear grip in fast direction \
+               changes; narrower = the rear lets go sooner. Read once when you \
+               enter the track, so changes only take effect on the next session. \
+               Stock 86596.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E58),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 86596,
+        range: None,
+    },
+    FieldDesc {
+        id: "track_front",
+        label: "Front Track Width",
+        help: "How far apart the two front wheels are. Wider = more front-end \
+               bite and resistance to roll at the front; narrower = less. Raising \
+               this relative to the rear track shifts the balance toward \
+               oversteer. Read once when you enter the track, so changes only \
+               take effect on the next session. Stock 90113.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E5C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 90113,
+        range: None,
+    },
+    FieldDesc {
+        id: "cog_height",
+        label: "CoG Height",
+        help: "How high the centre of gravity sits. This is the classic \"lower \
+               the CoG\" knob: it is the baseline torque arm for pitch under \
+               braking and roll in corners. Lower = less weight transfer, so less \
+               dive, squat and body roll. Affects all cars. Read once when you \
+               enter the track, so changes only take effect on the next session. \
+               Stock 13438.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E64),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 13438,
+        range: None,
+    },
+    FieldDesc {
+        id: "gyr_yaw",
+        label: "Yaw Gyration Radius",
+        help: "Feeds the car's yaw inertia - how hard it is to rotate the car \
+               about a vertical axis. Lower = a pointier, more darty car that \
+               changes direction eagerly; higher = lazier turn-in but more \
+               stability. Affects all cars. Old editor: \"Polar Moment of \
+               Inertia\". Read once when you enter the track, so changes only \
+               take effect on the next session. Stock 247.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5E90),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 247,
+        range: None,
+    },
+    FieldDesc {
+        id: "gyr_pitch",
+        label: "Pitch Gyration Radius",
+        help: "Feeds the car's pitch inertia - resistance to nose-up / nose-down \
+               rotation under braking and acceleration. Lower = the car pitches \
+               more readily; higher = it resists dive and squat. Read once when \
+               you enter the track, so changes only take effect on the next \
+               session. Stock 220.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5E94),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 220,
+        range: None,
+    },
+    FieldDesc {
+        id: "gyr_roll",
+        label: "Roll Gyration Radius",
+        help: "Feeds the car's roll inertia - resistance to rolling about the \
+               long axis in corners. Lower = the car rolls onto its outside tyres \
+               more readily; higher = it resists. Read once when you enter the \
+               track, so changes only take effect on the next session. Stock 104.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5E98),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 104,
+        range: None,
+    },
+    FieldDesc {
+        id: "unsprung_rear",
+        label: "Rear Unsprung Mass",
+        help: "The mass of one rear wheel/upright assembly - the part NOT carried \
+               by the springs. Higher = the rear wheels are slower to follow \
+               bumps and kerbs, so the car skips more over rough surfaces. Per \
+               wheel. Read once when you enter the track, so changes only take \
+               effect on the next session. Stock 55.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5E88),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 55,
+        range: None,
+    },
+    FieldDesc {
+        id: "unsprung_front",
+        label: "Front Unsprung Mass",
+        help: "The mass of one front wheel/upright assembly (see Rear Unsprung \
+               Mass). Higher = the front skips more over bumps and kerbs. Per \
+               wheel. Read once when you enter the track, so changes only take \
+               effect on the next session. Stock 44.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5E84),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 44,
+        range: None,
+    },
+    FieldDesc {
+        id: "inertia_fuel",
+        label: "Inertia Reference Fuel",
+        help: "A nominal fuel load used ONLY when computing the car's inertia - \
+               it is not the fuel you actually carry and does not change fuel \
+               strategy or weight. Higher = the car behaves as though it has more \
+               fuel sloshing in the inertia maths. Read once when you enter the \
+               track, so changes only take effect on the next session. Stock \
+               60000.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5C3A),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 60000,
+        range: None,
+    },
+    FieldDesc {
+        id: "camber_rl",
+        label: "Camber (Rear Left)",
+        help: "Static camber for the rear left wheel - how far the top of the \
+               tyre leans in or out. DORMANT in stock GP2: every wheel is 0, \
+               which leaves a whole piece of grip machinery switched off. Setting \
+               it non-zero wakes that machinery up, so it is a hidden feature \
+               rather than a normal tuning knob - expect surprises and test \
+               in-game. Signed: the sign is the lean direction. Read once when \
+               you enter the track, so changes only take effect on the next \
+               session. Stock 0.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        // Verified structurally, not by value: stock is 0, which would match at
+        // any zeroed address. The listing shows `dword_0_D5EC4 dd 0` read as
+        // `mov eax, dword_0_D5EC4[ecx*4]` (0x1A9F7/0x1AA28/0x1AA3F, in the tyre
+        // coefficient code) - a stride-4 dword array, confirming base + width.
+        target: Target::Data(0xD5EC4 + 0),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: 0,
+        range: None,
+    },
+    FieldDesc {
+        id: "camber_rr",
+        label: "Camber (Rear Right)",
+        help: "Static camber for the rear right wheel - how far the top of the \
+               tyre leans in or out. DORMANT in stock GP2: every wheel is 0, \
+               which leaves a whole piece of grip machinery switched off. Setting \
+               it non-zero wakes that machinery up, so it is a hidden feature \
+               rather than a normal tuning knob - expect surprises and test \
+               in-game. Signed: the sign is the lean direction. Read once when \
+               you enter the track, so changes only take effect on the next \
+               session. Stock 0.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EC4 + 4),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: 0,
+        range: None,
+    },
+    FieldDesc {
+        id: "camber_fl",
+        label: "Camber (Front Left)",
+        help: "Static camber for the front left wheel - how far the top of the \
+               tyre leans in or out. DORMANT in stock GP2: every wheel is 0, \
+               which leaves a whole piece of grip machinery switched off. Setting \
+               it non-zero wakes that machinery up, so it is a hidden feature \
+               rather than a normal tuning knob - expect surprises and test \
+               in-game. Signed: the sign is the lean direction. Read once when \
+               you enter the track, so changes only take effect on the next \
+               session. Stock 0.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EC4 + 8),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: 0,
+        range: None,
+    },
+    FieldDesc {
+        id: "camber_fr",
+        label: "Camber (Front Right)",
+        help: "Static camber for the front right wheel - how far the top of the \
+               tyre leans in or out. DORMANT in stock GP2: every wheel is 0, \
+               which leaves a whole piece of grip machinery switched off. Setting \
+               it non-zero wakes that machinery up, so it is a hidden feature \
+               rather than a normal tuning knob - expect surprises and test \
+               in-game. Signed: the sign is the lean direction. Read once when \
+               you enter the track, so changes only take effect on the next \
+               session. Stock 0.",
+        subtab: SubTab::Chassis,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EC4 + 12),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: 0,
+        range: None,
+    },
     // ---- Aero ----
     FieldDesc {
         id: "df_scale",

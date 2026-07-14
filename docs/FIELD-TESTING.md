@@ -45,6 +45,21 @@ Every new field batch appends its rows here as `untested`.
 | `slip_decay_rr` | Slip Decay Gain (Rear Right) | Drivetrain | Adv | untested |  |
 | `slip_decay_fl` | Slip Decay Gain (Front Left) | Drivetrain | Adv | untested |  |
 | `slip_decay_fr` | Slip Decay Gain (Front Right) | Drivetrain | Adv | untested |  |
+| `cog_rear_arm` | CoG -> Rear Axle | Chassis | Basic | untested |  |
+| `cog_front_arm` | CoG -> Front Axle | Chassis | Basic | untested |  |
+| `track_rear` | Rear Track Width | Chassis | Basic | untested |  |
+| `track_front` | Front Track Width | Chassis | Basic | untested |  |
+| `cog_height` | CoG Height | Chassis | Basic | untested |  |
+| `gyr_yaw` | Yaw Gyration Radius | Chassis | Basic | untested |  |
+| `gyr_pitch` | Pitch Gyration Radius | Chassis | Adv | untested |  |
+| `gyr_roll` | Roll Gyration Radius | Chassis | Adv | untested |  |
+| `unsprung_rear` | Rear Unsprung Mass | Chassis | Adv | untested |  |
+| `unsprung_front` | Front Unsprung Mass | Chassis | Adv | untested |  |
+| `inertia_fuel` | Inertia Reference Fuel | Chassis | Adv | untested |  |
+| `camber_rl` | Camber (Rear Left) | Chassis | Adv | untested |  |
+| `camber_rr` | Camber (Rear Right) | Chassis | Adv | untested |  |
+| `camber_fl` | Camber (Front Left) | Chassis | Adv | untested |  |
+| `camber_fr` | Camber (Front Right) | Chassis | Adv | untested |  |
 | `df_scale` | Downforce Scale | Aero | Basic | untested |  |
 | `rear_df_slope` | Rear Downforce Slope | Aero | Basic | untested |  |
 | `rear_df_floor` | Rear Downforce Floor | Aero | Basic | untested |  |
@@ -95,7 +110,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 81 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 96 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
