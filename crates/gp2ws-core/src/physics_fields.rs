@@ -1401,18 +1401,27 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     // ---- Surfaces ----
     // The listing notes at t_gripmax (0xD5CF4): "there are 3 tables of 2 * 5
     // dwords. The 5 is from 5 surface types. The 2 is from min and max value,
-    // using some factor to average between the two." The *min* halves are the
-    // wet-weather twins and are DEAD - the averaging factor is 0, so only the
-    // max half is ever used. They are deliberately not exposed (0xD5D08 /
-    // 0xD5D30 / 0xD5D58 hold live-looking values that do nothing).
+    // using some factor to average between the two."
+    //
+    // The blend is a Q14 lerp at 0x1FB67: coef = (max*(0x4000-w) + min*w) >> 14,
+    // w = dword_0_D5D6C. w is 0 in stock and has NO WRITER anywhere in the
+    // binary, so the *min* halves are dead AS WET VALUES and are not exposed.
+    //
+    // EXCEPT the first entry of each min table. Surface class comes from
+    // `D5692 & 0xF`, and class 5 (kerb back-apron) indexes ONE PAST the 5-entry
+    // max table (`mov eax, t_gripmax[ecx*4]`), landing on min[0]. So 0xD5D08 /
+    // 0xD5D30 / 0xD5D58 ARE live - not as wet values, but as class 5's dry
+    // coefficients (0x3800 / 0x2000 / 0x100). A shipped out-of-bounds quirk;
+    // see ~/vaults/gp2/docs/physics-surface-sampling.md.
     FieldDesc {
         id: "surf_grip_track",
         label: "Grip: Track",
         help: "Cornering grip on track. Higher = you can lean on that surface \
                harder; lower = it lets go sooner. Stock puts track and both kerbs \
                equal, with grass the most slippery and gravel between. Affects \
-               all cars. Old editor: \"Human Grip\" (Misc tab). Its wet-weather \
-               twin in the same table is dead and does nothing. Stock 16384.",
+               all cars. Old editor: \"Human Grip\" (Misc tab). Note: this entry's wet twin is NOT dead - the game reads it as the \
+               kerb back-apron surface via an out-of-bounds read, so it is that \
+               surface's live value. Stock 16384.",
         subtab: SubTab::Surfaces,
         tier: Tier::Advanced,
         target: Target::Data(0xD5CF4 + 0),
@@ -1499,8 +1508,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
                on track), which is why putting power down on a kerb lights the \
                wheels up. Affects all cars. Old editor: \"Asphalt Acceleration \
                1\" (\"Asphalt Acceleration 2\" was its dead wet twin and is not \
-               ported). Its wet-weather twin in the same table is dead and does \
-               nothing. Stock 16384.",
+               ported). Note: this entry's wet twin is NOT dead - the game reads it as the \
+               kerb back-apron surface via an out-of-bounds read, so it is that \
+               surface's live value. Stock 16384.",
         subtab: SubTab::Surfaces,
         tier: Tier::Advanced,
         target: Target::Data(0xD5D1C + 0),
@@ -1588,8 +1598,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         help: "How rough track is to drive over - how much it shakes the car and \
                upsets the suspension. Higher = rougher. Stock makes gravel far \
                rougher than grass, and the track and kerbs smooth. Affects all \
-               cars. Its wet-weather twin in the same table is dead and does \
-               nothing. Stock 256.",
+               cars. Note: this entry's wet twin is NOT dead - the game reads it as the \
+               kerb back-apron surface via an out-of-bounds read, so it is that \
+               surface's live value. Stock 256.",
         subtab: SubTab::Surfaces,
         tier: Tier::Advanced,
         target: Target::Data(0xD5D44 + 0),
