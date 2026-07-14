@@ -1315,6 +1315,321 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 32768,
         range: None,
     },
+    // ---- Surfaces ----
+    // The listing notes at t_gripmax (0xD5CF4): "there are 3 tables of 2 * 5
+    // dwords. The 5 is from 5 surface types. The 2 is from min and max value,
+    // using some factor to average between the two." The *min* halves are the
+    // wet-weather twins and are DEAD - the averaging factor is 0, so only the
+    // max half is ever used. They are deliberately not exposed (0xD5D08 /
+    // 0xD5D30 / 0xD5D58 hold live-looking values that do nothing).
+    FieldDesc {
+        id: "surf_grip_track",
+        label: "Grip: Track",
+        help: "Cornering grip on track. Higher = you can lean on that surface \
+               harder; lower = it lets go sooner. Stock puts track and both kerbs \
+               equal, with grass the most slippery and gravel between. Affects \
+               all cars. Old editor: \"Human Grip\" (Misc tab). Its wet-weather \
+               twin in the same table is dead and does nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5CF4 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_grip_kerb_low",
+        label: "Grip: Low Kerb",
+        help: "Cornering grip on low kerb. Higher = you can lean on that surface \
+               harder; lower = it lets go sooner. Stock puts track and both kerbs \
+               equal, with grass the most slippery and gravel between. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5CF4 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_grip_kerb_high",
+        label: "Grip: High Kerb",
+        help: "Cornering grip on high kerb. Higher = you can lean on that surface \
+               harder; lower = it lets go sooner. Stock puts track and both kerbs \
+               equal, with grass the most slippery and gravel between. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5CF4 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_grip_grass",
+        label: "Grip: Grass",
+        help: "Cornering grip on grass. Higher = you can lean on that surface \
+               harder; lower = it lets go sooner. Stock puts track and both kerbs \
+               equal, with grass the most slippery and gravel between. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 10240.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5CF4 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 10240,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_grip_gravel",
+        label: "Grip: Gravel",
+        help: "Cornering grip on gravel. Higher = you can lean on that surface \
+               harder; lower = it lets go sooner. Stock puts track and both kerbs \
+               equal, with grass the most slippery and gravel between. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 12288.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5CF4 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12288,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_traction_track",
+        label: "Traction: Track",
+        help: "How well power gets down on track - the drive/braking grip, as \
+               opposed to cornering grip. Higher = the wheels hook up; lower = \
+               they just spin. Note the stock kerb values are TINY (1024 vs 16384 \
+               on track), which is why putting power down on a kerb lights the \
+               wheels up. Affects all cars. Old editor: \"Asphalt Acceleration \
+               1\" (\"Asphalt Acceleration 2\" was its dead wet twin and is not \
+               ported). Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D1C + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_traction_kerb_low",
+        label: "Traction: Low Kerb",
+        help: "How well power gets down on low kerb - the drive/braking grip, as \
+               opposed to cornering grip. Higher = the wheels hook up; lower = \
+               they just spin. Note the stock kerb values are TINY (1024 vs 16384 \
+               on track), which is why putting power down on a kerb lights the \
+               wheels up. Affects all cars. Its wet-weather twin in the same \
+               table is dead and does nothing. Stock 1024.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5D1C + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1024,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_traction_kerb_high",
+        label: "Traction: High Kerb",
+        help: "How well power gets down on high kerb - the drive/braking grip, as \
+               opposed to cornering grip. Higher = the wheels hook up; lower = \
+               they just spin. Note the stock kerb values are TINY (1024 vs 16384 \
+               on track), which is why putting power down on a kerb lights the \
+               wheels up. Affects all cars. Its wet-weather twin in the same \
+               table is dead and does nothing. Stock 1024.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Basic,
+        target: Target::Data(0xD5D1C + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1024,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_traction_grass",
+        label: "Traction: Grass",
+        help: "How well power gets down on grass - the drive/braking grip, as \
+               opposed to cornering grip. Higher = the wheels hook up; lower = \
+               they just spin. Note the stock kerb values are TINY (1024 vs 16384 \
+               on track), which is why putting power down on a kerb lights the \
+               wheels up. Affects all cars. Its wet-weather twin in the same \
+               table is dead and does nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D1C + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_traction_gravel",
+        label: "Traction: Gravel",
+        help: "How well power gets down on gravel - the drive/braking grip, as \
+               opposed to cornering grip. Higher = the wheels hook up; lower = \
+               they just spin. Note the stock kerb values are TINY (1024 vs 16384 \
+               on track), which is why putting power down on a kerb lights the \
+               wheels up. Affects all cars. Its wet-weather twin in the same \
+               table is dead and does nothing. Stock 16384.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D1C + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 16384,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_rough_track",
+        label: "Roughness: Track",
+        help: "How rough track is to drive over - how much it shakes the car and \
+               upsets the suspension. Higher = rougher. Stock makes gravel far \
+               rougher than grass, and the track and kerbs smooth. Affects all \
+               cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 256.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D44 + 0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_rough_kerb_low",
+        label: "Roughness: Low Kerb",
+        help: "How rough low kerb is to drive over - how much it shakes the car \
+               and upsets the suspension. Higher = rougher. Stock makes gravel \
+               far rougher than grass, and the track and kerbs smooth. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 256.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D44 + 4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_rough_kerb_high",
+        label: "Roughness: High Kerb",
+        help: "How rough high kerb is to drive over - how much it shakes the car \
+               and upsets the suspension. Higher = rougher. Stock makes gravel \
+               far rougher than grass, and the track and kerbs smooth. Affects \
+               all cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 256.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D44 + 8),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 256,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_rough_grass",
+        label: "Roughness: Grass",
+        help: "How rough grass is to drive over - how much it shakes the car and \
+               upsets the suspension. Higher = rougher. Stock makes gravel far \
+               rougher than grass, and the track and kerbs smooth. Affects all \
+               cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 2048.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D44 + 12),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2048,
+        range: None,
+    },
+    FieldDesc {
+        id: "surf_rough_gravel",
+        label: "Roughness: Gravel",
+        help: "How rough gravel is to drive over - how much it shakes the car and \
+               upsets the suspension. Higher = rougher. Stock makes gravel far \
+               rougher than grass, and the track and kerbs smooth. Affects all \
+               cars. Its wet-weather twin in the same table is dead and does \
+               nothing. Stock 12288.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5D44 + 16),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12288,
+        range: None,
+    },
+    FieldDesc {
+        id: "bump_track_scale",
+        label: "Bump Amplitude: Track",
+        help: "How big the track's built-in bumps feel. Higher = a rougher ride \
+               on the racing surface itself; lower = a smoother track. Separate \
+               from Roughness: this scales the bump shapes, roughness scales how \
+               much they upset the car. Affects all cars. Stock 65536.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD7E24),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 65536,
+        range: None,
+    },
+    FieldDesc {
+        id: "bump_grass",
+        label: "Bump Amplitude: Grass",
+        help: "How big the bumps are once you put a wheel on the grass. Higher = \
+               running wide over grass throws the car around more. Affects all \
+               cars. Stock 786432.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD7E1C),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 786432,
+        range: None,
+    },
+    FieldDesc {
+        id: "bump_gravel",
+        label: "Bump Amplitude: Gravel",
+        help: "How big the bumps are in a gravel trap. Higher = a wilder ride \
+               once you are in the gravel. Stock is the roughest of the three \
+               surfaces. Affects all cars. Stock 1310720.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD7E20),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1310720,
+        range: None,
+    },
     // ---- Aero ----
     FieldDesc {
         id: "df_scale",

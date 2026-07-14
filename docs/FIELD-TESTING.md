@@ -91,6 +91,24 @@ Every new field batch appends its rows here as `untested`.
 | `dmg_thr_d_fr` | Damage Threshold D (Front Right) | Walls | Adv | untested |  |
 | `damage_probability` | Damage Probability | Walls | Adv | untested |  |
 | `spring_break_drop` | Broken-Spring Ride Drop | Walls | Adv | untested |  |
+| `surf_grip_track` | Grip: Track | Surfaces | Adv | untested |  |
+| `surf_grip_kerb_low` | Grip: Low Kerb | Surfaces | Adv | untested |  |
+| `surf_grip_kerb_high` | Grip: High Kerb | Surfaces | Adv | untested |  |
+| `surf_grip_grass` | Grip: Grass | Surfaces | Basic | untested |  |
+| `surf_grip_gravel` | Grip: Gravel | Surfaces | Basic | untested |  |
+| `surf_traction_track` | Traction: Track | Surfaces | Adv | untested |  |
+| `surf_traction_kerb_low` | Traction: Low Kerb | Surfaces | Basic | untested |  |
+| `surf_traction_kerb_high` | Traction: High Kerb | Surfaces | Basic | untested |  |
+| `surf_traction_grass` | Traction: Grass | Surfaces | Adv | untested |  |
+| `surf_traction_gravel` | Traction: Gravel | Surfaces | Adv | untested |  |
+| `surf_rough_track` | Roughness: Track | Surfaces | Adv | untested |  |
+| `surf_rough_kerb_low` | Roughness: Low Kerb | Surfaces | Adv | untested |  |
+| `surf_rough_kerb_high` | Roughness: High Kerb | Surfaces | Adv | untested |  |
+| `surf_rough_grass` | Roughness: Grass | Surfaces | Adv | untested |  |
+| `surf_rough_gravel` | Roughness: Gravel | Surfaces | Adv | untested |  |
+| `bump_track_scale` | Bump Amplitude: Track | Surfaces | Adv | untested |  |
+| `bump_grass` | Bump Amplitude: Grass | Surfaces | Adv | untested |  |
+| `bump_gravel` | Bump Amplitude: Gravel | Surfaces | Adv | untested |  |
 | `df_scale` | Downforce Scale | Aero | Basic | untested |  |
 | `rear_df_slope` | Rear Downforce Slope | Aero | Basic | untested |  |
 | `rear_df_floor` | Rear Downforce Floor | Aero | Basic | untested |  |
@@ -141,7 +159,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 127 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 145 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
