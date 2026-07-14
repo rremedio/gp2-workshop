@@ -1,0 +1,19 @@
+docs/MAGIC-T14-17-PIT-RENDER.md
+  s_43a31c3da013a9::t_fbd987a4ce4fcf 1-373
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "97c16a48afc92e1c1ac3a744c8ddac6b41117864",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "unknown"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
