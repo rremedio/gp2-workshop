@@ -224,6 +224,21 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_k6_front` | Curve Shape Slope (Front) | Tyres | Adv | untested |  |
 | `tyre_k7_rear` | Curve Shape Base (Rear) | Tyres | Adv | untested |  |
 | `tyre_k7_front` | Curve Shape Base (Front) | Tyres | Adv | untested |  |
+| `wing_dmg_loss` | Wing Damage: Rear Loss | Aero | Adv | untested |  |
+| `wing_dmg_front_boost` | Wing Damage: Front Boost | Aero | Adv | untested |  |
+| `wing_dmg_front_loss` | Wing Damage: Front Loss | Aero | Adv | untested |  |
+| `practice_fuel_laps` | Practice Fuel Laps | MassGrip | Adv | untested |  |
+| `upshift_block_rpm` | Upshift Block Wheel-RPM | Engine | Adv | untested |  |
+| `reengage_rpm_hi` | Shift Re-Engage RPM (1st) | Engine | Adv | untested |  |
+| `reengage_rpm_lo` | Shift Re-Engage RPM (2nd+) | Engine | Adv | untested |  |
+| `kerb_a_x1` | Kerb A Profile: First Width Point | Surfaces | Adv | untested |  |
+| `kerb_a_x2` | Kerb A Profile: Second Width Point | Surfaces | Adv | untested |  |
+| `kerb_a_h1` | Kerb A Profile: First Height Point | Surfaces | Adv | untested |  |
+| `kerb_a_h2` | Kerb A Profile: Second Height Point | Surfaces | Adv | untested |  |
+| `kerb_b_x1` | Kerb B Profile: First Width Point | Surfaces | Adv | untested |  |
+| `kerb_b_x2` | Kerb B Profile: Second Width Point | Surfaces | Adv | untested |  |
+| `kerb_b_h1` | Kerb B Profile: First Height Point | Surfaces | Adv | untested |  |
+| `kerb_b_h2` | Kerb B Profile: Second Height Point | Surfaces | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -233,7 +248,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 219 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 234 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 

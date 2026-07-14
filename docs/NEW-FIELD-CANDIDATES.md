@@ -305,3 +305,29 @@ Notes:
 8. Fuel burn base (D57DC)
 9. Default-setup editor (§10)
 10. Dormant camber array (D5EC4) — the "hidden feature" of the batch
+
+## Multi-site code immediates — blocked on multi-target `FieldDesc`
+
+`FieldDesc` holds ONE `target`, so one field can patch one address. These two
+constants appear at several sites that **must move together**, so they cannot be
+shipped safely today (verified 2026-07-14 against a pristine GP2.EXE):
+
+| candidate | sites | why one field is unsafe |
+|---|---|---|
+| **Free-Rev Cap** (19000) | `0x92199` (`cmp eax, 4A38h` @ IDA 0x19F44), `0x921A0` (`mov eax, 4A38h` @ 0x19F4B) | A `cmp`/`jle`/`mov` clamp. Patch only the `mov` and inputs between the old and new cap get *raised* instead of clamped; patch only the `cmp` and the cap no longer matches its own test. |
+| **Clutch Engage Wheel-RPM** (3000) | `0x9249D` (gate, `cmp eax, 0BB8h` @ IDA 0x1A248), `0x924E5` + `0x924EC` (`cmp`/`mov` clamp @ 0x1A290/0x1A297) | Three sites: a branch gate plus a clamp pair. Editing any subset desynchronises the gate from the clamp. |
+
+Exposing one field per site would work mechanically but hands the user a
+silent footgun — the same shape as the magic T14–17 mis-striding
+(`MAGIC-T14-17-PIT-RENDER.md`). The clean fix is multi-target support in
+`FieldDesc` (one field → N addresses, all written together), which is a registry
+change and needs its own task.
+
+### Confirmed NOT fields (do not re-derive)
+
+- **Limiter Bounce Base** — `sub_0_19F51` has no immediate; it reads the rev
+  limiter directly (`cmp eax, dword_0_D6010` @ 0x19F51, `add eax, dword_0_D6010`
+  @ 0x19F66). Already covered by `rev_limiter`.
+- **Soft-Cut Fade Base** — same: `sub edx, dword_0_D6010` @ 0x1A381. The "15200"
+  in earlier notes was the *listing's comment* annotating D6010's value, not a
+  constant in the code.

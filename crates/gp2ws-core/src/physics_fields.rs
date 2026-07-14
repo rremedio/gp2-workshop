@@ -3540,6 +3540,266 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 6404,
         range: None,
     },
+    // ---- Wing damage (CalcBothWings @0x16AA5) ----
+    // The plan listed these as code immediates (imm 0x3000 / 0x5000). They are
+    // NOT: CalcBothWings contains no immediates, it does `imul dword_0_D5EAC` /
+    // `D5EB0` / `D5EB4` (0x16ABE / 0x16ADE / 0x16B01). Plain data dwords, so
+    // Target::Data - no operand-offset guesswork. There are THREE, not two.
+    FieldDesc {
+        id: "wing_dmg_loss",
+        label: "Wing Damage: Rear Loss",
+        help: "How much rear downforce survives once the rear wing is damaged. \
+               Stock 12288 is x0.75, i.e. a damaged rear wing keeps three \
+               quarters of its downforce. Lower = a broken rear wing hurts more. \
+               Affects all cars. Stock 12288.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EAC),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12288,
+        range: None,
+    },
+    FieldDesc {
+        id: "wing_dmg_front_boost",
+        label: "Wing Damage: Front Boost",
+        help: "Applied to FRONT downforce when the rear wing is damaged but the \
+               front is still intact. Stock 20480 is x1.25 - a boost, not a loss, \
+               which shifts the balance forward and makes a rear-wing-damaged car \
+               pointy rather than merely slow. Affects all cars. Stock 20480.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        target: Target::Data(0xD5EB0),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 20480,
+        range: None,
+    },
+    FieldDesc {
+        id: "wing_dmg_front_loss",
+        label: "Wing Damage: Front Loss",
+        help: "How much front downforce survives once the FRONT wing is damaged \
+               (and the rear is not). Stock 12288 is x0.75, mirroring the rear. \
+               Lower = a broken front wing costs more turn-in. Affects all cars. \
+               Stock 12288.",
+        subtab: SubTab::Aero,
+        tier: Tier::Advanced,
+        // Not in the plan's table (it listed only two wing fields), but it is the
+        // front-damage twin of wing_dmg_loss - `imul dword_0_D5EB4` @0x16B01 on
+        // the [esi+0BBh]&0x80 branch. Shipping without it would leave front-wing
+        // damage uneditable while rear-wing damage is exposed.
+        target: Target::Data(0xD5EB4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12288,
+        range: None,
+    },
+    // ---- Code immediates (verified operand offsets) ----
+    // Target::Code assumes the operand sits at +1 (immediately after a 1-byte
+    // opcode). That is FALSE for `cmp [mem], imm`, which encodes a disp32 first
+    // and puts the operand at +6/+7. Every offset below was confirmed by reading
+    // the real bytes out of a pristine GP2.EXE, hence Target::Direct with the
+    // instruction and IDA address recorded.
+    FieldDesc {
+        id: "practice_fuel_laps",
+        label: "Practice Fuel Laps",
+        help: "How many laps of fuel the car is given in free practice. Higher = \
+               a heavier, slower practice car; lower = lighter. Note the \
+               qualifying equivalent (Qualifying Fuel Laps) is a data field and \
+               gets +1 in code, whereas this one is used as-is. Stock 12.",
+        subtab: SubTab::MassGrip,
+        tier: Tier::Advanced,
+        // `mov eax, 12` @ IDA 0x2C543 (B8 0C 00 00 00); operand +1 -> file 0xA4798.
+        target: Target::Direct(0xA4798),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 12,
+        range: None,
+    },
+    FieldDesc {
+        id: "upshift_block_rpm",
+        label: "Upshift Block Wheel-RPM",
+        help: "The wheel-RPM below which an upshift is refused, so the box will \
+               not change up while the wheels are turning too slowly. Higher = \
+               upshifts are blocked over a wider range. Cross-check with Rev \
+               Limiter and Max RPM if you are building a low-rev engine. Stock \
+               9000.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        // `cmp word_0_D4024, 2328h` @ IDA 0x19E4A
+        // (66 81 3D 24 40 01 00 | 28 23); operand at +7, width 2 -> file 0x920A5.
+        target: Target::Direct(0x920A5),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 9000,
+        range: None,
+    },
+    FieldDesc {
+        id: "reengage_rpm_hi",
+        label: "Shift Re-Engage RPM (1st)",
+        help: "The wheel-RPM the car must reach before drive is re-engaged after \
+               a shift, when in FIRST gear. Higher = a longer pause before the \
+               engine reconnects. Pairs with Shift Re-Engage RPM (2nd+), which \
+               stock sets lower (8000). Relevant when building a low-rev engine - \
+               see Rev Limiter. Stock 9000.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        // `cmp dword ptr word_0_D4024, 9000` @ IDA 0x1A1FE (1st-gear branch)
+        // (81 3D 24 40 01 00 | 28 23 00 00); operand at +6 -> file 0x92458.
+        target: Target::Direct(0x92458),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 9000,
+        range: None,
+    },
+    FieldDesc {
+        id: "reengage_rpm_lo",
+        label: "Shift Re-Engage RPM (2nd+)",
+        help: "The same re-engage threshold as Shift Re-Engage RPM (1st), but for \
+               second gear and above, where stock uses a lower figure (8000 vs \
+               9000). Higher = a longer pause before drive resumes after each \
+               shift. Stock 8000.",
+        subtab: SubTab::Engine,
+        tier: Tier::Advanced,
+        // `cmp dword ptr word_0_D4024, 1F40h` @ IDA 0x1A1E7 (gear >= 2 branch)
+        // (81 3D 24 40 01 00 | 40 1F 00 00); operand at +6 -> file 0x92441.
+        target: Target::Direct(0x92441),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 8000,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_a_x1",
+        label: "Kerb A Profile: First Width Point",
+        help: "The first width point of the default kerb profile A. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 110.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        // These are the DEFAULTS written into dSetByCmdCA/CBarg* at track load
+        // (`mov [mem], imm32` = C7 05 <disp32> <imm32>, operand at +6). A track
+        // carrying its own 0xCA / 0xCB command overrides them, so editing these
+        // only changes tracks that DON'T specify a kerb profile.
+        target: Target::Direct(0xEB7B1),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 110,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_a_x2",
+        label: "Kerb A Profile: Second Width Point",
+        help: "The second width point of the default kerb profile A. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 300.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7BB),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 300,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_a_h1",
+        label: "Kerb A Profile: First Height Point",
+        help: "The first height point of the default kerb profile A. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 18.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7C5),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 18,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_a_h2",
+        label: "Kerb A Profile: Second Height Point",
+        help: "The second height point of the default kerb profile A. Only \
+               applies to tracks that do not carry their own kerb-profile command \
+               - a track that does overrides this. Affects all cars. Stock 26.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7CF),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 26,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_b_x1",
+        label: "Kerb B Profile: First Width Point",
+        help: "The first width point of the default kerb profile B. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 178.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7D9),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 178,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_b_x2",
+        label: "Kerb B Profile: Second Width Point",
+        help: "The second width point of the default kerb profile B. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 356.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7E3),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 356,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_b_h1",
+        label: "Kerb B Profile: First Height Point",
+        help: "The first height point of the default kerb profile B. Only applies \
+               to tracks that do not carry their own kerb-profile command - a \
+               track that does overrides this. Affects all cars. Stock 14.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7ED),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 14,
+        range: None,
+    },
+    FieldDesc {
+        id: "kerb_b_h2",
+        label: "Kerb B Profile: Second Height Point",
+        help: "The second height point of the default kerb profile B. Only \
+               applies to tracks that do not carry their own kerb-profile command \
+               - a track that does overrides this. Affects all cars. Stock 24.",
+        subtab: SubTab::Surfaces,
+        tier: Tier::Advanced,
+        target: Target::Direct(0xEB7F7),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 24,
+        range: None,
+    },
 ];
 
 #[cfg(test)]
