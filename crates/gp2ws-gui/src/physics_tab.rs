@@ -13,14 +13,21 @@ use gp2ws_core::physics_fields::PHYSICS_FIELDS;
 use gp2ws_core::physics_io::PhysicsDoc;
 use gp2ws_core::tyre_fields::TYRE_FIELDS;
 
-const SUBTABS: [(SubTab, &str); 7] = [
+const SUBTABS: [(SubTab, &str); 14] = [
     (SubTab::Engine, "Engine"),
     (SubTab::PowerCurve, "Power Curve"),
+    (SubTab::Drivetrain, "Drivetrain"),
+    (SubTab::Chassis, "Chassis"),
     (SubTab::Aero, "Aero"),
     (SubTab::Brakes, "Brakes"),
+    (SubTab::Suspension, "Suspension"),
     (SubTab::MassGrip, "Mass/Grip"),
     (SubTab::Tyres, "Tyres"),
+    (SubTab::Surfaces, "Surfaces"),
     (SubTab::Slipstream, "Slipstream"),
+    (SubTab::AiRacecraft, "AI Racecraft"),
+    (SubTab::Walls, "Walls & Damage"),
+    (SubTab::Steering, "Steering"),
 ];
 
 /// All registry fields (physics + tyre) belonging to `subtab`.
@@ -85,7 +92,8 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
     }
 
     // --- Sub-tab selector ---
-    ui.horizontal(|ui| {
+    // 14 sub-tabs no longer fit one row on a default-width window.
+    ui.horizontal_wrapped(|ui| {
         for (st, label) in SUBTABS {
             ui.selectable_value(&mut app.subtab, st, label);
         }

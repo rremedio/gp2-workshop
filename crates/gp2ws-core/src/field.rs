@@ -11,11 +11,18 @@ pub enum Section {
 pub enum SubTab {
     Engine,
     PowerCurve,
+    Drivetrain,
+    Chassis,
     Aero,
     Brakes,
+    Suspension,
     MassGrip,
     Tyres,
+    Surfaces,
     Slipstream,
+    AiRacecraft,
+    Walls,
+    Steering,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
