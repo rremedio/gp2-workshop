@@ -1,0 +1,21 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_43a31c3da013a9::t_30b1f5b1d2dbde 1404-1415,1422-1424,1511-1513,1601-1603
+docs/NEW-FIELD-CANDIDATES.md
+  s_43a31c3da013a9::t_f2832eb7513cb9 164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "35f6cd2a8757fcde5f2dc84510a5b6e006b43fc9",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
