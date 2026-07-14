@@ -1,0 +1,23 @@
+crates/gp2ws-core/src/physics_fields.rs
+  s_f4f56f1b3e0304::t_2ecd8a634b3155 485-488,501-503,518-519,532-537,552,567-568,583-584,598-602,615-619,632-635,648-651,664-670,683-688,701-705,719-722,735-739,752-755
+docs/NEW-FIELD-CANDIDATES.md
+  s_f4f56f1b3e0304::t_fa4147fc07e566 1-306
+docs/plans/2026-07-14-new-physics-fields.md
+  s_f4f56f1b3e0304::t_2e4d381465bb9f 1-533
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "6980585188bca239f9fbaa4a9d352dd479c3866d",
+  "prompts": {},
+  "sessions": {
+    "s_f4f56f1b3e0304": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "291f7ed5-0cfb-427b-b1b8-76b00c24dca1",
+        "model": "unknown"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
