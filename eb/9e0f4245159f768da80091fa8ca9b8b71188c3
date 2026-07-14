@@ -1,0 +1,19 @@
+crates/gp2ws-core/src/target.rs
+  s_43a31c3da013a9::t_f457798776b345 6-9,18,40-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "eb9e0f4245159f768da80091fa8ca9b8b71188c3",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "unknown"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
