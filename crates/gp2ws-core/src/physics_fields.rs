@@ -297,7 +297,9 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
                HALVES AI braking (brakes earlier and softer), each -1 DOUBLES it. \
                Stock 8. Safe range about 7-10. Below 7 the values can overflow and \
                make AI braking erratic; above 10 they can hit zero and the AI may \
-               not brake at all. Experimental - test in-game.",
+               not brake at all. This is how hard the AI brakes for the CORNER; \
+               how it brakes for TRAFFIC is on the AI Racecraft tab. \
+               Experimental - test in-game.",
         subtab: SubTab::Brakes,
         tier: Tier::Basic,
         // 1-byte code patch: the shift count of `sar eax, 8` at IDA 0x2EF90 inside
@@ -531,14 +533,15 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_tow_strength",
-        label: "AI Tow Strength",
-        help: "NOT actually a tow boost (the label predates newer RE): every \
-               place this is read scales the AI's traffic-BRAKING caps with \
-               speed, so raising it above stock 0 makes AI cars brake harder \
-               for the car ahead at high speed - it can never add speed. The \
-               real AI slipstream is Tow Strength, which AI cars share with \
-               the player. Stock 0 (dormant).",
-        subtab: SubTab::Slipstream,
+        label: "AI Speed-Scaled Braking",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Despite the old name it can never add speed: every \
+               place it is read scales the AI\'s traffic-BRAKING caps with speed, \
+               so raising it above stock 0 makes AI cars brake harder for the car \
+               ahead at high speed. The real AI slipstream is Tow Strength, which \
+               AI cars share with the player. Old editor: \"AI Tow Strength\". \
+               Stock 0 (dormant).",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Basic,
         target: Target::Data(0xD5FF4),
         width: 4,
@@ -597,13 +600,13 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     // ai_follow_base_1..7 (7 signed thresholds, Hex)
     FieldDesc {
         id: "ai_follow_base_1",
-        label: "AI Follow Base 1",
-        help: "NOT slipstream: part of the AI's traffic-BRAKING controller (it \
-               can only slow AI cars, never boost them). Avoidance engage \
-               threshold - when the avoidance metric is at/above this, the AI \
-               ignores the car ahead (neutral). Signed; scaled by frame time at \
-               session start. Stock -4096.",
-        subtab: SubTab::Slipstream,
+        label: "AI Avoidance Engage",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). It can only slow AI cars, never boost them. Avoidance \
+               engage threshold - when the avoidance metric is at/above this, the \
+               AI ignores the car ahead (neutral). Signed; scaled by frame time \
+               at session start. Old editor: \"AI Follow Base 1\". Stock -4096.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CA),
         width: 2,
@@ -614,13 +617,14 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_2",
-        label: "AI Follow Base 2",
-        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
-               Leader-deceleration matching threshold - when the car ahead is \
-               slowing harder than this, the follower copies its deceleration \
-               instead of predicting its own braking point. Signed; scaled by \
-               frame time at session start. Stock -3072.",
-        subtab: SubTab::Slipstream,
+        label: "AI Leader-Decel Match",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Leader-deceleration matching threshold - when the car \
+               ahead is slowing harder than this, the follower copies its \
+               deceleration instead of predicting its own braking point. Signed; \
+               scaled by frame time at session start. Old editor: \"AI Follow \
+               Base 2\". Stock -3072.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96CC),
         width: 2,
@@ -631,12 +635,13 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_3",
-        label: "AI Follow Base 3",
-        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
-               Close-follow selector - decides whether the AI uses its energy \
-               model or the tight gap servo when running right behind another \
-               car. Signed; scaled by frame time at session start. Stock -24576.",
-        subtab: SubTab::Slipstream,
+        label: "AI Close-Follow Select",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Close-follow selector - decides whether the AI uses \
+               its energy model or the tight gap servo when running right behind \
+               another car. Signed; scaled by frame time at session start. Old \
+               editor: \"AI Follow Base 3\". Stock -24576.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D2),
         width: 2,
@@ -647,12 +652,13 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_4",
-        label: "AI Follow Base 4",
-        help: "NOT slipstream: part of the AI's traffic-BRAKING controller. \
-               Same close-follow selection as Base 3, but for the branch used \
-               when the AI car is damaged/out of shape. Signed; scaled by frame \
-               time at session start. Stock -1024.",
-        subtab: SubTab::Slipstream,
+        label: "AI Close-Follow (Damaged)",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Same close-follow selection as Close-Follow Select, \
+               but for the branch used when the AI car is damaged/out of shape. \
+               Signed; scaled by frame time at session start. Old editor: \"AI \
+               Follow Base 4\". Stock -1024.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D4),
         width: 2,
@@ -663,15 +669,16 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_5",
-        label: "AI Follow Base 5",
-        help: "NOT slipstream: per-tick BRAKE ceiling forced on an AI car in its \
+        label: "AI Brake Cap: Hold-Back",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Per-tick BRAKE ceiling forced on an AI car in its \
                hold-back / yellow-flag state (slowing past accident sites, \
-               yielding). More negative = it brakes harder in that state. Keep \
-               it NEGATIVE: pushed toward 0 or positive it turns into an \
+               yielding). More negative = it brakes harder in that state. Keep it \
+               NEGATIVE: pushed toward 0 or positive it turns into an \
                acceleration limit whenever the state fires, which reads as a \
                mysterious AI top-speed change. Scaled by frame time at session \
-               start. Stock -2048.",
-        subtab: SubTab::Slipstream,
+               start. Old editor: \"AI Follow Base 5\". Stock -2048.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96D8),
         width: 2,
@@ -682,14 +689,15 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_6",
-        label: "AI Follow Base 6",
-        help: "NOT slipstream: per-tick BRAKE ceiling forced on an AI car while \
-               it is SLIDING (the slide-test flag). More negative = harder \
-               braking when sliding. Keep it NEGATIVE - toward 0 or positive it \
-               becomes an acceleration limit at the grip limit, which shows up \
-               as an AI top-speed change. Scaled by frame time at session \
-               start. Stock -4096.",
-        subtab: SubTab::Slipstream,
+        label: "AI Brake Cap: Sliding",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Per-tick BRAKE ceiling forced on an AI car while it \
+               is SLIDING (the slide-test flag). More negative = harder braking \
+               when sliding. Keep it NEGATIVE - toward 0 or positive it becomes \
+               an acceleration limit at the grip limit, which shows up as an AI \
+               top-speed change. Scaled by frame time at session start. Old \
+               editor: \"AI Follow Base 6\". Stock -4096.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DA),
         width: 2,
@@ -700,13 +708,15 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_base_7",
-        label: "AI Follow Base 7",
-        help: "NOT slipstream: per-tick BRAKE ceiling in the AI's corner-squeeze \
-               state (\"can't steer around the car ahead at this grip, so brake \
+        label: "AI Brake Cap: Corner Squeeze",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Per-tick BRAKE ceiling in the AI\'s corner-squeeze \
+               state (\"can\'t steer around the car ahead at this grip, so brake \
                instead\"). The hardest of the three state ceilings. Keep it \
-               NEGATIVE (see Base 5/6). Scaled by frame time at session start. \
-               Stock -512.",
-        subtab: SubTab::Slipstream,
+               NEGATIVE (see the Hold-Back and Sliding caps). Scaled by frame \
+               time at session start. Old editor: \"AI Follow Base 7\". Stock \
+               -512.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xC96DC),
         width: 2,
@@ -718,12 +728,14 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     // ai_follow_floor_1..3 (Hex, u32)
     FieldDesc {
         id: "ai_follow_floor_1",
-        label: "AI Follow Floor 1",
-        help: "NOT slipstream: threshold below which an AI car's per-tick speed \
+        label: "AI Heavy-Braking Flag",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Threshold below which an AI car\'s per-tick speed \
                delta counts as \"heavy braking\" (sets a status flag; the value \
-               is a negative s16, stored here as 0xFC00 = -1024). Scaled by \
-               frame time at session start. Stock 64512.",
-        subtab: SubTab::Slipstream,
+               is a negative s16, stored here as 0xFC00 = -1024). Scaled by frame \
+               time at session start. Old editor: \"AI Follow Floor 1\". Stock \
+               64512.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FE8),
         width: 4,
@@ -734,13 +746,15 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_floor_2",
-        label: "AI Follow Floor 2",
-        help: "NOT slipstream: the AI's maximum braking per tick for ALL \
+        label: "AI Max Braking / Tick",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). The AI\'s maximum braking per tick for ALL \
                traffic-follow caps - every braking request from the follow \
                controller is floored here (negative s16, stored as 0xD000 = \
-               -12288). More negative = the AI may brake harder for other \
-               cars. Scaled by frame time at session start. Stock 53248.",
-        subtab: SubTab::Slipstream,
+               -12288). More negative = the AI may brake harder for other cars. \
+               Scaled by frame time at session start. Old editor: \"AI Follow \
+               Floor 2\". Stock 53248.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FEC),
         width: 4,
@@ -751,12 +765,14 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
     },
     FieldDesc {
         id: "ai_follow_floor_3",
-        label: "AI Follow Floor 3",
-        help: "NOT slipstream: clamp on the AI's avoidance metric - the largest \
+        label: "AI Avoidance Clamp",
+        help: "Part of the AI's traffic-braking controller (System C - not the \
+               slipstream). Clamp on the AI\'s avoidance metric - the largest \
                slow-down request the gap/closing-speed servo may generate when \
-               closing on the car ahead (positive s16, 0x5000). Scaled by \
-               frame time at session start. Stock 20480.",
-        subtab: SubTab::Slipstream,
+               closing on the car ahead (positive s16, 0x5000). Scaled by frame \
+               time at session start. Old editor: \"AI Follow Floor 3\". Stock \
+               20480.",
+        subtab: SubTab::AiRacecraft,
         tier: Tier::Advanced,
         target: Target::Data(0xD5FF0),
         width: 4,

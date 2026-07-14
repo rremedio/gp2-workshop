@@ -41,8 +41,9 @@ with and the value the "↺ stock" button restores.
 ## Physics settings
 
 These live on the **Physics** tab, which is split into sub-tabs: Engine, Power
-Curve, Aero, Brakes, Mass/Grip, Tyres and Slipstream. They affect the cars
-themselves (mostly *every* car, unless a description says "player only" or
+Curve, Drivetrain, Chassis, Aero, Brakes, Suspension, Mass/Grip, Tyres,
+Surfaces, Slipstream, AI Racecraft, Walls & Damage and Steering. They affect the
+cars themselves (mostly *every* car, unless a description says "player only" or
 "AI only").
 
 ### Engine
@@ -147,34 +148,51 @@ usable; lower = a heavier penalty for old rubber. Stock ~1.094.
 
 ### Slipstream / Tow (the draft behind another car)
 
-The "tow" is the speed boost you get tucking in behind another car on a
-straight. These settings split into **your** slipstream (player only), the
-**AI's** slipstream, and some fiddly internal AI-following thresholds.
-
-**Your slipstream (player only):**
+The "tow" is the speed boost from tucking in behind another car on a straight.
+There is **one** slipstream in GP2 and both the player and the AI use it — the
+AI wake reads the same constants, so these settings affect everyone.
 
 | Setting | Tier | Everyday meaning | Stock |
 |---|---|---|---|
-| **Tow Strength** | Basic | How strong *your* slipstream is when you tuck in behind another car. Higher = a bigger speed boost; **0 turns the player draft off entirely**. | 262144 |
+| **Tow Strength** | Basic | How strong the slipstream is when tucked in behind another car. Higher = a bigger speed boost; **0 turns the draft off entirely**. | 262144 |
 | **Tow Reach** | Basic | How far back behind another car the draft still works. Higher = you can catch the tow from further away. | 384 |
 | **Tow Align Width** | Basic | How directly behind the other car you must be — the *width* of the slipstream cone. Wider = easier to stay in the tow when not perfectly lined up. | 512 |
 | **Tow Max Wake** | Advanced | A cap on how much boost you can get, no matter how close you are. Raise it to allow a bigger maximum draft. | 256 |
 | **Tow Max Range** | Advanced | The maximum distance over which the draft applies. Higher = the slipstream stretches further down the track. | 7 |
 | **Tow Min Speed** | Advanced | The minimum speed you must be going for the draft to work at all (so it only helps on fast sections). | 2816 |
 
-**The AI's slipstream:**
+### AI Racecraft (how the AI brakes for traffic)
+
+These used to sit on the Slipstream tab under names like "AI Tow Strength" and
+"AI Follow Base 1–7", which badly mis-sold them. They are **not** a slipstream
+and they are **AI-only**. They are the AI's traffic-braking controller: every
+one of them can only ever *slow an AI car down*, never speed it up. If you came
+here looking for AI drafting, the AI already uses **Tow Strength** above.
+
+*Recommended: leave alone unless you are testing.* None of these are verified
+in-game yet.
 
 | Setting | Tier | Everyday meaning | Stock |
 |---|---|---|---|
-| **AI Tow Strength** | Basic | A boost that lets AI cars slingshot past the car ahead. **Stock 0 means OFF** — the developers left it disabled. Raise it to enable; a little goes a long way, so test in small steps. | 0 |
+| **AI Speed-Scaled Braking** | Basic | Scales the AI's traffic-braking caps with speed. Raise it above 0 and AI cars brake *harder* for the car ahead at high speed. Despite its old name it can never add speed. | 0 (dormant) |
+| **AI Avoidance Engage** | Advanced | At/above this, the AI ignores the car ahead. | −4096 |
+| **AI Leader-Decel Match** | Advanced | When the car ahead slows harder than this, the follower copies its deceleration instead of predicting its own braking point. | −3072 |
+| **AI Close-Follow Select** | Advanced | Picks between the AI's energy model and the tight gap servo when running right behind another car. | −24576 |
+| **AI Close-Follow (Damaged)** | Advanced | Same, for the damaged / out-of-shape branch. | −1024 |
+| **AI Brake Cap: Hold-Back** | Advanced | Braking ceiling in the hold-back / yellow-flag state. **Keep it negative.** | −2048 |
+| **AI Brake Cap: Sliding** | Advanced | Braking ceiling while the AI car is sliding. **Keep it negative.** | −4096 |
+| **AI Brake Cap: Corner Squeeze** | Advanced | Braking ceiling when the AI can't steer around the car ahead. The hardest of the three. **Keep it negative.** | −512 |
+| **AI Heavy-Braking Flag** | Advanced | Threshold below which a speed drop counts as "heavy braking" (sets a status flag). | 64512 |
+| **AI Max Braking / Tick** | Advanced | The floor under *every* traffic-follow braking request. More negative = the AI may brake harder for other cars. | 53248 |
+| **AI Avoidance Clamp** | Advanced | The largest slow-down request the gap/closing-speed servo may generate. | 20480 |
 
-**Advanced AI-following thresholds** — *recommended: leave alone.* These are a
-set of internal numbers (the app calls them **AI Follow Base 1–7** and **AI
-Follow Floor 1–3**) that decide *when* and *how* the AI decides to follow, back
-off, or slingshot past the car ahead. They have no intuitive scale and their
-exact direction needs in-game testing. The only general guidance baked into the
-app: lowering the "catch-up clamp" values can rein in over-aggressive AI
-drafting. Treat them as an experiment.
+The three **Brake Cap** values must stay **negative**. Pushed to 0 or positive
+they stop being brake limits and become *acceleration* limits whenever their
+state fires — which shows up as a baffling AI top-speed change rather than as a
+braking bug.
+
+Related: **AI Brake Strength (shift)** on the Brakes tab is how hard the AI
+brakes for the *corner*; the settings here are how it brakes for *traffic*.
 
 ---
 
@@ -239,8 +257,12 @@ Here's what each of the 24 values means:
   faster with **Wear Sensitivity**.
 - **Make low-wing setups cost something** → Physics ▸ Aero ▸ lower **Rear
   Downforce Floor** and raise **Rear Downforce Slope**.
-- **Turn on AI slipstreaming** → Physics ▸ Slipstream ▸ raise **AI Tow
-  Strength** from 0 in small steps.
+- **Change AI slipstreaming** → Physics ▸ Slipstream ▸ **Tow Strength**. The AI
+  already drafts using the same setting you do; there is no separate AI draft to
+  switch on. (The old "AI Tow Strength" is now **AI Speed-Scaled Braking** on the
+  AI Racecraft tab — it only ever makes the AI brake *harder*.)
+- **Make the AI brake harder for traffic** → Physics ▸ AI Racecraft ▸ **AI Max
+  Braking / Tick** (more negative), or raise **AI Speed-Scaled Braking** from 0.
 - **Make fuel strategy more important** → Physics ▸ Mass/Grip ▸ **Fuel Factor**
   (all tracks), or Magic Data values **22–23** (per-track fuel burn).
 - **Raise the rev ceiling** → Physics ▸ Engine ▸ **Rev Limiter** and **Max
