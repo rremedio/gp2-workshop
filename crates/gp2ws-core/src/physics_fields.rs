@@ -3350,6 +3350,196 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 4096,
         range: None,
     },
+    // ---- Tyres: the tyre-model coefficient block ----
+    // Data constants living INSIDE the code segment (0x1A93F-0x1A9B6), hence
+    // Target::CodeData (file = IDA + CODE_BASE, with NO +1 opcode skip - these
+    // are not instruction operands). Each pair is rear @addr, front @addr+4.
+    // All 12 verified byte-for-byte against a pristine GP2.EXE.
+    FieldDesc {
+        id: "tyre_k3_rear",
+        label: "Base Lateral Grip (Rear)",
+        help: "The rear tyre's baseline cornering grip - the single biggest lever \
+               on front/rear balance. Raise it for more rear grip (understeer); \
+               lower it for a looser, more oversteery car. Read this together \
+               with Base Lateral Grip (Front): what matters is the RATIO between \
+               them, and stock already gives the rear noticeably more (327616 vs \
+               251904). Affects all cars. Stock 327616.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        // The oversteer/understeer knob: k3 rear vs front IS the grip balance.
+        target: Target::CodeData(0x1A95F),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 327616,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k3_front",
+        label: "Base Lateral Grip (Front)",
+        help: "The front tyre's baseline cornering grip. Raise it for more front \
+               bite (oversteer); lower it for understeer. Only its ratio to Base \
+               Lateral Grip (Rear) really matters - move both together and you \
+               just change overall grip. Affects all cars. Stock 251904.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Basic,
+        target: Target::CodeData(0x1A963),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 251904,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k1_rear",
+        label: "Load Sensitivity Slope (Rear)",
+        help: "How fast the rear tyre LOSES grip per unit of load - real tyres \
+               get less grippy the harder you push them, and this is that \
+               falloff. SIGNED and negative: more negative = a sharper penalty \
+               for loading the tyre up, so weight transfer costs more grip. Works \
+               with Load Sensitivity Base (Rear). Affects all cars. Stock -87327.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A94F),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: -87327,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k1_front",
+        label: "Load Sensitivity Slope (Front)",
+        help: "The front twin of Load Sensitivity Slope (Rear). SIGNED and \
+               negative; stock makes the FRONT more load-sensitive than the rear \
+               (-117651 vs -87327), so the front loses grip faster as it is \
+               loaded. Affects all cars. Stock -117651.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A953),
+        width: 4,
+        signed: true,
+        encoding: Encoding::Raw,
+        stock: -117651,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k2_rear",
+        label: "Load Sensitivity Base (Rear)",
+        help: "The constant term of the rear tyre's load-sensitivity curve - its \
+               grip at the reference load, before the slope eats into it. Pairs \
+               with Load Sensitivity Slope (Rear). Affects all cars. Stock 33161.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A957),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 33161,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k2_front",
+        label: "Load Sensitivity Base (Front)",
+        help: "The front twin of Load Sensitivity Base (Rear). Affects all cars. \
+               Stock 35307.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A95B),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 35307,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k5_rear",
+        label: "Optimal Load (Rear)",
+        help: "The load at which the rear tyre is happiest - where it gives its \
+               best grip. Move it and you change which corners and which fuel \
+               loads suit the car. Affects all cars. Stock 1064.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A967),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 1064,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k5_front",
+        label: "Optimal Load (Front)",
+        help: "The front twin of Optimal Load (Rear); stock sets the front's \
+               optimum a little lower (972 vs 1064). Affects all cars. Stock 972.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A96B),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 972,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k6_rear",
+        label: "Curve Shape Slope (Rear)",
+        help: "Shapes how peaky the rear tyre's grip curve is - how sharply grip \
+               falls away once you pass the limit. Higher = a more knife-edge \
+               tyre that snaps; lower = a progressive one that slides gently. \
+               Pairs with Curve Shape Base (Rear). Affects all cars. Stock 18292.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A977),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 18292,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k6_front",
+        label: "Curve Shape Slope (Front)",
+        help: "The front twin of Curve Shape Slope (Rear). Stock makes the front \
+               curve far peakier than the rear (70249 vs 18292). Affects all \
+               cars. Stock 70249.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A97B),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 70249,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k7_rear",
+        label: "Curve Shape Base (Rear)",
+        help: "The constant term of the rear tyre's curve-shape function (see \
+               Curve Shape Slope (Rear)). Affects all cars. Stock 4000.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A97F),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4000,
+        range: None,
+    },
+    FieldDesc {
+        id: "tyre_k7_front",
+        label: "Curve Shape Base (Front)",
+        help: "The front twin of Curve Shape Base (Rear). Affects all cars. Stock \
+               6404.",
+        subtab: SubTab::Tyres,
+        tier: Tier::Advanced,
+        target: Target::CodeData(0x1A983),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 6404,
+        range: None,
+    },
 ];
 
 #[cfg(test)]

@@ -212,6 +212,18 @@ Every new field batch appends its rows here as `untested`.
 | `steer_master_clamp` | Max Steering Lock | Steering | Basic | untested |  |
 | `steer_base_lock` | Manual Base Lock | Steering | Adv | untested |  |
 | `tc_ramp_rate` | Traction-Control Ramp | Steering | Adv | untested |  |
+| `tyre_k3_rear` | Base Lateral Grip (Rear) | Tyres | Basic | untested |  |
+| `tyre_k3_front` | Base Lateral Grip (Front) | Tyres | Basic | untested |  |
+| `tyre_k1_rear` | Load Sensitivity Slope (Rear) | Tyres | Adv | untested |  |
+| `tyre_k1_front` | Load Sensitivity Slope (Front) | Tyres | Adv | untested |  |
+| `tyre_k2_rear` | Load Sensitivity Base (Rear) | Tyres | Adv | untested |  |
+| `tyre_k2_front` | Load Sensitivity Base (Front) | Tyres | Adv | untested |  |
+| `tyre_k5_rear` | Optimal Load (Rear) | Tyres | Adv | untested |  |
+| `tyre_k5_front` | Optimal Load (Front) | Tyres | Adv | untested |  |
+| `tyre_k6_rear` | Curve Shape Slope (Rear) | Tyres | Adv | untested |  |
+| `tyre_k6_front` | Curve Shape Slope (Front) | Tyres | Adv | untested |  |
+| `tyre_k7_rear` | Curve Shape Base (Rear) | Tyres | Adv | untested |  |
+| `tyre_k7_front` | Curve Shape Base (Front) | Tyres | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -221,7 +233,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 207 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 219 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
