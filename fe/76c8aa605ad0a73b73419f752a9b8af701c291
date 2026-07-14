@@ -1,0 +1,23 @@
+crates/gp2ws-core/src/tyre_fields.rs
+  s_43a31c3da013a9::t_db446b280e2a19 21-22,37,52-53,68-69,85-86,101-102,117-118,133-134,151-152
+crates/gp2ws-gui/src/magic_tab.rs
+  s_43a31c3da013a9::t_622bdf25c2ca05 16,21,26,31,46,51,56,61,66,76,107,112,117,122,127
+crates/gp2ws-core/src/physics_fields.rs
+  s_43a31c3da013a9::t_02e35404835024 43-44,58-59,73-74,89,281
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "fe76c8aa605ad0a73b73419f752a9b8af701c291",
+  "prompts": {},
+  "sessions": {
+    "s_43a31c3da013a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "36351be4-9eea-4942-b11c-adffaa1bb743",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
