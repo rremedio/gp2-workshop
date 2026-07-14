@@ -18,7 +18,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Wear Sensitivity A",
         help: "How fast compound A wears out, shown as a multiplier (1.0 = \
                baseline). Higher = wears faster. A is the hardest, most durable \
-               compound, so its wear is the lowest of the four. Stock 0.75.",
+               compound, so its wear is the lowest of the four. Old editor: \"Wear\" \
+               (Tire Types tab). Stock 0.75.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DDE),
@@ -33,7 +34,7 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Wear Sensitivity B",
         help: "How fast compound B wears out, shown as a multiplier (1.0 = \
                baseline). Higher = wears faster. B sits between hard A and the \
-               softer C/D. Stock 1.0.",
+               softer C/D. Old editor: \"Wear\" (Tire Types tab). Stock 1.0.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DDE + 4),
@@ -48,7 +49,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Wear Sensitivity C",
         help: "How fast compound C wears out, shown as a multiplier (1.0 = \
                baseline). Higher = wears faster. C is a soft compound and wears \
-               about twice as fast as hard A. Stock 1.5.",
+               about twice as fast as hard A. Old editor: \"Wear\" (Tire Types tab). \
+               Stock 1.5.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DDE + 8),
@@ -63,7 +65,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Wear Sensitivity D",
         help: "How fast compound D wears out, shown as a multiplier (1.0 = \
                baseline). Higher = wears faster. D is the softest, grippiest \
-               compound and wears by far the fastest (about 4x hard A). Stock 3.0.",
+               compound and wears by far the fastest (about 4x hard A). Old editor: \
+               \"Wear\" (Tire Types tab). Stock 3.0.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DDE + 12),
@@ -79,7 +82,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Base Grip A",
         help: "The base grip of compound A, shown as a multiplier (1.0 = \
                baseline). Higher = more grip. A is the hardest compound; in stock \
-               data the four compounds are only ~4% apart in grip. Stock ~1.135.",
+               data the four compounds are only ~4% apart in grip. Old editor: \"Grip\" \
+               (Tire Types tab). Stock ~1.135.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DEE),
@@ -94,7 +98,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Base Grip B",
         help: "The base grip of compound B, shown as a multiplier (1.0 = \
                baseline). Higher = more grip. Raise the softer compounds (or \
-               lower A) to make compound choice matter more. Stock ~1.150.",
+               lower A) to make compound choice matter more. Old editor: \"Grip\" (Tire \
+               Types tab). Stock ~1.150.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DEE + 4),
@@ -109,7 +114,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Base Grip C",
         help: "The base grip of compound C, shown as a multiplier (1.0 = \
                baseline). Higher = more grip. C is a soft compound - more grip \
-               than A/B but it wears faster. Stock ~1.166.",
+               than A/B but it wears faster. Old editor: \"Grip\" (Tire Types tab). \
+               Stock ~1.166.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DEE + 8),
@@ -124,7 +130,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         label: "Tyre Base Grip D",
         help: "The base grip of compound D, shown as a multiplier (1.0 = \
                baseline). Higher = more grip. D is the softest, grippiest \
-               compound but wears out the fastest. Stock ~1.182.",
+               compound but wears out the fastest. Old editor: \"Grip\" (Tire Types \
+               tab). Stock ~1.182.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DEE + 12),
@@ -141,7 +148,8 @@ pub static TYRE_FIELDS: &[FieldDesc] = &[
         help: "The grip a fully worn-out tyre keeps - grip never drops below this, \
                shown as a multiplier (1.0 = baseline). Higher = worn tyres stay \
                more usable; lower = a heavier penalty for old rubber. In stock \
-               data this is below even a fresh hard A. Stock ~1.094.",
+               data this is below even a fresh hard A. Old editor: \"Min\" (Tire Types \
+               tab). Stock ~1.094.",
         subtab: SubTab::Tyres,
         tier: Tier::Basic,
         target: Target::Data(0xD5DFE),

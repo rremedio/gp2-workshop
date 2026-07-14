@@ -13,22 +13,22 @@ pub const MAGIC_LABELS: [(&str, &str); 24] = [
     (
         "T1 Tyre/track grip",
         "Per-track grip level that also drives tyre wear. Higher = more grip but \
-         faster wear; this is the wear term that clearly slows the player too.",
+         faster wear; this is the wear term that clearly slows the player too. Old editor: \"Tire Wear\".",
     ),
     (
         "T2 Cornering grip (always)",
         "Per-track cornering-grip multiplier applied in both qualifying and the \
-         race. Higher = more cornering speed for every car.",
+         race. Higher = more cornering speed for every car. Old editor: \"Slot Grip\".",
     ),
     (
         "T3 Cornering grip (qual)",
         "Per-track cornering-grip multiplier used only in non-race sessions \
-         (qualifying/practice). Higher = more cornering speed there.",
+         (qualifying/practice). Higher = more cornering speed there. Old editor: \"Qual Grip 1\".",
     ),
     (
         "T4 Cornering grip (race)",
         "Per-track cornering-grip multiplier used only in the race. Higher = more \
-         cornering speed during the race.",
+         cornering speed during the race. Old editor: \"Race Grip 1\".",
     ),
     (
         "T5 Out-lap grip bias",
@@ -43,27 +43,27 @@ pub const MAGIC_LABELS: [(&str, &str); 24] = [
     (
         "T7 Driver pace (qual)",
         "Per-driver qualifying pace scaler for the AI (the player is always 1.0). \
-         Higher = faster AI driver in qualifying.",
+         Higher = faster AI driver in qualifying. Old editor: \"Qual Grip 2\".",
     ),
     (
         "T8 Driver pace (race)",
         "Per-driver race pace scaler for the AI (the player is always 1.0). \
-         Higher = faster AI driver in the race.",
+         Higher = faster AI driver in the race. Old editor: \"Race Grip 2\".",
     ),
     (
         "T9 Lap-clock rate (qual)",
         "Adjusts qualifying lap times without changing car speed - it tweaks how \
-         fast the lap clock counts. Higher = slower recorded laps.",
+         fast the lap clock counts. Higher = slower recorded laps. Old editor: \"Qual Timing\".",
     ),
     (
         "T10 Lap-clock rate (race)",
         "Adjusts race lap times without changing car speed - it tweaks how fast \
-         the lap clock counts. Higher = slower recorded laps.",
+         the lap clock counts. Higher = slower recorded laps. Old editor: \"Race Timing\".",
     ),
     (
         "T11 Difficulty grip (SemiPro)",
         "AI grip at the SemiPro difficulty for this track (Pro is interpolated \
-         from it). Higher = faster AI; Ace level is about 16384.",
+         from it). Higher = faster AI; Ace level is about 16384. Old editor: \"Semi-Pro Grip\".",
     ),
     (
         "T12 Difficulty grip (Rookie)",
@@ -73,7 +73,7 @@ pub const MAGIC_LABELS: [(&str, &str); 24] = [
     (
         "T13 CC mistake rate",
         "How often AI cars make a mistake in corners on this track. Higher = more \
-         AI mistakes; lower = cleaner AI driving.",
+         AI mistakes; lower = cleaner AI driving. Old editor: \"CC Mistake Rate\".",
     ),
     (
         "T14 Pit geometry",
@@ -104,27 +104,27 @@ pub const MAGIC_LABELS: [(&str, &str); 24] = [
     (
         "T19 Pit-in distance",
         "How many segments before the pit entry cars start leaving the racing line \
-         to dive into the pits. Varies per track (sometimes 0).",
+         to dive into the pits. Varies per track (sometimes 0). Old editor: \"Pit-in Distance\".",
     ),
     (
         "T20 Pit-out distance",
         "How many segments after the pit exit cars use to rejoin the racing line. \
-         Affects AI cars leaving the pits.",
+         Affects AI cars leaving the pits. Old editor: \"Pit-out Distance\".",
     ),
     (
         "T21 Pit-in speed",
         "The speed cars are held to while in the pit-in zone (the pit-lane speed). \
-         Higher = faster pit approach.",
+         Higher = faster pit approach. Old editor: \"Pit-in Speed\".",
     ),
     (
         "T22 Fuel burn (human)",
         "Per-track fuel-burn multiplier for the player (16384 = normal). Higher = \
-         you use more fuel per lap on this track.",
+         you use more fuel per lap on this track. Old editor: \"Human Fuel\".",
     ),
     (
         "T23 Fuel burn (CC)",
         "Per-track fuel-burn multiplier for the AI cars (16384 = normal). Higher = \
-         the AI uses more fuel per lap on this track.",
+         the AI uses more fuel per lap on this track. Old editor: \"CC Fuel\".",
     ),
     (
         "T24 Reference lap time",

@@ -40,7 +40,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "RPM Light 1",
         help: "The RPM at which the first cockpit shift light comes on. Purely \
                cosmetic, but bump it up if you raise the rev limiter or max RPM \
-               so the dashboard lights still make sense. Stock 7146.",
+               so the dashboard lights still make sense. Old editor: \
+               \"RPM Lights 1\". Stock 7146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6700),
@@ -54,7 +55,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         id: "rpm_light_2",
         label: "RPM Light 2",
         help: "The RPM at which the second cockpit shift light comes on. Purely \
-               cosmetic; raise it alongside the rev limiter / max RPM. Stock 8146.",
+               cosmetic; raise it alongside the rev limiter / max RPM. Old \
+               editor: \"RPM Lights 2\". Stock 8146.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6704),
@@ -68,7 +70,8 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         id: "rpm_light_3",
         label: "RPM Light 3",
         help: "The RPM at which the third cockpit shift light comes on. Purely \
-               cosmetic; raise it alongside the rev limiter / max RPM. Stock 8496.",
+               cosmetic; raise it alongside the rev limiter / max RPM. Old \
+               editor: \"RPM Lights 3\". Stock 8496.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD6708),
@@ -83,7 +86,7 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         label: "RPM Light 4",
         help: "The RPM at which the fourth (top) cockpit shift light comes on. \
                Purely cosmetic; raise it alongside the rev limiter / max RPM. \
-               Stock 8696.",
+               Old editor: \"RPM Lights 4\". Stock 8696.",
         subtab: SubTab::Engine,
         tier: Tier::Basic,
         target: Target::Data(0xD670C),
@@ -275,7 +278,7 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         help: "Overall braking power. Higher = shorter stopping distances. It \
                affects the human player strongly (you brake by feel), but only a \
                little for the AI, which brakes to hit a target corner speed either \
-               way. Stock 1441792.",
+               way. Old editor: \"Breaking Force\". Stock 1441792.",
         subtab: SubTab::Brakes,
         tier: Tier::Basic,
         target: Target::Data(0xD53FC),
