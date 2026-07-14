@@ -3295,6 +3295,61 @@ pub static PHYSICS_FIELDS: &[FieldDesc] = &[
         stock: 16384,
         range: None,
     },
+    // ---- Steering ----
+    FieldDesc {
+        id: "steer_master_clamp",
+        label: "Max Steering Lock",
+        help: "The hard ceiling on how far the front wheels can be steered, \
+               whatever the input. Higher = more lock available for tight corners \
+               and catching slides; lower = the car cannot turn as sharply at \
+               all. Affects all cars. Stock 6372.",
+        subtab: SubTab::Steering,
+        tier: Tier::Basic,
+        // Plan marked this width `2?`. The listing settles it as `dd` -> width 4:
+        // `000D61C4 dword_0_D61C4 dd 18E4h`. The block is genuinely MIXED
+        // (D61C0 dw / D61C4 dd / D61C8 dw), and width 2 would ALSO read 6372
+        // here because the high word is zero - so the stock test cannot tell
+        // the widths apart. Only the directive does.
+        target: Target::Data(0xD61C4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 6372,
+        range: None,
+    },
+    FieldDesc {
+        id: "steer_base_lock",
+        label: "Manual Base Lock",
+        help: "The baseline steering lock used when you are steering manually, \
+               before the speed-sensitive assist scales it. Higher = more \
+               steering per unit of input at the low-speed end. Sits under Max \
+               Steering Lock, which caps the result. Stock 2048.",
+        subtab: SubTab::Steering,
+        tier: Tier::Advanced,
+        target: Target::Data(0x1731E4),
+        width: 4,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 2048,
+        range: None,
+    },
+    FieldDesc {
+        id: "tc_ramp_rate",
+        label: "Traction-Control Ramp",
+        help: "How fast the traction-control aid winds power back when it detects \
+               wheelspin. Higher = it cuts in more abruptly; lower = it eases in. \
+               Only affects players driving with the traction-control aid \
+               switched on. Stock 4096.",
+        subtab: SubTab::Steering,
+        tier: Tier::Advanced,
+        // Listing confirms `dw` -> width 2: `000C9722 word_0_C9722 dw 1000h`.
+        target: Target::Data(0xC9722),
+        width: 2,
+        signed: false,
+        encoding: Encoding::Raw,
+        stock: 4096,
+        range: None,
+    },
 ];
 
 #[cfg(test)]

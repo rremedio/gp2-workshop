@@ -209,6 +209,9 @@ Every new field batch appends its rows here as `untested`.
 | `ge_clamp_rear` | GE Ride Clamp Rear | Aero | Adv | untested |  |
 | `ge_clamp_front` | GE Ride Clamp Front | Aero | Adv | untested |  |
 | `ge_master_scale` | Ground-Effect Master | Aero | Basic | untested |  |
+| `steer_master_clamp` | Max Steering Lock | Steering | Basic | untested |  |
+| `steer_base_lock` | Manual Base Lock | Steering | Adv | untested |  |
+| `tc_ramp_rate` | Traction-Control Ramp | Steering | Adv | untested |  |
 | `tyre_grip_a` | Tyre Wear Sensitivity A | Tyres | Basic | untested |  |
 | `tyre_grip_b` | Tyre Wear Sensitivity B | Tyres | Basic | untested |  |
 | `tyre_grip_c` | Tyre Wear Sensitivity C | Tyres | Basic | untested |  |
@@ -218,7 +221,7 @@ Every new field batch appends its rows here as `untested`.
 | `tyre_base_c` | Tyre Base Grip C | Tyres | Basic | untested |  |
 | `tyre_base_d` | Tyre Base Grip D | Tyres | Basic | untested |  |
 | `tyre_worn_floor` | Worn Tyre Floor | Tyres | Basic | untested |  |
-**Count:** 204 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
+**Count:** 207 fields (registry: `PHYSICS_FIELDS` + `TYRE_FIELDS`).
 
 ## Magic data (24 per-track tables)
 
