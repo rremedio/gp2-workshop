@@ -1,0 +1,21 @@
+.gitignore
+  s_f4f56f1b3e0304::t_e9c99eecf075ed 10-12
+docs/NEW-FIELD-CANDIDATES.md
+  s_f4f56f1b3e0304::t_22043eb0166729 299
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "c364a0a1dee9f57248ef3e3e41752ae5526450f5",
+  "prompts": {},
+  "sessions": {
+    "s_f4f56f1b3e0304": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "291f7ed5-0cfb-427b-b1b8-76b00c24dca1",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
