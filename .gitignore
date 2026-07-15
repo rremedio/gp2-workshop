@@ -24,3 +24,6 @@ GP2-Workshop-*.zip
 *~
 .DS_Store
 Thumbs.db
+
+# implementation plans are local working docs
+docs/plans/
