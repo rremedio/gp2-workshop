@@ -10,3 +10,17 @@ GP2WS_TEST_EXE
 
 # build artifacts (release zips)
 GP2-Workshop-*.zip
+
+# copyrighted game data (tracks, jams) — never commit, same as GP2.EXE
+*.DAT
+*.dat
+*.JAM
+*.jam
+
+# editor / OS junk
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
