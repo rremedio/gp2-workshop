@@ -56,6 +56,17 @@ cars themselves (mostly *every* car, unless a description says "player only" or
 | **RPM Light 2** | RPM for the *second* cockpit shift light. Cosmetic; raise it alongside the rev limiter / max RPM. | 8146 |
 | **RPM Light 3** | RPM for the *third* cockpit shift light. Cosmetic. | 8496 |
 | **RPM Light 4** | RPM for the *fourth (top)* cockpit shift light. Cosmetic. | 8696 |
+| **Engine Force Scale** | Overall engine power, in one number — every car, every gear, on top of the Power Curve shape. Raise it for more grunt everywhere, lower it for a gentler grid. | 15728 |
+| **Engine Braking** | How much the engine slows the car when you lift off the throttle in gear. Higher = the car "sits down" more on a lift; lower = it coasts more freely. | 2560 |
+
+*Advanced here:* the Engine-Brake Pitch Factor (how much lifting off pitches the
+nose), Idle RPM, Misfire Probability (only matters once an engine failure has
+started), and the three gearbox RPM gates — **Upshift Block Wheel-RPM** and the
+two **Shift Re-Engage RPM** values. Those three exist for one job: building
+low-revving engines. Stock GP2 refuses upshifts below 9000 wheel-RPM and won't
+re-engage the clutch after a shift below 8000–9000, so an engine limited to,
+say, 6500 RPM can never shift — lower these gates together with the Rev
+Limiter (roughly proportionally) and low-rev engines become driveable.
 
 ### Power Curve
 
@@ -86,6 +97,14 @@ top-speed-killing drag they cost.
 | **Lateral Drag X** | Advanced | Sideways air resistance along one axis (felt mostly when the car is sliding). Subtle and not well confirmed — test before changing much. | 6656 |
 | **Lateral Drag Y** | Advanced | Sideways air resistance along the other axis. Subtle and not well confirmed. | 22528 |
 | **Rear Wing Drag Factor** | Advanced | An extra multiplier on rear-wing drag, tied into the slipstream maths. Prefer the Rear Drag Slope/Floor settings for normal tuning. | 4096 |
+| **Reference Rake** | Basic | The nose-down "rake" angle the car's ground effect is happiest at. Downforce falls off as the car's actual attitude drifts away from this. Pairs with your ride-height setups: change one, re-tune the other. | 13760 |
+| **Ground-Effect Master** | Basic | One knob for the *whole* ride-height/rake downforce effect. Stock 16384 = exactly 1.0 — the developers left it neutral, so this is a hidden lever: raise it and running the car low is rewarded much more; 0 switches ground effect off entirely. | 16384 |
+
+*Advanced here:* the individual ground-effect terms (rake sensitivities, front
+ride sensitivity and reference, and the rear/front ride clamps where the effect
+maxes out), plus the three **Wing Damage** values — how much downforce a broken
+rear or front wing costs (stock −25%) and how much the front end gains when
+only the rear wing is gone (+25%).
 
 ### Brakes
 
@@ -109,6 +128,12 @@ top-speed-killing drag they cost.
 | **Packer Factor** | Advanced | Scales the suspension bump rubbers and ride heights. Subtle, and only matters with advanced setup on. | 14091072 |
 | **Rebound Factor** | Advanced | Scales the suspension dampers (how the springs settle after bumps). Subtle. | 5529600 |
 | **Min Grip Clamp** | Advanced | A floor on grip so it never drops below a set minimum. Raising it guarantees more baseline grip; rarely needs touching. | 11264 |
+| **Fuel Burn Base** | Basic | How fast every car burns fuel, everywhere. Higher = more consumption per lap (heavier strategy pressure); lower = economy runs. For a single track, use Magic Data values 22–23 instead. | 2048 |
+
+*Advanced here:* the two **Fuel Weight** values (together they set how *heavy*
+each lap of fuel is — how much a full tank actually slows the car), and the
+starting fuel loads for **Qualifying** (stock 4 laps + 1) and **Practice**
+(stock 12 laps).
 
 ### Tyres
 
@@ -145,6 +170,23 @@ faster).
 **Worn Tyre Floor** *(one shared value, all compounds)* — the grip a fully
 worn-out tyre keeps; grip never drops below this. Higher = worn tyres stay more
 usable; lower = a heavier penalty for old rubber. Stock ~1.094.
+
+**Tyre behaviour (applies to every compound):**
+
+| Setting | Everyday meaning | Stock |
+|---|---|---|
+| **Base Lateral Grip (Rear)** | How much sideways grip the rear tyres make. The front/rear pair is the game's built-in balance: raise the rear (or lower the front) for a more planted, understeery car; the other way round for a livelier, oversteery one. | 327616 |
+| **Base Lateral Grip (Front)** | The front half of that balance. Note stock is rear-biased — that's a big part of why GP2 feels stable. | 251904 |
+| **Tyre Wear Rate (Rear L/R)** | How fast the rear tyres wear, per wheel. | 640 each |
+| **Tyre Wear Rate (Front L/R)** | Same for the fronts. Stock fronts wear ~1.6× faster than rears, which is why the front end goes off first — even the values out (or flip them) to change which end gives up first. | 1024 each |
+| **Rear Pure-Lateral Blend** | How the rear behaves when it's sliding sideways *and* driving at the same time. Higher leans on the pure-sideways grip more (a steadier rear under power); lower makes power cost more sideways grip (snappier). Subtle — test in-game. | 6144 |
+
+*Advanced here:* Slip Sensitivity (how sharply grip responds to slip angle),
+Segment Grip Boost (the small extra grip some track segments grant), and the
+rear/front tyre-curve pairs — Load Sensitivity Slope/Base (how grip falls away
+as load rises), Optimal Load (the load where each axle's grip peaks) and Curve
+Shape Slope/Base (how peaky or forgiving the slide is). These reshape the heart
+of the tyre model; change one pair at a time and keep notes.
 
 ### Slipstream / Tow (the draft behind another car)
 
@@ -237,10 +279,11 @@ up, so expect surprises).
 | **Spring Rate Scale** | Basic | A global multiplier on every spring setting in the garage. Use it to re-centre the whole setup range rather than editing setups. | 1966080 |
 | **Anti-Roll Bar Scale** | Basic | The same idea for both anti-roll bars — the knob for making ARB choice actually matter. | 196608 |
 
-*Advanced here:* per-wheel tyre damping, free length, bump-stop rates and packer
-caps, droop stiffness, bump/rebound ratio, the damper knee pair (keep it
-mirrored), bottoming stiffness, plank wear, and the heave/pitch/roll soft-limit
-knee+gain pairs.
+*Advanced here:* the four **Tyre Spring Init** values (keep each equal to Tyre
+Spring Rate ÷ 120), per-wheel tyre damping, suspension travel, bump-stop rates
+and packer caps, droop stiffness, bump/rebound ratio, the damper knee pair
+(keep it mirrored: one positive, one the same value negative), bottoming
+stiffness, plank wear, and the heave/pitch/roll soft-limit knee+gain pairs.
 
 ### Surfaces
 
@@ -254,8 +297,10 @@ grass, gravel.
 | **Traction: Low Kerb** | Basic | How well power goes down on a low kerb. Stock is *tiny* (1024 vs 16384 on track) — this is why kerbs light the wheels up. | 1024 |
 | **Traction: High Kerb** | Basic | The same for high kerbs. | 1024 |
 
-*Advanced here:* grip/traction/roughness for the remaining classes, and the three
-bump amplitudes.
+*Advanced here:* grip/traction/roughness for the remaining classes, the three
+bump amplitudes, and the default **kerb profile shapes** — two width points and
+two height points for each of the two kerb types (A = high, B = low), which set
+how wide and how tall kerbs are on tracks that don't define their own.
 
 > **Note on the "wet" tables.** GP2 ships a full second set of surface values for
 > wet weather, but the blend factor that would mix them in is 0 and nothing in
@@ -314,7 +359,7 @@ Here's what each of the 24 values means:
 | 2 | **Cornering grip (always)** | Per-track cornering-grip multiplier applied in *both* qualifying and the race. Higher = more cornering speed for every car. |
 | 3 | **Cornering grip (qual)** | Per-track cornering-grip multiplier used only in non-race sessions (qualifying/practice). |
 | 4 | **Cornering grip (race)** | Per-track cornering-grip multiplier used only in the race. |
-| 5 | **Out-lap grip bias** | A small extra grip bias felt most on the out-lap / early laps (the "miss corners at the start" feel). |
+| 5 | **AI bravery (lap 1 pace & mistakes)** | How much faster than its own "safe" cornering speed the AI dares to go at this track. Shows up mostly early: higher = a quicker first flying lap and bolder opening corners (AI brakes later behind rivals and runs side by side longer). From lap 2 the AI is allowed to make mistakes, and a higher value also makes those mistakes bigger — so overall race pace barely changes, the AI just gets braver *and* scrappier. For a clean all-race speed change use tables 2–4 or 7–8 instead. AI only. |
 | 6 | **Dead data** | The game ignores this — it has no effect. Leave it as-is. (Kept only so saved files match the original layout.) |
 | 7 | **Driver pace (qual)** | Per-driver qualifying pace for the AI (the player is always normal). Higher = faster AI driver in qualifying. |
 | 8 | **Driver pace (race)** | Per-driver race pace for the AI. Higher = faster AI driver in the race. |
@@ -355,10 +400,22 @@ Here's what each of the 24 values means:
   draft — it only ever makes the AI brake *harder*.)
 - **Make the AI brake harder for traffic** → Physics ▸ AI Racecraft ▸ **AI Max
   Braking / Tick** (more negative), or raise **AI Speed-Scaled Braking** from 0.
-- **Make fuel strategy more important** → Physics ▸ Mass/Grip ▸ **Fuel Factor**
-  (all tracks), or Magic Data values **22–23** (per-track fuel burn).
+- **Make fuel strategy more important** → Physics ▸ Mass/Grip ▸ **Fuel Burn
+  Base** (how much fuel is used) and **Fuel Factor** (how heavy it is), or Magic
+  Data values **22–23** (per-track fuel burn).
+- **Give every car more (or less) power** → Physics ▸ Engine ▸ **Engine Force
+  Scale** — one number, no need to redraw the Power Curve.
+- **Dial in understeer / oversteer for everyone** → Physics ▸ Tyres ▸ nudge
+  **Base Lateral Grip (Rear)** vs **(Front)** toward each other or apart.
 - **Raise the rev ceiling** → Physics ▸ Engine ▸ **Rev Limiter** and **Max
   RPM**, then nudge **RPM Light 1–4** up so the dash lights still match.
+- **Build a low-revving engine** (e.g. a 6500 RPM classic) → lower **Rev
+  Limiter** / **Max RPM**, reshape the **Power Curve**, then lower the three
+  shift RPM gates in Engine ▸ Advanced and re-gear with Drivetrain ▸ **Final
+  Drive Divisor** — without the gates the car can't shift; without the gearing
+  it runs out of speed.
+- **Make lap 1 wilder (or calmer) at one track** → Magic Data value **5**
+  (AI bravery).
 - **Undo a mess** → use the **↺ stock** button on a single field, or **Reset all
   to stock** to return everything to factory values.
 

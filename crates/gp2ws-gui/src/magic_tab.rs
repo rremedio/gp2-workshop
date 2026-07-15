@@ -31,9 +31,18 @@ pub const MAGIC_LABELS: [(&str, &str); 24] = [
          cornering speed during the race. Old editor: \"Race Grip 1\".",
     ),
     (
-        "T5 Out-lap grip bias",
-        "A small extra grip bias felt most on the out-lap / early laps (the \
-         \"miss corners at the start\" feel). Higher = more early-lap grip.",
+        "T5 AI bravery (lap 1 pace & mistakes)",
+        "How much faster than its own \"safe\" cornering speed the AI dares to \
+         go at this track. The effect shows up mostly at the start of a run: a \
+         higher value makes the AI noticeably quicker on the first flying lap \
+         and bolder into the opening corners - cars brake later behind a rival \
+         and stay side by side longer. From lap 2 onwards the game starts \
+         letting the AI make mistakes, and a higher value also makes those \
+         mistakes bigger (overcooked corners, lifting to recover), so overall \
+         race pace barely changes - the AI just gets braver AND scrappier. For \
+         a clean all-race AI speed change use the grip/pace tables instead. \
+         AI only. Old editor: \"Unknown 5\"; previously mislabelled \"Out-lap \
+         grip bias\" here.",
     ),
     (
         "T6 Dead data",
