@@ -1,0 +1,21 @@
+Cargo.lock
+  s_f4f56f1b3e0304::t_358bce7b218c00 1236,1245
+Cargo.toml
+  s_f4f56f1b3e0304::t_f16e661e0ccb65 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "356902262825125c3f3236b48d2053d7e1870284",
+  "prompts": {},
+  "sessions": {
+    "s_f4f56f1b3e0304": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "291f7ed5-0cfb-427b-b1b8-76b00c24dca1",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Roberto Remedio <rremedio@gmail.com>"
+    }
+  }
+}
