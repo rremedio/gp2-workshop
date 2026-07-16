@@ -4,7 +4,7 @@ members = ["crates/gp2ws-core", "crates/gp2ws-gui"]
 
 [workspace.package]
 edition = "2021"
-version = "0.1.0"
+version = "0.2.0"
 
 # Vendored arboard (clipboard backend pulled in by eframe/egui-winit). The only
 # change vs. crates.io 3.6.1 is dropping the PathCchStripPrefix call, which
