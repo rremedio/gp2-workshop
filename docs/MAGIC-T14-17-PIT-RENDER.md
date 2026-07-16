@@ -342,16 +342,21 @@ case; what it costs is the tuning knob, not a safety net.
 
 ---
 
-## 9. Pending in this repo (blocked on the format decision)
+## 9. Pending in this repo — **RESOLVED 2026-07-16**
 
-- `MAGIC_LAYOUT` (`crates/gp2ws-core/src/magic.rs`) models T14–17 as four
-  stride-6 arrays — the community permutation. Not corrupting for whole-EXE
-  round-trips (§6), but wrong per slot and unable to reach the offsets.
-- `MAGIC_LABELS` (`crates/gp2ws-gui/src/magic_tab.rs`) still describes T14–17 as
-  "Part of the pit-lane entry/exit positioning for this track", which is the
-  superseded pit-*driving* reading. **Known wrong; left in place deliberately**
-  because any honest rewrite depends on whether the four cells survive as cells
-  at all.
+The format decision landed (with Roberto): `.m2d` v2 = 28 lines in strict EXE
+address order — dead T6 dropped, the four community T14–17 slices replaced by
+the six true record fields (stride 12), and the three 2026-07 RE tables
+(D58D4, D5A3A, D5A3C) included. Same `.m2d` extension; version detected by
+line count (24 = legacy, 28 = v2). Legacy files still load and export, but the
+record + new fields are skipped on export (a single-slot legacy write would
+corrupt other slots per §6); files are only ever saved as v2.
+
+- `MAGIC_LAYOUT` (`crates/gp2ws-core/src/magic.rs`) now models the true
+  stride-12 record (signed angles, unsigned offsets) — byte-verified against
+  the pristine EXE (Brazil record `[1792, −512, 4, −2176, 2048, 4]`).
+- `MAGIC_LABELS` rewritten: six "Pit view" fields with the render-side
+  reading, including the unchecked-offset blank-screen warning (§5).
 
 ## 10. Corrections owed to `~/vaults/gp2/docs/`
 

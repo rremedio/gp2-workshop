@@ -99,18 +99,24 @@ impl Session {
 
     // ---- Magic-data helpers -------------------------------------------------
 
-    /// Read all 24 magic-data words for `slot` (0..15). Requires calibration.
-    pub fn read_magic_slot(&self, slot: usize) -> Result<[u16; 24], Error> {
+    /// Read all 28 magic-data values for `slot` (0..15). Requires calibration.
+    pub fn read_magic_slot(&self, slot: usize) -> Result<[i32; magic::MAGIC_COUNT], Error> {
         let delta = self.delta().ok_or(Error::NotCalibrated)?;
         Ok(magic::read_slot(&self.img, delta, slot))
     }
 
-    /// Write all 24 magic-data words for `slot` (0..15) into the in-memory
-    /// image. Call [`Session::save_backup_and_write`] to persist. Requires
-    /// calibration.
-    pub fn write_magic_slot(&mut self, slot: usize, vals: &[u16; 24]) -> Result<(), Error> {
+    /// Write magic-data values for `slot` (0..15) into the in-memory image.
+    /// With `legacy` set (data loaded from a 24-line `.m2d`), the pit-record
+    /// and new AI fields are skipped — see [`magic::NOT_IN_LEGACY`]. Call
+    /// [`Session::save_backup_and_write`] to persist. Requires calibration.
+    pub fn write_magic_slot(
+        &mut self,
+        slot: usize,
+        vals: &[i32; magic::MAGIC_COUNT],
+        legacy: bool,
+    ) -> Result<(), Error> {
         let delta = self.delta().ok_or(Error::NotCalibrated)?;
-        magic::write_slot(&mut self.img, delta, slot, vals);
+        magic::write_slot(&mut self.img, delta, slot, vals, legacy);
         Ok(())
     }
 
@@ -187,8 +193,14 @@ mod tests {
         let mut session = Session::open(&path).unwrap();
 
         // Edit a magic slot, persist, reopen, confirm it stuck.
-        let vals: [u16; 24] = core::array::from_fn(|i| (i as u16) * 13 + 1);
-        session.write_magic_slot(2, &vals).unwrap();
+        let vals: [i32; magic::MAGIC_COUNT] = core::array::from_fn(|i| {
+            if magic::MAGIC_LAYOUT[i].signed {
+                -((i as i32) * 13 + 1)
+            } else {
+                (i as i32) * 13 + 1
+            }
+        });
+        session.write_magic_slot(2, &vals, false).unwrap();
         session.save_backup_and_write().unwrap();
 
         // Backup was created.

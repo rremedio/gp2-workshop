@@ -128,7 +128,7 @@ only the rear wing is gone (+25%).
 | **Packer Factor** | Advanced | Scales the suspension bump rubbers and ride heights. Subtle, and only matters with advanced setup on. | 14091072 |
 | **Rebound Factor** | Advanced | Scales the suspension dampers (how the springs settle after bumps). Subtle. | 5529600 |
 | **Min Grip Clamp** | Advanced | A floor on grip so it never drops below a set minimum. Raising it guarantees more baseline grip; rarely needs touching. | 11264 |
-| **Fuel Burn Base** | Basic | How fast every car burns fuel, everywhere. Higher = more consumption per lap (heavier strategy pressure); lower = economy runs. For a single track, use Magic Data values 22–23 instead. | 2048 |
+| **Fuel Burn Base** | Basic | How fast every car burns fuel, everywhere. Higher = more consumption per lap (heavier strategy pressure); lower = economy runs. For a single track, use the Magic Data fuel-burn values (T22/T23) instead. | 2048 |
 
 *Advanced here:* the two **Fuel Weight** values (together they set how *heavy*
 each lap of fuel is — how much a full tank actually slows the car), and the
@@ -336,49 +336,63 @@ affects players running the traction-control aid).
 ## Magic Data (per-track and per-driver tuning)
 
 The **Magic Data** tab is a more advanced area. Where the Physics tab changes
-the cars themselves, Magic Data holds **24 separate tuning values that the game
+the cars themselves, Magic Data holds **28 separate tuning values that the game
 keeps for each of 16 entries** (the app calls them **slots 1–16**, roughly
 corresponding to the championship's tracks/cars).
 
 How to think about it:
 
-- Pick a **slot (1–16)** at the top, then edit the **24 values** for that slot
+- Pick a **slot (1–16)** at the top, then edit the **28 values** for that slot
   in the grid below.
 - You can **Import/Export** a slot straight to/from the game, or **Load/Save**
-  it as a `.m2d` file. **One `.m2d` file holds one slot** (24 numbers). These
-  files are compatible with the old GP2 magic-data editors.
+  it as a `.m2d` file. **One `.m2d` file holds one slot** — 28 numbers, one
+  per line, in the same order as the grid.
+- **Old `.m2d` files still load.** Files from the classic editors (24 lines)
+  open fine; the values they don't carry (the six *Pit view* fields and the
+  three *new* AI fields) simply stay untouched in your game when you Export.
+  Saving always writes the new 28-line format — old editors can't read those
+  files, so don't hand them to someone still on a classic tool.
+- **Why the change?** The classic format's four "pit geometry" values (old
+  T14–T17) turned out to be a scrambled view of six real values, mixed
+  *across* tracks — editing them for one track silently changed two others.
+  The new format fixes that (and drops old T6, which the game never reads).
 - Most of these are very situational. The ones most people actually touch are
   the **AI difficulty/pace** values and **fuel burn**; the rest (especially the
-  pit-geometry ones) are best left at stock.
+  pit-view ones) are best left at stock.
 
-Here's what each of the 24 values means:
+Here's what each of the 28 values means (in file/grid order — classic values
+keep their old "T" numbers):
 
 | # | Name | What it does |
 |---|---|---|
-| 1 | **Tyre/track grip** | Per-track grip level that also drives tyre wear. Higher = more grip but faster wear; this is the wear term that clearly slows the player too. |
-| 2 | **Cornering grip (always)** | Per-track cornering-grip multiplier applied in *both* qualifying and the race. Higher = more cornering speed for every car. |
-| 3 | **Cornering grip (qual)** | Per-track cornering-grip multiplier used only in non-race sessions (qualifying/practice). |
-| 4 | **Cornering grip (race)** | Per-track cornering-grip multiplier used only in the race. |
-| 5 | **AI bravery (lap 1 pace & mistakes)** | How much faster than its own "safe" cornering speed the AI dares to go at this track. Shows up mostly early: higher = a quicker first flying lap and bolder opening corners (AI brakes later behind rivals and runs side by side longer). From lap 2 the AI is allowed to make mistakes, and a higher value also makes those mistakes bigger — so overall race pace barely changes, the AI just gets braver *and* scrappier. For a clean all-race speed change use tables 2–4 or 7–8 instead. AI only. |
-| 6 | **Dead data** | The game ignores this — it has no effect. Leave it as-is. (Kept only so saved files match the original layout.) |
-| 7 | **Driver pace (qual)** | Per-driver qualifying pace for the AI (the player is always normal). Higher = faster AI driver in qualifying. |
-| 8 | **Driver pace (race)** | Per-driver race pace for the AI. Higher = faster AI driver in the race. |
-| 9 | **Lap-clock rate (qual)** | Adjusts qualifying lap *times* without changing car speed — it tweaks how fast the lap clock counts. Higher = slower recorded laps. |
-| 10 | **Lap-clock rate (race)** | Same idea for the race. Higher = slower recorded laps. |
-| 11 | **Difficulty grip (SemiPro)** | AI grip at the SemiPro difficulty for this track (Pro is worked out from it). Higher = faster AI. |
-| 12 | **Difficulty grip (Rookie)** | AI grip at the Rookie difficulty (Amateur is worked out from this and SemiPro). Higher = faster AI at the easier levels. |
-| 13 | **CC mistake rate** | How often AI cars make a mistake in corners on this track. Higher = more AI mistakes; lower = cleaner AI driving. |
-| 14 | **Pit geometry** | Part of the pit-lane entry/exit positioning. Best left alone. |
-| 15 | **Pit geometry** | Part of the pit-lane entry/exit positioning. Best left alone. |
-| 16 | **Pit geometry** | Part of the pit-lane entry/exit positioning. Best left alone. |
-| 17 | **Pit geometry** | Part of the pit-lane entry/exit positioning. Best left alone. |
-| 18 | **Pit-approach zone** | Length of the zone before the pit entry where the AI eases off so cars don't pile up at the pit mouth. |
-| 19 | **Pit-in distance** | How far before the pit entry cars start leaving the racing line to dive into the pits. |
-| 20 | **Pit-out distance** | How far after the pit exit cars use to rejoin the racing line. |
-| 21 | **Pit-in speed** | The speed cars are held to in the pit-in zone (the pit-lane speed). Higher = faster pit approach. |
-| 22 | **Fuel burn (human)** | Per-track fuel-burn rate for the player (normal = no change). Higher = you use more fuel per lap on this track. |
-| 23 | **Fuel burn (CC)** | Per-track fuel-burn rate for the AI cars. Higher = the AI uses more fuel per lap. |
-| 24 | **Reference lap time** | A reference lap time (in milliseconds) used by the race-director timing — *not* car performance. Set it to the real track lap time; it does **not** make cars faster or slower. |
+| 1 | **T1 Tyre/track grip** | Per-track grip level that also drives tyre wear. Higher = more grip but faster wear; this is the wear term that clearly slows the player too. |
+| 2 | **T2 Cornering grip (always)** | Per-track cornering-grip multiplier applied in *both* qualifying and the race. Higher = more cornering speed for every car. |
+| 3 | **T3 Cornering grip (qual)** | Per-track cornering-grip multiplier used only in non-race sessions (qualifying/practice). |
+| 4 | **T4 Cornering grip (race)** | Per-track cornering-grip multiplier used only in the race. |
+| 5 | **AI consistency floor** *(new)* | How good the AI's *worst* corners are at this track. Positive = steadier AI with fewer weak corners; negative = scrappier. The game ships this as 0 everywhere — a dormant knob. AI only. |
+| 6 | **T5 AI bravery (lap 1 pace & mistakes)** | How much faster than its own "safe" cornering speed the AI dares to go at this track. Shows up mostly early: higher = a quicker first flying lap and bolder opening corners (AI brakes later behind rivals and runs side by side longer). From lap 2 the AI is allowed to make mistakes, and a higher value also makes those mistakes bigger — so overall race pace barely changes, the AI just gets braver *and* scrappier. For a clean all-race speed change use the grip/pace tables instead. AI only. |
+| 7 | **T7 Driver pace (qual)** | Per-driver qualifying pace for the AI (the player is always normal). Higher = faster AI driver in qualifying. |
+| 8 | **T8 Driver pace (race)** | Per-driver race pace for the AI. Higher = faster AI driver in the race. |
+| 9 | **T9 Lap-clock rate (qual)** | Adjusts qualifying lap *times* without changing car speed — it tweaks how fast the lap clock counts. Higher = slower recorded laps. |
+| 10 | **T10 Lap-clock rate (race)** | Same idea for the race. Higher = slower recorded laps. |
+| 11 | **T11 Difficulty grip (SemiPro)** | AI grip at the SemiPro difficulty for this track (Pro is worked out from it). Higher = faster AI. |
+| 12 | **T12 Difficulty grip (Rookie)** | AI grip at the Rookie difficulty (Amateur is worked out from this and SemiPro). Higher = faster AI at the easier levels. |
+| 13 | **T13 CC mistake rate** | How often AI cars make a mistake in corners on this track. Higher = more AI mistakes; lower = cleaner AI driving. |
+| 14 | **AI mistake severity min** *(new)* | The *smallest* extra corner speed an AI mistake carries at this track. Higher = even minor errors become obvious wobbles. Stock 512. AI only. |
+| 15 | **AI mistake severity max** *(new)* | The *largest* extra corner speed an AI mistake can carry. Raise it for spectacular offs, lower it for gentle wobbles. Stock 2048. AI only. |
+| 16 | **Pit view: entry angle A** | Purely visual: fine-tunes how track and pit-lane 3D graphics overlap at the pit entry. These six values replace the old T14–T17. Wrong values = glitched buildings near the pits; never affects driving. |
+| 17 | **Pit view: entry angle B** | Partner of entry angle A — past this angle the draw order of track vs pit lane flips. Purely visual. |
+| 18 | **Pit view: entry overlap trim** | How many track pieces the pit-entry overlap check covers (stock 3–8). ⚠️ Unchecked by the game — a large value can blank the screen near the pits. Keep it small. |
+| 19 | **Pit view: exit angle A** | Same as entry angle A, for the pit *exit*. Purely visual. |
+| 20 | **Pit view: exit angle B** | Same as entry angle B, for the pit *exit*. Purely visual. |
+| 21 | **Pit view: exit overlap trim** | Same as the entry trim, for the pit *exit* (stock 3–8, keep small). |
+| 22 | **T18 Pit-approach zone** | Length of the zone before the pit entry where the AI eases off so cars don't pile up at the pit mouth. |
+| 23 | **T19 Pit-in distance** | How far before the pit entry cars start leaving the racing line to dive into the pits. |
+| 24 | **T20 Pit-out distance** | How far after the pit exit cars use to rejoin the racing line. |
+| 25 | **T21 Pit-in speed** | The speed cars are held to in the pit-in zone (the pit-lane speed). Higher = faster pit approach. |
+| 26 | **T22 Fuel burn (human)** | Per-track fuel-burn rate for the player (normal = no change). Higher = you use more fuel per lap on this track. |
+| 27 | **T23 Fuel burn (CC)** | Per-track fuel-burn rate for the AI cars. Higher = the AI uses more fuel per lap. |
+| 28 | **T24 Reference lap time** | A reference lap time (in milliseconds) used by the race-director timing — *not* car performance. Set it to the real track lap time; it does **not** make cars faster or slower. |
 
 ---
 
@@ -386,9 +400,10 @@ Here's what each of the 24 values means:
 
 - **Make the AI faster / slower overall** → Physics ▸ Mass/Grip ▸ **CC Grip
   (Qualifying)** and **CC Grip (Race)**. For a single track or difficulty, use
-  Magic Data values **11–12** (difficulty grip) and **7–8** (driver pace).
-- **Let computer cars make more/fewer mistakes** → Magic Data value **13**
-  (CC mistake rate).
+  the Magic Data difficulty-grip (T11/T12) and driver-pace (T7/T8) values.
+- **Let computer cars make more/fewer mistakes** → Magic Data **T13
+  CC mistake rate** (and the two *AI mistake severity* values for how big
+  the mistakes are).
 - **Make tyre choice actually matter** → Physics ▸ Tyres ▸ spread the four
   **Base Grip** values further apart, and make the soft compounds (C, D) wear
   faster with **Wear Sensitivity**.
@@ -401,8 +416,8 @@ Here's what each of the 24 values means:
 - **Make the AI brake harder for traffic** → Physics ▸ AI Racecraft ▸ **AI Max
   Braking / Tick** (more negative), or raise **AI Speed-Scaled Braking** from 0.
 - **Make fuel strategy more important** → Physics ▸ Mass/Grip ▸ **Fuel Burn
-  Base** (how much fuel is used) and **Fuel Factor** (how heavy it is), or Magic
-  Data values **22–23** (per-track fuel burn).
+  Base** (how much fuel is used) and **Fuel Factor** (how heavy it is), or the Magic
+  Data fuel-burn values (T22/T23) for one track.
 - **Give every car more (or less) power** → Physics ▸ Engine ▸ **Engine Force
   Scale** — one number, no need to redraw the Power Curve.
 - **Dial in understeer / oversteer for everyone** → Physics ▸ Tyres ▸ nudge
@@ -414,8 +429,8 @@ Here's what each of the 24 values means:
   shift RPM gates in Engine ▸ Advanced and re-gear with Drivetrain ▸ **Final
   Drive Divisor** — without the gates the car can't shift; without the gearing
   it runs out of speed.
-- **Make lap 1 wilder (or calmer) at one track** → Magic Data value **5**
-  (AI bravery).
+- **Make lap 1 wilder (or calmer) at one track** → Magic Data **T5
+  AI bravery**.
 - **Undo a mess** → use the **↺ stock** button on a single field, or **Reset all
   to stock** to return everything to factory values.
 

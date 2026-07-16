@@ -35,8 +35,11 @@ pub struct App {
     // ---- Magic Data tab state ----
     /// Selected slot, 0-based (UI shows 1..16).
     pub magic_slot: usize,
-    /// Editable text buffers for the 24 magic words of the current slot.
-    pub magic_buf: [String; 24],
+    /// Editable text buffers for the 28 magic values of the current slot.
+    pub magic_buf: [String; gp2ws_core::magic::MAGIC_COUNT],
+    /// True when the buffers were filled from a legacy 24-line `.m2d`: the
+    /// pit-view / new AI fields are absent and must be skipped on export.
+    pub magic_legacy: bool,
 
     // ---- Physics tab state ----
     /// Active physics sub-tab.
@@ -72,6 +75,7 @@ impl Default for App {
             tab: Tab::MagicData,
             magic_slot: 0,
             magic_buf: core::array::from_fn(|_| String::new()),
+            magic_legacy: false,
             subtab: SubTab::Engine,
             show_advanced: false,
             physics: None,
@@ -168,6 +172,8 @@ impl App {
                 for (b, v) in self.magic_buf.iter_mut().zip(vals.iter()) {
                     *b = v.to_string();
                 }
+                // EXE data is complete — clear any legacy-file marker.
+                self.magic_legacy = false;
             }
         }
     }
@@ -337,8 +343,10 @@ mod tests {
         app.open_path(path.clone());
 
         assert!(app.is_calibrated());
-        // Magic buffers are filled (24 entries, all parseable).
-        assert!(app.magic_buf.iter().all(|b| b.parse::<u16>().is_ok()));
+        // Magic buffers are filled (28 entries, all parseable; signed fields
+        // may be negative) and EXE data clears the legacy marker.
+        assert!(app.magic_buf.iter().all(|b| b.parse::<i32>().is_ok()));
+        assert!(!app.magic_legacy);
         // Physics doc imported and curve buffer has 36 entries.
         assert!(app.physics.is_some());
         assert_eq!(app.curve_buf.len(), 36);
