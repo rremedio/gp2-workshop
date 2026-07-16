@@ -86,12 +86,16 @@ pub const MAGIC_LABELS: [(&str, &str); MAGIC_COUNT] = [
     (
         "T11 Difficulty grip (SemiPro)",
         "AI grip at the SemiPro difficulty for this track (Pro is interpolated \
-         from it). Higher = faster AI; Ace level is about 16384. Old editor: \"Semi-Pro Grip\".",
+         from it). Higher = faster AI; Ace level is about 16384. Old editor: \
+         \"Semi-Pro Grip\". Old-format .m2d files stored this scrambled across \
+         slots, so it is skipped when loading/exporting legacy files.",
     ),
     (
         "T12 Difficulty grip (Rookie)",
         "AI grip at the Rookie difficulty for this track (Amateur is interpolated \
-         from this and SemiPro). Higher = faster AI at easier levels.",
+         from this and SemiPro). Higher = faster AI at easier levels. Old-format \
+         .m2d files stored this scrambled across slots, so it is skipped when \
+         loading/exporting legacy files.",
     ),
     (
         "T13 CC mistake rate",
@@ -238,9 +242,9 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
     if app.magic_legacy {
         ui.colored_label(
             egui::Color32::from_rgb(220, 170, 60),
-            "Legacy .m2d loaded: the pit-view and new AI fields were not in the \
-             file. Export leaves them untouched in the EXE; Import (read slot) \
-             fills them back in.",
+            "Legacy .m2d loaded: the pit-view, difficulty-grip and new AI \
+             fields were not (reliably) in the file. Export leaves them \
+             untouched in the EXE; Import (read slot) fills them back in.",
         );
     }
 
@@ -310,7 +314,8 @@ pub fn ui(app: &mut App, ui: &mut egui::Ui) {
             .add_enabled(calibrated, egui::Button::new("Export (write slot)"))
             .on_hover_text(
                 "Write this slot into the EXE (makes a .bak backup first). \
-                 Data loaded from a legacy .m2d skips the pit-view / new AI fields.",
+                 Data loaded from a legacy .m2d skips the pit-view, \
+                 difficulty-grip and new AI fields.",
             )
             .clicked()
         {
@@ -364,7 +369,8 @@ fn export_slot(app: &mut App) {
             app.backup_exists = true;
             if legacy {
                 app.info(format!(
-                    "Wrote slot {} to EXE (pit-view / new AI fields left untouched)",
+                    "Wrote slot {} to EXE (pit-view / difficulty-grip / new AI \
+                     fields left untouched)",
                     slot + 1
                 ));
             } else {
@@ -400,8 +406,8 @@ fn load_m2d(app: &mut App) {
             app.magic_legacy = slot.legacy;
             if slot.legacy {
                 app.info(format!(
-                    "Loaded {} (legacy 24-line format - pit-view / new AI fields \
-                     not present)",
+                    "Loaded {} (legacy 24-line format - pit-view / \
+                     difficulty-grip / new AI fields not carried over)",
                     path.display()
                 ));
             } else {
@@ -415,8 +421,9 @@ fn load_m2d(app: &mut App) {
 fn save_m2d(app: &mut App) {
     if app.magic_legacy {
         app.error(
-            "This slot was loaded from a legacy file and is missing the pit-view / \
-             new AI fields. Use Import (read slot) to fill them from the EXE, then save."
+            "This slot was loaded from a legacy file and is missing the pit-view, \
+             difficulty-grip and new AI fields. Use Import (read slot) to fill \
+             them from the EXE, then save."
                 .to_string(),
         );
         return;
@@ -457,10 +464,14 @@ mod tests {
         for &i in &NOT_IN_LEGACY {
             let (l, h) = MAGIC_LABELS[i];
             assert!(
-                l.contains("new") || l.starts_with("Pit view"),
+                l.contains("new") || l.starts_with("Pit view") || l.starts_with("T11")
+                    || l.starts_with("T12"),
                 "label {l:?} at {i}"
             );
-            assert!(h.contains("Not stored in old-format"));
+            assert!(
+                h.contains("Not stored in old-format") || h.contains("skipped when"),
+                "help at {i} must mention legacy handling"
+            );
         }
     }
 

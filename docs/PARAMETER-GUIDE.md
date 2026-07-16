@@ -348,14 +348,17 @@ How to think about it:
   it as a `.m2d` file. **One `.m2d` file holds one slot** — 28 numbers, one
   per line, in the same order as the grid.
 - **Old `.m2d` files still load.** Files from the classic editors (24 lines)
-  open fine; the values they don't carry (the six *Pit view* fields and the
-  three *new* AI fields) simply stay untouched in your game when you Export.
-  Saving always writes the new 28-line format — old editors can't read those
-  files, so don't hand them to someone still on a classic tool.
+  open fine; the values they don't carry correctly (the six *Pit view*
+  fields, the two *difficulty grip* values and the three *new* AI fields)
+  simply stay untouched in your game when you Export. Saving always writes
+  the new 28-line format — old editors can't read those files, so don't hand
+  them to someone still on a classic tool.
 - **Why the change?** The classic format's four "pit geometry" values (old
   T14–T17) turned out to be a scrambled view of six real values, mixed
   *across* tracks — editing them for one track silently changed two others.
-  The new format fixes that (and drops old T6, which the game never reads).
+  The two difficulty-grip values had the same problem (SemiPro and Rookie
+  were interleaved across tracks). The new format fixes both (and drops old
+  T6, which the game never reads).
 - Most of these are very situational. The ones most people actually touch are
   the **AI difficulty/pace** values and **fuel burn**; the rest (especially the
   pit-view ones) are best left at stock.
@@ -375,8 +378,8 @@ keep their old "T" numbers):
 | 8 | **T8 Driver pace (race)** | Per-driver race pace for the AI. Higher = faster AI driver in the race. |
 | 9 | **T9 Lap-clock rate (qual)** | Adjusts qualifying lap *times* without changing car speed — it tweaks how fast the lap clock counts. Higher = slower recorded laps. |
 | 10 | **T10 Lap-clock rate (race)** | Same idea for the race. Higher = slower recorded laps. |
-| 11 | **T11 Difficulty grip (SemiPro)** | AI grip at the SemiPro difficulty for this track (Pro is worked out from it). Higher = faster AI. |
-| 12 | **T12 Difficulty grip (Rookie)** | AI grip at the Rookie difficulty (Amateur is worked out from this and SemiPro). Higher = faster AI at the easier levels. |
+| 11 | **T11 Difficulty grip (SemiPro)** | AI grip at the SemiPro difficulty for this track (Pro is worked out from it). Higher = faster AI. Not carried over from old-format files. |
+| 12 | **T12 Difficulty grip (Rookie)** | AI grip at the Rookie difficulty (Amateur is worked out from this and SemiPro). Higher = faster AI at the easier levels. Not carried over from old-format files. |
 | 13 | **T13 CC mistake rate** | How often AI cars make a mistake in corners on this track. Higher = more AI mistakes; lower = cleaner AI driving. |
 | 14 | **AI mistake severity min** *(new)* | The *smallest* extra corner speed an AI mistake carries at this track. Higher = even minor errors become obvious wobbles. Stock 512. AI only. |
 | 15 | **AI mistake severity max** *(new)* | The *largest* extra corner speed an AI mistake can carry. Raise it for spectacular offs, lower it for gentle wobbles. Stock 2048. AI only. |

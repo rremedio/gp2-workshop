@@ -41,8 +41,10 @@ pub const MAGIC_LAYOUT: [MagicField; MAGIC_COUNT] = [
     f(1280936, 2, false), //  7: T8  driver pace (race)
     f(1280976, 4, false), //  8: T9  lap-clock rate (qual)
     f(1280978, 4, false), //  9: T10 lap-clock rate (race)
-    f(1281040, 2, false), // 10: T11 difficulty grip (SemiPro)
-    f(1281072, 2, false), // 11: T12 difficulty grip (Rookie)
+    f(1281040, 4, false), // 10: T11 difficulty grip (SemiPro) — low word of a
+    //     per-slot dword (stride 4!); the legacy stride-2 model interleaved
+    //     SemiPro/Rookie across slots, same bug class as the old T14–17
+    f(1281042, 4, false), // 11: T12 difficulty grip (Rookie) — high word
     f(1281134, 2, false), // 12: T13 CC mistake rate
     f(1281166, 4, false), // 13: NEW AI mistake severity min (D5A3A)
     f(1281168, 4, false), // 14: NEW AI mistake severity max (D5A3C)
@@ -77,8 +79,9 @@ pub const LEGACY_LINE_MAP: [Option<usize>; LEGACY_COUNT] = [
     Some(7),  // T8
     Some(8),  // T9
     Some(9),  // T10
-    Some(10), // T11
-    Some(11), // T12
+    None,     // T11 (legacy stride-2 slices interleave SemiPro/Rookie
+    //            across slots — per-slot values are cross-slot poisoned)
+    None,     // T12 (same)
     Some(12), // T13
     None,     // T14 (permuted pit-record view)
     None,     // T15
@@ -94,8 +97,10 @@ pub const LEGACY_LINE_MAP: [Option<usize>; LEGACY_COUNT] = [
 ];
 
 /// v2 layout indices that a legacy file does NOT provide (and that a
-/// legacy-sourced export must leave untouched in the EXE).
-pub const NOT_IN_LEGACY: [usize; 9] = [4, 13, 14, 15, 16, 17, 18, 19, 20];
+/// legacy-sourced export must leave untouched in the EXE): the new AI
+/// fields, the pit record, and the difficulty-grip pair (whose legacy
+/// slices are cross-slot scrambled).
+pub const NOT_IN_LEGACY: [usize; 11] = [4, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20];
 
 /// Inclusive value range accepted by field `i`.
 pub fn field_range(i: usize) -> (i32, i32) {
@@ -291,10 +296,11 @@ mod tests {
         let parsed = parse_m2d(&s).unwrap();
         assert!(parsed.legacy);
         // T1 (line 1) → idx 0; T5 (line 5) → idx 5; T7 (line 7) → idx 6;
-        // T18 (line 18) → idx 21; T24 (line 24) → idx 27.
+        // T13 (line 13) → idx 12; T18 (line 18) → idx 21; T24 → idx 27.
         assert_eq!(parsed.vals[0], 1000);
         assert_eq!(parsed.vals[5], 1004);
         assert_eq!(parsed.vals[6], 1006);
+        assert_eq!(parsed.vals[12], 1012);
         assert_eq!(parsed.vals[21], 1017);
         assert_eq!(parsed.vals[27], 1023);
         // fields legacy files don't carry stay zero
@@ -365,6 +371,15 @@ mod tests {
         assert_eq!(slot0[4], 0);
         assert_eq!(slot0[13], 512);
         assert_eq!(slot0[14], 2048);
+        // difficulty grip is a per-slot (SemiPro, Rookie) dword pair —
+        // byte-checked in the pristine EXE: slot 0 = (15488, 12352),
+        // slot 1 = (14656, 11648). The stride-2 legacy model would read
+        // slot 1 SemiPro as slot 0's Rookie (12352).
+        assert_eq!(slot0[10], 15488);
+        assert_eq!(slot0[11], 12352);
+        let slot1 = read_slot(&img, delta, 1);
+        assert_eq!(slot1[10], 14656);
+        assert_eq!(slot1[11], 11648);
 
         let parsed = parse_m2d(&to_m2d(&slot0)).unwrap();
         assert!(!parsed.legacy);
